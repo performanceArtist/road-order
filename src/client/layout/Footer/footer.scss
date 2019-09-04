@@ -1,0 +1,27 @@
+.footer {
+  background: $light-grey;
+  padding: 3rem;
+
+  &__link {
+    text-decoration: none;
+    color: white;
+    background-color: black;
+    display: inline-block;
+    text-align: center;
+    padding: 1.25rem;
+
+    &:hover {
+      background-color: $medium-grey;
+      color: black;
+    }
+
+    &:active {
+      color: white;
+    }
+
+    &:visited {
+      color: white;
+      background-color: black;
+    }
+  }
+}

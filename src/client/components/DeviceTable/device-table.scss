@@ -1,0 +1,37 @@
+.device-table {
+  display: inline-block;
+  width: 50rem;
+
+  &__device {
+    display: flex;
+    align-items: center;
+    padding-right: 0.5rem;
+    height: 3.5rem;
+    @include collapse-border();
+
+    &_pending {
+      background: $light-grey;
+    }
+
+    &_failed {
+      background: $danger;
+    }
+
+    &_complete {
+      background: $light-green;
+    }
+  }
+
+  &__name {
+    width: 100%;
+    padding-left: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  &__icon {
+    font-size: 1.8rem;
+    font-weight: bold;
+    @extend %unselectable;
+  }
+}

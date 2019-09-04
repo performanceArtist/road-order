@@ -1,0 +1,30 @@
+.progressbar {
+  height: 3.5rem;
+  display: flex;
+  position: relative;
+  max-width: 65rem;
+  margin: auto;
+
+  &__status {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: 100%;
+    line-height: 3.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  &__step {
+    height: 100%;
+    background: $light-grey;
+
+    &_complete {
+      background: $light-green;
+    }
+
+    &_failed {
+      background: $danger;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__line {
+    width: 2rem;
+    background: black;
+    height: 1.25rem;
+    float: left;
+  }
+
+  &__pointer {
+    width: 0;
+    height: 0;
+    border-top: 1.25rem solid transparent;
+    border-bottom: 1.25rem solid transparent;
+    border-right: 1.875rem solid black;
+    float: right;
+  }
+}
