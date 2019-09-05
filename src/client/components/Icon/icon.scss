@@ -1,0 +1,16 @@
+.icon {
+  box-sizing: border-box;
+  border: $medium-grey;
+  background-size: cover;
+  cursor: pointer;
+
+  &_medium {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &_small {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}
