@@ -16,7 +16,10 @@ const DeviceTable: React.FC<Props> = ({ devices = [] }) => {
   const x = <span>&#10006;</span>;
 
   const rows = devices.map(({ name, status = 'pending' }) => (
-    <div className={`device-table__device device-table__device_${status}`}>
+    <div
+      className={`device-table__device device-table__device_${status}`}
+      key={name}
+    >
       <div className="device-table__name">{name}</div>
       {status === 'pending' ? (
         <Spinner />

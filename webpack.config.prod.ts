@@ -4,15 +4,36 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const config = {
   entry: {
-    main: ['@babel/polyfill', path.join(__dirname, 'src/client/main.tsx')]
+    user: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/entries/user/index.tsx')
+    ],
+    login: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/entries/public/index.tsx')
+    ]
   },
 
   resolve: {
     modules: ['node_modules'],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
+      '@root': path.resolve(__dirname, 'src'),
+      '@client': path.resolve(__dirname, 'src/client'),
       '@redux': path.resolve(__dirname, 'src/client/redux'),
       '@components': path.resolve(__dirname, 'src/client/components')
+    }
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2,
+          minSize: 0
+        }
+      }
     }
   },
   output: {

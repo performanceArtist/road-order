@@ -1,0 +1,10 @@
+.task-panel {
+  max-height: 37.5rem;
+  max-width: 80rem;
+  overflow-y: auto;
+
+  &__task {
+    padding: 2rem;
+    border-bottom: 0.125rem solid black;
+  }
+}

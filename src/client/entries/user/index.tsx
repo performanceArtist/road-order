@@ -22,5 +22,5 @@ function importAll(resolve: any) {
 }
 
 importAll(
-  require.context('./', true, /\.(css|scss|jpg|png|svg|png|ico|xml|mp4|)$/)
+  require.context('../../', true, /\.(css|scss|jpg|png|svg|png|ico|xml|mp4|)$/)
 );

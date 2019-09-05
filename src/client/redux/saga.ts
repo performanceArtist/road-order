@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
 
-import request from './api/saga';
+import task from './task/saga';
 
 export default function* rootSaga() {
-  yield all([request()]);
+  yield all([task()]);
 }

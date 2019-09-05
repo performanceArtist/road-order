@@ -1,40 +1,61 @@
 import * as express from 'express';
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter, matchPath } from 'react-router-dom';
-import { Provider as ReduxProvider } from 'react-redux';
+import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const path = require('path');
-
-import routes from '../client/routes';
-import createStore from '../client/store';
-import App from '../client/App';
-import html from '../html';
-
 const router = express.Router();
 
-router.use(express.static(path.join(__dirname, '../static/public')));
+import knex from '@root/connection';
+import config from '@root/config';
+import App from '@root/client/entries/public/app';
+import render from '@root/utils/render';
 
-router.get('/api/test', (req, res) => {
-  res.json({ status: 'ok', message: 'Hello world' });
-});
-
-router.get('/*', (req, res) => {
-  const store = createStore();
-
+const sendApp = (url: string, res: express.Response) => {
   const jsx = (
-    <ReduxProvider store={store}>
-      <StaticRouter location={req.url}>
-        <App />
-      </StaticRouter>
-    </ReduxProvider>
+    <StaticRouter location={url}>
+      <App />
+    </StaticRouter>
   );
-
   const reactDom = renderToString(jsx);
-  const reduxState = store.getState();
   const helmetData = Helmet.renderStatic();
 
-  res.send(html(reactDom, reduxState, helmetData));
+  res.send(render({ reactDom, helmetData, bundle: 'login' }));
+};
+
+router.get('/', (req, res) => {
+  sendApp('/', res);
+});
+
+router.get('/login', (req, res) => {
+  const { token, login } = req.cookies;
+  if (token && login) {
+    res.redirect('/');
+  } else {
+    sendApp('/login', res);
+  }
+});
+
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await knex('users')
+      .where({ login: username })
+      .first();
+
+    if (!user) throw { type: 'login', message: 'Неверный логин' };
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw { type: 'password', message: 'Неверный пароль' };
+
+    const token = jwt.sign({ login: user.login }, config.auth.key);
+    res.json({ token, login: user.login });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 });
 
 export default router;

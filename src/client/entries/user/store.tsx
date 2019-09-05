@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import rootReducer from './redux/reducer';
-import rootSaga from './redux/saga';
+import rootReducer from '@redux/reducer';
+import rootSaga from '@redux/saga';
 
 export default ({ initialState = {}, browser = false } = {}) => {
   let comp;

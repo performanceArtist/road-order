@@ -1,0 +1,33 @@
+.task-info {
+  display: flex;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-right: 3rem;
+  }
+
+  &__name {
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    width: 4rem;
+    text-align: center;
+    word-break: break-all;
+  }
+
+  &__icon-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    margin-right: 0.5rem;
+  }
+
+  &__create-button {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+}

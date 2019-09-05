@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Header from './layout/Header/Header';
-import ModalManager from './layout/ModalManager/ModalManager';
-import { Navigation } from './layout/Navigation/Navigation';
-import Footer from './layout/Footer/Footer';
+import Header from '@client/layout/Header/Header';
+import ModalManager from '@client/layout/ModalManager/ModalManager';
+import { Navigation } from '@client/layout/Navigation/Navigation';
+import Footer from '@client/layout/Footer/Footer';
 import { hot } from 'react-hot-loader/root';
 
 import routes from './routes';

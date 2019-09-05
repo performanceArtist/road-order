@@ -13,12 +13,14 @@
     "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
+      "@root/*": ["./*"],
+      "@client/*": ["./client/*"],
       "@redux/*": [
         "client/redux/*"
       ],
       "@components/*": [
         "client/components/*"
-      ],
+      ]
     },
     "jsx": "react",
     "allowJs": true,

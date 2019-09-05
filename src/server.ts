@@ -1,4 +1,4 @@
-//import 'module-alias/register';
+import 'module-alias/register';
 import * as express from 'express';
 const morgan = require('morgan');
 const cors = require('cors');
@@ -6,7 +6,10 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
-import mainRouter from './routes/public';
+import publicRouter from './routes/public';
+import appRouter from './routes/app';
+//import apiRouter from './routes/api';
+//import adminRouter from './routes/admin';
 
 const app = express();
 
@@ -18,8 +21,11 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// public routes
-app.use(mainRouter);
+app.use(publicRouter);
+app.use(appRouter);
+//app.use(apiRouter);
+//app.use(adminRouter);
+
 app.get('*', (req, res) => {
   res.status(404);
   res.end();

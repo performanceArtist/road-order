@@ -6,16 +6,36 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const config = {
   entry: {
     rhl: 'react-hot-loader/patch',
-    main: ['@babel/polyfill', path.join(__dirname, 'src/client/main.tsx')]
+    user: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/entries/user/index.tsx')
+    ],
+    login: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/entries/public/index.tsx')
+    ]
   },
-
   resolve: {
     modules: ['node_modules', 'client'],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      '@root': path.resolve(__dirname, 'src'),
+      '@client': path.resolve(__dirname, 'src/client'),
       '@redux': path.resolve(__dirname, 'src/client/redux'),
       '@components': path.resolve(__dirname, 'src/client/components')
+    }
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2,
+          minSize: 0
+        }
+      }
     }
   },
   output: {
@@ -80,7 +100,7 @@ module.exports = (env: any, options: any) => {
   if (options.mode === 'development') {
     config.plugins.push(
       new HtmlWebpackPlugin({
-        template: 'src/client/index.html',
+        template: 'src/client/entries/user/index.html',
         filename: `index.html`,
         chunks: []
       })

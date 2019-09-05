@@ -1,14 +1,12 @@
 import { combineReducers } from 'redux';
 import { StateType } from 'typesafe-actions';
 
-import test from '@components/TSTest/redux/reducer';
-import request from './api/reducer';
 import modals from './modal/reducer';
+import tasks from './task/reducer';
 
 const rootReducer = combineReducers({
   modals,
-  test,
-  request
+  tasks
 });
 
 export type RootState = StateType<typeof rootReducer>;
