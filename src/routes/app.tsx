@@ -15,37 +15,33 @@ import render from '@root/utils/render';
 import config from '@root/config';
 import knex from '@root/connection';
 
-/*
 router.use('/', async (req, res, next) => {
   try {
-    const { token, login } = req.cookies;
-    if (!token || !login) throw new Error('No auth');
+    const { token } = req.cookies;
+    if (!token) throw new Error('No auth');
 
     const payload = jwt.verify(token, config.auth.key);
-    const user = await knex('users')
-      .where({ login: payload.login })
+    const user = await knex('drivers')
+      .select('*')
+      .where({ uid: payload.uid })
       .first();
-
     if (!user) throw new Error('User not found');
-    req.user = { login, role: user.group_id };
+    req.user = user;
+
     next();
   } catch (error) {
     req.user = null;
-    if (/\/api\//.test(req.url)) {
-      res.status(401).json({ error: 'Unauthorized' });
-    } else {
-      res.redirect('/login');
-    }
+    res.status(401).json({ error: 'Unauthorized' });
   }
-});*/
+});
 
-const paths = routes.map(({ path }) => `/app/${path}`);
+const paths = routes.map(({ path }) => path);
 router.get(paths, (req, res, next) => {
   const store = createStore();
 
   const jsx = (
     <ReduxProvider store={store}>
-      <StaticRouter location={`/app/${req.url}`}>
+      <StaticRouter location={`${req.url}`}>
         <App />
       </StaticRouter>
     </ReduxProvider>
@@ -55,7 +51,7 @@ router.get(paths, (req, res, next) => {
   const reduxState = store.getState();
   const helmetData = Helmet.renderStatic();
 
-  res.send(render({ reactDom, reduxState, helmetData, bundle: 'app' }));
+  res.send(render({ reactDom, reduxState, helmetData, bundle: 'user' }));
 });
 
 export default router;

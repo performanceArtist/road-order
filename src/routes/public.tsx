@@ -3,9 +3,7 @@ import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const path = require('path');
 const router = express.Router();
 
 import knex from '@root/connection';
@@ -25,13 +23,8 @@ const sendApp = (url: string, res: express.Response) => {
   res.send(render({ reactDom, helmetData, bundle: 'login' }));
 };
 
-router.get('/', (req, res) => {
-  sendApp('/', res);
-});
-
 router.get('/login', (req, res) => {
-  const { token, login } = req.cookies;
-  if (token && login) {
+  if (req.cookies.token) {
     res.redirect('/');
   } else {
     sendApp('/login', res);
@@ -39,22 +32,28 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { uid } = req.body;
 
   try {
-    const user = await knex('users')
-      .where({ login: username })
+    const user = await knex('drivers')
+      .select('*')
+      .where({ uid })
       .first();
 
-    if (!user) throw { type: 'login', message: 'Неверный логин' };
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) throw { type: 'password', message: 'Неверный пароль' };
-
-    const token = jwt.sign({ login: user.login }, config.auth.key);
-    res.json({ token, login: user.login });
+    if (!user) throw { type: 'uid', message: 'Несуществующий uid' };
+    const token = jwt.sign({ uid }, config.auth.key);
+    res.json({ token });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error });
+  }
+});
+
+router.get('/', (req, res, next) => {
+  if (req.cookies.token) {
+    next();
+  } else {
+    sendApp('/', res);
   }
 });
 

@@ -1,30 +1,15 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Header from '@client/layout/Header/Header';
-import ModalManager from '@client/layout/ModalManager/ModalManager';
-import { Navigation } from '@client/layout/Navigation/Navigation';
 import Footer from '@client/layout/Footer/Footer';
-import { hot } from 'react-hot-loader/root';
-import Profile from '@components/Profile/Profile';
+import AdminView from '@client/views/AdminView/AdminView';
 
-import routes from './routes';
+const routes = [{ path: '/admin', exact: false, component: AdminView }];
 
 const App = () => {
   return (
     <div className="container">
       <main className="app">
-        <ModalManager />
-        <div className="app__navigation">
-          <Navigation
-            links={routes.map(({ path, title, icon }) => ({
-              url: path,
-              title,
-              icon
-            }))}
-          />
-          <Profile />
-        </div>
         <div className="app__content">
           <Switch>
             {routes.map(({ path, exact, component }, index) => (
@@ -38,10 +23,9 @@ const App = () => {
           </Switch>
         </div>
       </main>
-
       <Footer />
     </div>
   );
 };
 
-export default hot(App);
+export default App;

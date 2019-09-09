@@ -1,5 +1,4 @@
 import Index from '@client/views/Index/Index';
-import Login from '@client/views/Login/Login';
 import TaskView from '@client/views/TaskView/TaskView';
 import MapView from '@client/views/MapView/MapView';
 import RoadView from '@client/views/RoadView/RoadView';
@@ -20,11 +19,6 @@ export default [
     title: 'Homepage',
     component: Index,
     exact: true
-  },
-  {
-    path: '/login',
-    title: 'Login',
-    component: Login
   },
   {
     path: '/task',
