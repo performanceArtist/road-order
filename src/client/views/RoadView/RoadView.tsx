@@ -3,8 +3,10 @@ import Road from '../../features/Road';
 
 const RoadView = () => {
   return (
-    <div>
-      <Road />
+    <div className="road-view">
+      <div className="road-view__road">
+        <Road />
+      </div>
     </div>
   );
 };

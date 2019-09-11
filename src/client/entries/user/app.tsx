@@ -26,6 +26,7 @@ const App = () => {
           <Profile />
         </div>
         <div className="app__content">
+          <Header />
           <Switch>
             {routes.map(({ path, exact, component }, index) => (
               <Route

@@ -1,9 +1,19 @@
 import * as React from 'react';
 
-import Map from '../../features/Map/Map';
+import { canUseDOM } from '../../utils';
+
+let Map = () => <></>;
+
+if (canUseDOM) {
+  Map = require('@client/features/Map/Map').default;
+}
 
 const MapView = () => {
-  return <div />;
+  return (
+    <div>
+      <Map />
+    </div>
+  );
 };
 
 export default MapView;

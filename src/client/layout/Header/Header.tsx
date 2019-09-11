@@ -1,13 +1,19 @@
 import * as React from 'react';
 
-type Props = {
-  title?: string;
-};
+import ProgressBar from '@components/ProgressBar/ProgressBar';
 
-const Header = ({ title = 'Title' }: Props) => {
+const Header = () => {
   return (
     <header className="header">
-      <h1 className="header__title">{title}</h1>
+      <ProgressBar
+        steps={[
+          { name: 'Диагностика', status: 'complete' },
+          { name: 'Георадар', status: 'complete' },
+          { name: 'Профилометр', status: 'complete' },
+          { name: 'Система позиционирования', status: 'failed' },
+          { name: 'Система фото-видео фиксации' }
+        ]}
+      />
     </header>
   );
 };

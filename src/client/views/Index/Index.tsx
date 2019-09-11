@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 
-import StatusBar from '@components/StatusBar/StatusBar';
 import DeviceTable from '@components/DeviceTable/DeviceTable';
 
 const Index: React.FC<{}> = () => (
@@ -10,7 +9,6 @@ const Index: React.FC<{}> = () => (
       <title>Homepage</title>
     </Helmet>
     <div className="index">
-      <StatusBar />
       <div className="index__device-table">
         <DeviceTable
           devices={[
