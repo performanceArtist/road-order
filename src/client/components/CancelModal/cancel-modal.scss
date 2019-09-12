@@ -1,0 +1,15 @@
+.cancel-modal {
+  &__generic {
+    padding: 2rem;
+    text-align: center;
+  }
+
+  &__voice {
+    text-align: center;
+  }
+
+  &__button {
+    display: inline-block;
+    margin-right: 1rem;
+  }
+}

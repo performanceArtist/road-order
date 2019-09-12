@@ -33,7 +33,7 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
         </a>
       </div>
       <div className="task-panel__button">
-        <Button onClick={() => openModal('Cancel')}>Отменить заказ</Button>
+        <Button onClick={() => openModal('Cancel')}>Отменить задание</Button>
       </div>
     </div>
   );

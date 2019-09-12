@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import Modal from '@components/Modal/Modal';
+import Button from '@components/Button/Button';
 
 import { closeModal } from '@redux/modal/actions';
 
@@ -10,9 +11,24 @@ type Props = typeof mapDispatch;
 const CancelModal: React.FC<Props> = ({ closeModal }) => {
   return (
     <Modal open={true} onClose={closeModal}>
-      <Modal.Header>Отменить</Modal.Header>
+      <Modal.Header>Причина отмены</Modal.Header>
       <Modal.Content>
-        <div>Test</div>
+        <div className="cancel-modal">
+          <div className="cancel-modal__generic">
+            <div className="cancel-modal__button">
+              <Button>Дорожные работы</Button>
+            </div>
+            <div className="cancel-modal__button">
+              <Button>Авария на полосе</Button>
+            </div>
+            <div className="cancel-modal__button">
+              <Button>Неисправность автомобиля</Button>
+            </div>
+          </div>
+          <div className="cancel-modal__voice">
+            <Button>Голосовой комментарий</Button>
+          </div>
+        </div>
       </Modal.Content>
       <Modal.Footer />
     </Modal>

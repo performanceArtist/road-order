@@ -1,6 +1,8 @@
 .profile {
   display: flex;
   align-items: center;
+  padding: 1rem;
+  padding-left: 0;
 
   &__username {
     display: inline-block;

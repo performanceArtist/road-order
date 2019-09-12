@@ -6,7 +6,7 @@ import RoadControl from './RoadControl';
 const Road = () => {
   return (
     <div>
-      <RoadChart min={0} max={2000} current={1200} />
+      <RoadChart min={0} max={1200} current={853} />
       <RoadControl />
     </div>
   );

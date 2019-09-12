@@ -1,0 +1,35 @@
+.speed-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40rem;
+  padding: 1rem;
+  margin: auto;
+
+  &__title {
+    display: inline-block;
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+  }
+
+  &__circle {
+    margin: auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 0 0.0625rem $medium-grey;
+    box-sizing: border-box;
+    height: 9.875rem;
+    min-width: 9.875rem;
+    max-width: 9.875rem;
+    border: 0.85rem solid $light-green;
+    background-color: $light-grey;
+    font-size: 4.75rem;
+    line-height: 8.1rem;
+    display: inline-block;
+    margin-right: 1rem;
+
+    &_alert {
+      border: 0.85rem solid red;
+    }
+  }
+}
