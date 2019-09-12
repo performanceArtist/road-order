@@ -3,10 +3,12 @@ import { StateType } from 'typesafe-actions';
 
 import modals from './modal/reducer';
 import tasks from './task/reducer';
+import map from './map/reducer';
 
 const rootReducer = combineReducers({
   modals,
-  tasks
+  tasks,
+  map
 });
 
 export type RootState = StateType<typeof rootReducer>;

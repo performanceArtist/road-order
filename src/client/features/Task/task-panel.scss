@@ -3,14 +3,17 @@
   max-width: 70rem;
   overflow-y: auto;
   margin: auto;
+  border: 1px solid $medium-grey;
 
   &__task {
     padding: 2rem;
     border-bottom: 0.125rem solid black;
     background: rgba(200, 200, 200, 0.2);
+    opacity: 0.65;
 
     &_active {
       background: none;
+      opacity: 1;
     }
   }
 

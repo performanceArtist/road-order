@@ -1,6 +1,7 @@
 import { MODAL } from './actions';
 
 import ErrorModal from '@components/ErrorModal/ErrorModal';
+import CancelModal from '@components/CancelModal/CancelModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 
@@ -8,7 +9,8 @@ export const ModalMap: Record<
   string,
   ConnectedComponentClass<any, any> | React.SFC | React.Component
 > = {
-  Error: ErrorModal
+  Error: ErrorModal,
+  Cancel: CancelModal
 };
 
 export interface ModalPayload {

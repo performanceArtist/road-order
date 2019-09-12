@@ -28,12 +28,12 @@ const App = () => {
         <div className="app__content">
           <Header />
           <Switch>
-            {routes.map(({ path, exact, component }, index) => (
+            {routes.map(({ path, exact, component: Component }, index) => (
               <Route
                 key={index}
                 exact={exact}
                 path={path}
-                component={component}
+                render={props => <Component {...props} />}
               />
             ))}
           </Switch>

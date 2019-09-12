@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 
@@ -8,6 +7,7 @@ import Button from '@components/Button/Button';
 
 import { Task } from '@redux/task/types';
 import { RootState } from '@redux/reducer';
+import { openModal } from '@redux/modal/actions';
 
 type OwnProps = {
   tasks: Array<Task>;
@@ -15,19 +15,19 @@ type OwnProps = {
 
 type Props = OwnProps;
 
-const TaskPanel: React.FC<Props> = ({ tasks = [] }) => {
+const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
   const sortByDate = R.sort(
     ({ date: fdate }, { date: sdate }) =>
       new Date(fdate).getTime() - new Date(sdate).getTime()
   );
   const mapIndexed = R.addIndex(R.map);
-  const buttons = (
+  const buttons = task => (
     <div className="task-panel__buttons">
       <div className="task-panel__button">
         <Button>Проложить маршрут</Button>
       </div>
       <div className="task-panel__button">
-        <Button>Отменить заказ</Button>
+        <Button onClick={() => openModal('Cancel')}>Отменить заказ</Button>
       </div>
     </div>
   );
@@ -42,7 +42,7 @@ const TaskPanel: React.FC<Props> = ({ tasks = [] }) => {
       key={`task-${task.id}`}
     >
       <TaskInfo task={task} />
-      {index === 0 && buttons}
+      {index === 0 && buttons(task)}
     </div>
   ));
 
@@ -63,4 +63,9 @@ const mapState = ({ tasks }: RootState) => ({
   tasks: tasks.tasks
 });
 
-export default connect(mapState)(TaskPanel);
+const mapDispatch = { openModal };
+
+export default connect(
+  mapState,
+  mapDispatch
+)(TaskPanel);

@@ -35,14 +35,13 @@ router.use('/', async (req, res, next) => {
   }
 });
 
-const paths = routes.map(({ path }) => path);
-router.get(paths, (req, res, next) => {
+const renderApp = (url: string, props: any = {}) => {
   const store = createStore();
 
   const jsx = (
     <ReduxProvider store={store}>
-      <StaticRouter location={`${req.url}`}>
-        <App />
+      <StaticRouter location={`${url}`}>
+        <App props={props} />
       </StaticRouter>
     </ReduxProvider>
   );
@@ -51,7 +50,16 @@ router.get(paths, (req, res, next) => {
   const reduxState = store.getState();
   const helmetData = Helmet.renderStatic();
 
-  res.send(render({ reactDom, reduxState, helmetData, bundle: 'user' }));
+  return render({ reactDom, reduxState, helmetData, bundle: 'user' });
+};
+
+router.get('/map', (req, res) => {
+  res.send(renderApp(req.url, { from: req.query.from, to: req.query.to }));
+});
+
+const paths = routes.map(({ path }) => path);
+router.get(paths, (req, res, next) => {
+  res.send(renderApp(req.url));
 });
 
 export default router;
