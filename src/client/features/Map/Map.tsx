@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 
-import L from 'leaflet';
 import { Map, TileLayer, Polyline } from 'react-leaflet';
 import { Icon, IconImage } from '@components/Icon/Icon';
 
@@ -10,20 +9,17 @@ import { connect } from 'react-redux';
 import { RootState } from '@redux/reducer';
 
 interface State {
-  lat: number;
-  lng: number;
   zoom: number;
   fullscreen: boolean;
 }
 
 type OwnProps = {
-  from?: string;
-  to?: string;
-  track?: Array<{ latitude: number; longitude: number }>;
+  from?: [number, number];
+  to?: [number, number];
 };
 
 type MapState = {
-  track: { latitude: number; longitude: number };
+  track: Array<[number, number]>;
 };
 
 type Props = OwnProps & MapState & typeof mapDispatch;
@@ -35,8 +31,6 @@ class MapComponent extends Component<Props, State> {
     super(props);
 
     this.state = {
-      lat: 56.472596,
-      lng: 84.950367,
       zoom: 14,
       fullscreen: false
     };
@@ -46,9 +40,10 @@ class MapComponent extends Component<Props, State> {
 
   componentDidMount() {
     const { from, to } = this.props;
+
     if (!from || !to) return;
 
-    getRoute(from, to);
+    this.props.getRoute(from, to);
   }
 
   handleFullscreen() {
@@ -60,24 +55,20 @@ class MapComponent extends Component<Props, State> {
   drawRoute() {
     if (this.props.track.length === 0) return null;
 
-    return (
-      <Polyline
-        positions={this.props.track.map(({ latitude, longitude }) =>
-          L.latLng(latitude, longitude)
-        )}
-        color="green"
-        weight={8}
-      />
-    );
+    return <Polyline positions={this.props.track} color="green" weight={8} />;
   }
 
   render() {
-    const { lat, lng, zoom } = this.state;
+    const { zoom } = this.state;
+    const center =
+      this.props.track.length > 0
+        ? this.props.track[0]
+        : [56.472596, 84.950367];
 
     return (
       <div className={this.state.fullscreen ? 'map map_fullscreen' : 'map'}>
         <div className="map__map">
-          <Map center={[lat, lng]} zoom={zoom} ref={this.ref} maxZoom={19}>
+          <Map center={center} zoom={zoom} ref={this.ref} maxZoom={19}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

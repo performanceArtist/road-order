@@ -72,7 +72,9 @@ const tasks = [
     regionId: '889b1f3a-98aa-40fc-9d3d-0f41192758ab',
     lane: 2,
     isForward: true,
-    date: 'Wed Sep 7 2019 16:19:12 GMT+0700 (Novosibirsk Standard Time)'
+    date: 'Wed Sep 7 2019 16:19:12 GMT+0700 (Novosibirsk Standard Time)',
+    from: [56.469248, 84.950495],
+    to: [56.47752, 84.981566]
   },
   {
     id: 34,

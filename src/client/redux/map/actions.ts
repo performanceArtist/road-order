@@ -6,7 +6,7 @@ export const MAP = {
   }
 };
 
-export const getRoute = (from: string, to: string) => ({
+export const getRoute = (from: [number, number], to: [number, number]) => ({
   type: MAP.GET_ROUTE.REQUEST,
   payload: { from, to }
 });

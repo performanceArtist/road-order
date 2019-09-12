@@ -24,7 +24,13 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
   const buttons = task => (
     <div className="task-panel__buttons">
       <div className="task-panel__button">
-        <Button>Проложить маршрут</Button>
+        <a
+          href={`/map?from=${JSON.stringify(task.from)}&to=${JSON.stringify(
+            task.to
+          )}`}
+        >
+          <Button>Проложить маршрут</Button>
+        </a>
       </div>
       <div className="task-panel__button">
         <Button onClick={() => openModal('Cancel')}>Отменить заказ</Button>

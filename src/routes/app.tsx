@@ -15,6 +15,7 @@ import render from '@root/utils/render';
 import config from '@root/config';
 import knex from '@root/connection';
 
+/*
 router.use('/', async (req, res, next) => {
   try {
     const { token } = req.cookies;
@@ -34,7 +35,7 @@ router.use('/', async (req, res, next) => {
     res.status(401).json({ error: 'Unauthorized' });
   }
 });
-
+*/
 const renderApp = (url: string, props: any = {}) => {
   const store = createStore();
 

@@ -5,7 +5,10 @@ import { MAP } from './actions';
 
 function* getWorker(action: { type: string; payload: any }) {
   try {
-    const response = yield call(axios.get, '/api/', action.payload);
+    const response = yield call(axios.get, '/api/route', {
+      params: action.payload
+    });
+
     yield put({
       type: MAP.GET_ROUTE.SUCCESS,
       payload: response.data
