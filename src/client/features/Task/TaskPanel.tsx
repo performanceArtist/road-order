@@ -27,7 +27,7 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
         <a
           href={`/map?from=${JSON.stringify(task.from)}&to=${JSON.stringify(
             task.to
-          )}`}
+          )}&current=${JSON.stringify(task.current)}`}
         >
           <Button>Проложить маршрут</Button>
         </a>

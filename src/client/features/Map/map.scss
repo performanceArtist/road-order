@@ -40,6 +40,18 @@
   &__mode-switch {
     margin-top: 0.5rem;
   }
+
+  &__controls {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+  }
+
+  .leaflet-right {
+    left: 0;
+    right: auto;
+  }
 }
 
 @media screen and (max-width: 1600px) {

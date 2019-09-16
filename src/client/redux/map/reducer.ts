@@ -5,8 +5,14 @@ type Point = {
   longitude: number;
 };
 
-const initialState: { track: Array<Point> } = {
-  track: []
+const initialState: {
+  track: Array<Point>;
+  hasArrived: boolean;
+  measurementStarted: boolean;
+} = {
+  track: [],
+  hasArrived: false,
+  measurementStarted: false
 };
 
 export default function reducer(
@@ -16,6 +22,10 @@ export default function reducer(
   switch (type) {
     case MAP.GET_ROUTE.SUCCESS:
       return { ...state, track: payload };
+    case MAP.SET_HAS_ARRIVED:
+      return { ...state, hasArrived: payload };
+    case MAP.SET_MEASUREMENT_STATUS:
+      return { ...state, measurementStarted: payload };
     default:
       return state;
   }

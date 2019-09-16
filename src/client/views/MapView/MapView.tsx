@@ -15,7 +15,7 @@ const MapView = ({ location: { search } }) => {
 
   return (
     <div>
-      <Map from={query.from} to={query.to} />
+      <Map from={query.from} to={query.to} current={query.current} />
     </div>
   );
 };

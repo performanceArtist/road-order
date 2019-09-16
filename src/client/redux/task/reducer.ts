@@ -74,7 +74,8 @@ const tasks = [
     isForward: true,
     date: 'Wed Sep 7 2019 16:19:12 GMT+0700 (Novosibirsk Standard Time)',
     from: [56.469248, 84.950495],
-    to: [56.47752, 84.981566]
+    to: [56.47752, 84.981566],
+    current: [56.469248, 84.950495]
   },
   {
     id: 34,

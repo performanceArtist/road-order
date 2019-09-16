@@ -1,0 +1,12 @@
+.map-controls {
+  padding: 0.5rem;
+  width: 14rem;
+
+  &__arrived {
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-evenly;
+  }
+}

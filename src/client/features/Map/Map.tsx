@@ -1,12 +1,19 @@
 import * as React from 'react';
 import { Component } from 'react';
 
-import { Map, TileLayer, Polyline } from 'react-leaflet';
+import * as L from 'leaflet';
+import { Map, TileLayer, Polyline, Marker } from 'react-leaflet';
 import { Icon, IconImage } from '@components/Icon/Icon';
 
-import { getRoute } from '@redux/map/actions';
+import {
+  getRoute,
+  setHasArrived,
+  setMeasurementStatus
+} from '@redux/map/actions';
 import { connect } from 'react-redux';
 import { RootState } from '@redux/reducer';
+
+import Controls from './Controls';
 
 interface State {
   zoom: number;
@@ -16,10 +23,13 @@ interface State {
 type OwnProps = {
   from?: [number, number];
   to?: [number, number];
+  current: [number, number];
 };
 
 type MapState = {
   track: Array<[number, number]>;
+  hasArrived: boolean;
+  measurementStarted: boolean;
 };
 
 type Props = OwnProps & MapState & typeof mapDispatch;
@@ -58,8 +68,27 @@ class MapComponent extends Component<Props, State> {
     return <Polyline positions={this.props.track} color="green" weight={8} />;
   }
 
+  addCurrentMarker() {
+    const { current } = this.props;
+    if (!current) return;
+
+    const o = JSON.parse(current);
+
+    return (
+      <Marker
+        key={Math.random()}
+        icon={L.icon({
+          iconUrl: 'images/car-icon.png'
+        })}
+        position={L.latLng(o[0], o[1])}
+      />
+    );
+  }
+
   render() {
     const { zoom } = this.state;
+    const { measurementStarted, hasArrived } = this.props;
+
     const center =
       this.props.track.length > 0
         ? this.props.track[0]
@@ -74,9 +103,16 @@ class MapComponent extends Component<Props, State> {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {this.drawRoute()}
+            {this.addCurrentMarker()}
           </Map>
           <div className="map__fullscreen-button">
             <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
+          </div>
+          <div className="map__controls">
+            <Controls
+              measurementStarted={measurementStarted}
+              hasArrived={hasArrived}
+            />
           </div>
         </div>
       </div>
@@ -84,8 +120,8 @@ class MapComponent extends Component<Props, State> {
   }
 }
 
-const mapState = ({ map }: RootState) => ({ track: map.track });
-const mapDispatch = { getRoute };
+const mapState = ({ map }: RootState) => map;
+const mapDispatch = { getRoute, setHasArrived, setMeasurementStatus };
 
 export default connect(
   mapState,
