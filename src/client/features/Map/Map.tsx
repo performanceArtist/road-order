@@ -8,12 +8,15 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 import {
   getRoute,
   setHasArrived,
-  setMeasurementStatus
+  setMeasurementStatus,
+  move
 } from '@redux/map/actions';
+import { openModal } from '@redux/modal/actions';
 import { connect } from 'react-redux';
 import { RootState } from '@redux/reducer';
 
 import Controls from './Controls';
+import Button from '@components/Button/Button';
 
 interface State {
   zoom: number;
@@ -28,6 +31,7 @@ type OwnProps = {
 
 type MapState = {
   track: Array<[number, number]>;
+  carPosition: [number, number];
   hasArrived: boolean;
   measurementStarted: boolean;
 };
@@ -46,6 +50,8 @@ class MapComponent extends Component<Props, State> {
     };
 
     this.handleFullscreen = this.handleFullscreen.bind(this);
+    this.startSimulation = this.startSimulation.bind(this);
+    this.stopSimulation = this.stopSimulation.bind(this);
   }
 
   componentDidMount() {
@@ -69,10 +75,8 @@ class MapComponent extends Component<Props, State> {
   }
 
   addCurrentMarker() {
-    const { current } = this.props;
+    const current = this.props.carPosition || JSON.parse(this.props.current);
     if (!current) return;
-
-    const o = JSON.parse(current);
 
     return (
       <Marker
@@ -80,9 +84,24 @@ class MapComponent extends Component<Props, State> {
         icon={L.icon({
           iconUrl: 'images/car-icon.png'
         })}
-        position={L.latLng(o[0], o[1])}
+        position={L.latLng(current[0], current[1])}
       />
     );
+  }
+
+  startSimulation() {
+    this.timeout = setInterval(() => {
+      if (this.props.track.length === 0) {
+        clearInterval(this.timeout);
+        return;
+      }
+
+      this.props.move(this.props.carPosition);
+    }, 150);
+  }
+
+  stopSimulation() {
+    if (this.timeout) clearTimeout(this.timeout);
   }
 
   render() {
@@ -95,33 +114,45 @@ class MapComponent extends Component<Props, State> {
         : [56.472596, 84.950367];
 
     return (
-      <div className={this.state.fullscreen ? 'map map_fullscreen' : 'map'}>
-        <div className="map__map">
-          <Map center={center} zoom={zoom} ref={this.ref} maxZoom={19}>
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {this.drawRoute()}
-            {this.addCurrentMarker()}
-          </Map>
-          <div className="map__fullscreen-button">
-            <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
-          </div>
-          <div className="map__controls">
-            <Controls
-              measurementStarted={measurementStarted}
-              hasArrived={hasArrived}
-            />
+      <>
+        <Button onClick={this.startSimulation}>Начать движение</Button>
+        <Button onClick={this.stopSimulation}>Остановиться</Button>
+        <div className={this.state.fullscreen ? 'map map_fullscreen' : 'map'}>
+          <div className="map__map">
+            <Map center={center} zoom={zoom} ref={this.ref} maxZoom={19}>
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {this.drawRoute()}
+              {this.addCurrentMarker()}
+            </Map>
+            <div className="map__fullscreen-button">
+              <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
+            </div>
+            <div className="map__controls">
+              <Controls
+                measurementStarted={measurementStarted}
+                hasArrived={hasArrived}
+                onMeasurementClick={() => this.props.setMeasurementStatus(true)}
+                onCancelClick={() => this.props.openModal('Cancel')}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
 
 const mapState = ({ map }: RootState) => map;
-const mapDispatch = { getRoute, setHasArrived, setMeasurementStatus };
+const mapDispatch = {
+  getRoute,
+  setHasArrived,
+  setMeasurementStatus,
+  move,
+  openModal
+};
 
 export default connect(
   mapState,

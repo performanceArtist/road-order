@@ -1,18 +1,18 @@
+import { haversine } from '@client/features/Map/helpers';
 import { MAP } from './actions';
-
-type Point = {
-  latitude: number;
-  longitude: number;
-};
+import track from './track';
 
 const initialState: {
-  track: Array<Point>;
+  track: Array<[number, number]>;
   hasArrived: boolean;
   measurementStarted: boolean;
+  offTrack: boolean;
 } = {
-  track: [],
+  track,
+  carPosition: track[0],
   hasArrived: false,
-  measurementStarted: false
+  measurementStarted: false,
+  offTrack: false
 };
 
 export default function reducer(
@@ -26,6 +26,22 @@ export default function reducer(
       return { ...state, hasArrived: payload };
     case MAP.SET_MEASUREMENT_STATUS:
       return { ...state, measurementStarted: payload };
+    case MAP.MOVE:
+      const next = payload || state.track[1];
+      if (!next) return state;
+
+      const closest = haversine(state.track, next);
+      const track = state.track.slice(closest + 1, state.track.length);
+      console.log(closest, track, next);
+
+      return {
+        ...state,
+        carPosition: track.length > 0 ? track[0] : state.carPosition,
+        track,
+        hasArrived: track.length === 0
+      };
+    case MAP.SET_CAR_POSITION:
+      return { ...state, carPosition: payload };
     default:
       return state;
   }
