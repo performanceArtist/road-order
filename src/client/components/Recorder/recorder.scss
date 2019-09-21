@@ -1,0 +1,11 @@
+.recorder {
+  &__buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 12.5rem;
+  }
+
+  &__audio {
+    display: flex;
+  }
+}

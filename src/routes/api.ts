@@ -1,7 +1,17 @@
 import * as express from 'express';
 import axios from 'axios';
 const polyline = require('@mapbox/polyline');
-
+const multer = require('multer');
+const path = require('path');
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, path.resolve('dist/uploads'));
+  },
+  filename: function(req, file, cb) {
+    return cb(null, file.originalname);
+  }
+});
+const upload = multer({ storage });
 const router = express.Router();
 
 router.get('/api/route', (req, res) => {
@@ -27,4 +37,10 @@ router.get('/api/route', (req, res) => {
       res.status(500).send(error);
     });
 });
+
+router.post('/api/audio', upload.single('audio'), (req, res) => {
+  console.log(req.file);
+  res.status(200).send('ok');
+});
+
 export default router;

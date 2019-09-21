@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import Modal from '@components/Modal/Modal';
 import Button from '@components/Button/Button';
 
-import { closeModal } from '@redux/modal/actions';
+import { openModal, closeModal } from '@redux/modal/actions';
 
 type Props = typeof mapDispatch;
 
-const CancelModal: React.FC<Props> = ({ closeModal }) => {
+const CancelModal: React.FC<Props> = ({ openModal, closeModal }) => {
   return (
     <Modal open={true} onClose={closeModal}>
       <Modal.Header>Причина отмены</Modal.Header>
@@ -26,7 +26,9 @@ const CancelModal: React.FC<Props> = ({ closeModal }) => {
             </div>
           </div>
           <div className="cancel-modal__voice">
-            <Button>Голосовой комментарий</Button>
+            <Button onClick={() => openModal('Recorder')}>
+              Голосовой комментарий
+            </Button>
           </div>
         </div>
       </Modal.Content>
@@ -35,7 +37,7 @@ const CancelModal: React.FC<Props> = ({ closeModal }) => {
   );
 };
 
-const mapDispatch = { closeModal };
+const mapDispatch = { openModal, closeModal };
 
 export default connect(
   null,

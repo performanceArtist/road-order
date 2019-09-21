@@ -1,21 +1,19 @@
 import * as React from 'react';
-
 const qs = require('query-string');
-
 import { canUseDOM } from '../../utils';
 
 let Map = () => <></>;
-
 if (canUseDOM) {
   Map = require('@client/features/Map/Map').default;
 }
 
 const MapView = ({ location: { search } }) => {
   const query = qs.parse(search);
+  const { from, to, current } = query;
 
   return (
     <div>
-      <Map from={query.from} to={query.to} current={query.current} />
+      <Map from={from} to={to} current={current} />
     </div>
   );
 };
