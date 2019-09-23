@@ -4,6 +4,7 @@ import track from './track';
 
 const initialState: {
   track: Array<[number, number]>;
+  carPosition?: [number, number];
   hasArrived: boolean;
   measurementStarted: boolean;
   offTrack: boolean;
@@ -32,7 +33,6 @@ export default function reducer(
 
       const closest = haversine(state.track, next);
       const track = state.track.slice(closest + 1, state.track.length);
-      console.log(closest, track, next);
 
       return {
         ...state,

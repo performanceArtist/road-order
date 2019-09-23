@@ -48,6 +48,17 @@
     z-index: 2;
   }
 
+  &__simulation-buttons {
+    position: absolute;
+    bottom: 0;
+    right: 15rem;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    width: 17rem;
+    padding: 0.5rem;
+  }
+
   .leaflet-right {
     left: 0;
     right: auto;

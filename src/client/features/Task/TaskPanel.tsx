@@ -11,11 +11,12 @@ import { openModal } from '@redux/modal/actions';
 
 type OwnProps = {
   tasks: Array<Task>;
+  cancel: { cancelled: Array<string> };
 };
 
 type Props = OwnProps;
 
-const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
+const TaskPanel: React.FC<Props> = ({ tasks = [], cancel, openModal }) => {
   const sortByDate = R.sort(
     ({ date: fdate }, { date: sdate }) =>
       new Date(fdate).getTime() - new Date(sdate).getTime()
@@ -33,7 +34,9 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
         </a>
       </div>
       <div className="task-panel__button">
-        <Button onClick={() => openModal('Cancel')}>Отменить задание</Button>
+        <Button onClick={() => openModal('Cancel', { taskId: task.id })}>
+          Отменить задание
+        </Button>
       </div>
     </div>
   );
@@ -52,7 +55,10 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
     </div>
   ));
 
+  const filterCanceled = R.filter(({ id }) => !cancel.cancelled.includes(id));
+
   const transform = R.pipe(
+    filterCanceled,
     sortByDate,
     createElements
   );
@@ -65,8 +71,9 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
   );
 };
 
-const mapState = ({ tasks }: RootState) => ({
-  tasks: tasks.tasks
+const mapState = ({ tasks, cancel }: RootState) => ({
+  tasks: tasks.tasks,
+  cancel
 });
 
 const mapDispatch = { openModal };

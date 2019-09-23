@@ -1,7 +1,7 @@
 import { MODAL } from './actions';
 
 import ErrorModal from '@components/ErrorModal/ErrorModal';
-import CancelModal from '@components/CancelModal/CancelModal';
+import CancelModal from '@client/features/CancelModal/CancelModal';
 import RecorderModal from '@components/RecorderModal/RecorderModal';
 
 import { ConnectedComponentClass } from 'react-redux';

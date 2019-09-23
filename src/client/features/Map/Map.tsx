@@ -75,7 +75,16 @@ class MapComponent extends Component<Props, State> {
   }
 
   addCurrentMarker() {
-    const current = this.props.carPosition || JSON.parse(this.props.current);
+    const tryParse = () => {
+      try {
+        const current = JSON.parse(this.props.current);
+        return current;
+      } catch (error) {
+        return null;
+      }
+    };
+
+    const current = this.props.carPosition || tryParse();
     if (!current) return;
 
     return (
@@ -108,15 +117,11 @@ class MapComponent extends Component<Props, State> {
     const { zoom } = this.state;
     const { measurementStarted, hasArrived } = this.props;
 
-    const center =
-      this.props.track.length > 0
-        ? this.props.track[0]
-        : [56.472596, 84.950367];
+    const center = this.props.carPosition ||
+      this.props.track[0] || [56.472596, 84.950367];
 
     return (
       <>
-        <Button onClick={this.startSimulation}>Начать движение</Button>
-        <Button onClick={this.stopSimulation}>Остановиться</Button>
         <div className={this.state.fullscreen ? 'map map_fullscreen' : 'map'}>
           <div className="map__map">
             <Map center={center} zoom={zoom} ref={this.ref} maxZoom={19}>
@@ -130,11 +135,28 @@ class MapComponent extends Component<Props, State> {
             <div className="map__fullscreen-button">
               <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
             </div>
+            <div className="map__simulation-buttons">
+              <Button
+                onClick={this.startSimulation}
+                disabled={this.props.track.length === 0}
+              >
+                Начать движение
+              </Button>
+              <Button
+                onClick={this.stopSimulation}
+                disabled={this.props.track.length === 0}
+              >
+                Остановиться
+              </Button>
+            </div>
             <div className="map__controls">
               <Controls
                 measurementStarted={measurementStarted}
                 hasArrived={hasArrived}
-                onMeasurementClick={() => this.props.setMeasurementStatus(true)}
+                onMeasurementClick={() => {
+                  this.props.setMeasurementStatus(true);
+                  window.location.href = '/road';
+                }}
                 onCancelClick={() => this.props.openModal('Cancel')}
               />
             </div>

@@ -43,4 +43,17 @@ router.post('/api/audio', upload.single('audio'), (req, res) => {
   res.status(200).send('ok');
 });
 
+router.post('/api/cancel', (req, res) => {
+  const reasons = ['road-works', 'car-crash-ahead', 'mechanical-failure'];
+  const { reason, taskId } = req.body;
+
+  if (!taskId || !reasons.includes(reason)) {
+    res
+      .status(500)
+      .json({ error: `Invalid reason(${reason}) or task id(${taskId})` });
+  } else {
+    res.json(taskId);
+  }
+});
+
 export default router;

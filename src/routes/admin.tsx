@@ -11,6 +11,7 @@ import App from '@root/client/entries/admin/app';
 import render from '@root/utils/render';
 
 router.use('/admin/', (req, res, next) => {
+  console.log(req.user);
   if (!req.user || req.user.role !== 'admin')
     return res.status(401).send('<h1>Unauthorized</h1>');
   next();
