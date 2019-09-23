@@ -44,7 +44,7 @@ const RoadChart: React.FC<Props> = ({ max, min, current }) => {
     );
 
     ctx.font = '18px Arial';
-    const currentLabel = current.toString();
+    const currentLabel = Math.round(current).toString();
     ctx.fillText(
       currentLabel,
       (current / (max - min)) * config.width -

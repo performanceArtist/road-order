@@ -2,9 +2,15 @@ import * as React from 'react';
 
 import Button from '@components/Button/Button';
 
-const RoadControl = () => {
+const RoadControl = ({ onStart, onStop }) => {
   return (
     <div className="road-control">
+      <div className="road-control__button">
+        <Button onClick={onStart}>Старт</Button>
+      </div>
+      <div className="road-control__button">
+        <Button onClick={onStop}>Стоп</Button>
+      </div>
       <div className="road-control__button">
         <Button>Завершить</Button>
       </div>

@@ -9,8 +9,8 @@ const initialState: {
   measurementStarted: boolean;
   offTrack: boolean;
 } = {
-  track,
-  carPosition: track[0],
+  track: [],
+  carPosition: null,
   hasArrived: false,
   measurementStarted: false,
   offTrack: false

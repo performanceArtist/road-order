@@ -14,7 +14,7 @@ type Props = typeof mapDispatch;
 
 const RecorderModal: React.FC<Props> = ({ closeModal, onSaveClick }) => {
   return (
-    <Modal open={true} onClose={closeModal} maxWidthPercentage={53}>
+    <Modal open={true} onClose={closeModal} remWidth={46}>
       <Modal.Header>Запись</Modal.Header>
       <Modal.Content>{<Recorder onSaveClick={onSaveClick} />}</Modal.Content>
       <Modal.Footer />

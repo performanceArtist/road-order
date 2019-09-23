@@ -13,7 +13,7 @@ const SpeedBar: React.FC<Props> = ({ limit, current }) => {
         <br />
         (текущая/лимит):
       </div>
-      <div className="speed-bar__circle">{current}</div>
+      <div className="speed-bar__circle">{Math.round(current)}</div>
       <div className="speed-bar__circle speed-bar__circle_alert">{limit}</div>
     </div>
   );
