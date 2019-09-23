@@ -5,7 +5,7 @@ import Modal from '@components/Modal/Modal';
 import Button from '@components/Button/Button';
 
 import { openModal, closeModal } from '@redux/modal/actions';
-import { cancelWithReason } from './redux/actions';
+import { cancelWithReason, cancelWithAudio } from './redux/actions';
 
 type OwnProps = {
   taskId: string;
@@ -17,6 +17,7 @@ const CancelModal: React.FC<Props> = ({
   openModal,
   closeModal,
   cancelWithReason,
+  cancelWithAudio,
   taskId
 }) => {
   return (
@@ -57,7 +58,16 @@ const CancelModal: React.FC<Props> = ({
             </div>
           </div>
           <div className="cancel-modal__voice">
-            <Button onClick={() => openModal('Recorder')}>
+            <Button
+              onClick={() =>
+                openModal('Recorder', {
+                  onSaveClick: audio => {
+                    cancelWithAudio(taskId, audio);
+                    closeModal();
+                  }
+                })
+              }
+            >
               Голосовой комментарий
             </Button>
           </div>
@@ -68,7 +78,12 @@ const CancelModal: React.FC<Props> = ({
   );
 };
 
-const mapDispatch = { openModal, closeModal, cancelWithReason };
+const mapDispatch = {
+  openModal,
+  closeModal,
+  cancelWithReason,
+  cancelWithAudio
+};
 
 export default connect(
   null,

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { connect } from 'react-redux';
 import { ReactMic } from 'react-mic';
 
 import Button from '@components/Button/Button';
 
-import { RootState } from '@redux/reducer';
-import { saveAudio } from '@redux/recorder/actions';
+type OwnProps = {
+  onSaveClick: Function;
+};
 
-type Props = typeof mapDispatch;
+type Props = OwnProps;
 
-const Recorder: React.FC<Props> = ({ saveAudio }) => {
+const Recorder: React.FC<Props> = ({ onSaveClick }) => {
   const [audio, setAudio] = useState(null);
   const [record, setRecord] = useState(false);
 
@@ -19,7 +19,7 @@ const Recorder: React.FC<Props> = ({ saveAudio }) => {
     return (
       <div className="recorder__audio">
         <audio src={URL.createObjectURL(audio.blob)} controls />
-        <Button onClick={() => saveAudio(audio.blob)} disabled={!audio}>
+        <Button onClick={() => onSaveClick(audio.blob)} disabled={!audio}>
           Отправить
         </Button>
       </div>
@@ -37,13 +37,4 @@ const Recorder: React.FC<Props> = ({ saveAudio }) => {
   );
 };
 
-const mapState = ({ recorder }: RootState) => ({
-  ...recorder
-});
-
-const mapDispatch = { saveAudio };
-
-export default connect(
-  mapState,
-  mapDispatch
-)(Recorder);
+export default Recorder;

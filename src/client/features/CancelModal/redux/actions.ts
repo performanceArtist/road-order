@@ -16,3 +16,12 @@ export const cancelWithReason = (
     reason
   }
 });
+
+export const cancelWithAudio = (taskId: string, audio: any) => ({
+  type: CANCEL.WITH_REASON.REQUEST,
+  payload: {
+    audio,
+    reason: 'in-audio',
+    taskId
+  }
+})

@@ -12,11 +12,11 @@ if (canUseDOM) {
 
 type Props = typeof mapDispatch;
 
-const RecorderModal: React.FC<Props> = ({ closeModal }) => {
+const RecorderModal: React.FC<Props> = ({ closeModal, onSaveClick }) => {
   return (
     <Modal open={true} onClose={closeModal} maxWidthPercentage={53}>
       <Modal.Header>Запись</Modal.Header>
-      <Modal.Content>{<Recorder />}</Modal.Content>
+      <Modal.Content>{<Recorder onSaveClick={onSaveClick} />}</Modal.Content>
       <Modal.Footer />
     </Modal>
   );

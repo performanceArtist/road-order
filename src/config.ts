@@ -3,10 +3,10 @@ export default {
     key: 'something'
   },
   database: {
-    user: 'admin',
+    user: 'postgres',
     host: '127.0.0.1',
-    database: 'new-condor',
-    password: 'admin',
+    database: 'kondor-2',
+    password: '!bigBadWolf69',
     port: 5432
   }
 };

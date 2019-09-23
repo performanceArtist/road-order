@@ -39,8 +39,7 @@ router.get('/api/route', (req, res) => {
 });
 
 router.post('/api/audio', upload.single('audio'), (req, res) => {
-  console.log(req.file);
-  res.status(200).send('ok');
+  res.status(200).send(req.body.taskId);
 });
 
 router.post('/api/cancel', (req, res) => {
