@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { ModalMap, ModalPayload } from '@redux/modal/reducer';
+import { ModalMap, ModalPayload } from '../redux/reducer';
 
 const ModalManager = ({ modals }: { modals: Array<ModalPayload> }) => {
   const renderedModals = modals.map(

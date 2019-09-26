@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import MeasurementInfo from './MeasurementInfo';
 
-import { Task } from '@redux/task/types';
+import { Task } from '../redux/types';
 
 type OwnProps = {
   task: Task;

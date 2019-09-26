@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { StateType } from 'typesafe-actions';
 
-import modals from './modal/reducer';
-import tasks from './task/reducer';
-import map from './map/reducer';
-import cancel from '@client/features/CancelModal/redux/reducer';
+import { reducer as modals } from '@features/Modal/redux';
+import { reducer as tasks } from '@features/TaskPanel/redux';
+import { reducer as map } from '@features/Map/redux';
+import { reducer as cancel } from '@features/CancelModal/redux';
 
 const rootReducer = combineReducers({
   modals,

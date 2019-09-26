@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import Modal from '@components/Modal/Modal';
-
-import { closeModal } from '@redux/modal/actions';
+import { Modal } from '@features/Modal';
+import { actions } from '@features/Modal/redux';
+const { closeModal } = actions;
 
 type Props = typeof mapDispatch;
+
+const mapDispatch = { closeModal };
 
 const ErrorModal: React.FC<Props> = ({ closeModal }) => {
   return (
@@ -18,8 +20,6 @@ const ErrorModal: React.FC<Props> = ({ closeModal }) => {
     </Modal>
   );
 };
-
-const mapDispatch = { closeModal };
 
 export default connect(
   null,

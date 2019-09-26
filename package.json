@@ -14,7 +14,9 @@
   "_moduleAliases": {
     "@root": "dist",
     "@client": "dist/client",
+    "@elements": "dist/client/elements",
     "@components": "dist/client/components",
+    "@features": "dist/client/features",
     "@redux": "dist/client/redux"
   },
   "author": "",

@@ -2,12 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 
-import TaskInfo from './TaskInfo';
-import Button from '@components/Button/Button';
-
-import { Task } from '@redux/task/types';
+import Button from '@elements/Button/Button';
 import { RootState } from '@redux/reducer';
-import { openModal } from '@redux/modal/actions';
+import { actions } from '@features/Modal/redux';
+const { openModal } = actions;
+
+import { Task } from '../redux/types';
+import TaskInfo from './Task';
 
 type OwnProps = {
   tasks: Array<Task>;
@@ -16,20 +17,30 @@ type OwnProps = {
 
 type Props = OwnProps;
 
+const mapState = ({ tasks, cancel }: RootState) => ({
+  tasks: tasks.tasks,
+  cancel
+});
+
+const mapDispatch = { openModal };
+
 const TaskPanel: React.FC<Props> = ({ tasks = [], cancel, openModal }) => {
   const sortByDate = R.sort(
     ({ date: fdate }, { date: sdate }) =>
       new Date(fdate).getTime() - new Date(sdate).getTime()
   );
   const mapIndexed = R.addIndex(R.map);
+  const handleStartClick = ({ id, from, to, current }) => {
+    const href = `/map?from=${JSON.stringify(from)}&to=${JSON.stringify(
+      to
+    )}&current=${JSON.stringify(current)}`;
+    document.location.href = href;
+  };
+
   const buttons = task => (
     <div className="task-panel__buttons">
       <div className="task-panel__button">
-        <a
-          href={`/map?from=${JSON.stringify(task.from)}&to=${JSON.stringify(
-            task.to
-          )}&current=${JSON.stringify(task.current)}`}
-        >
+        <a onClick={() => handleStartClick(task)}>
           <Button>Проложить маршрут</Button>
         </a>
       </div>
@@ -70,13 +81,6 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], cancel, openModal }) => {
     </div>
   );
 };
-
-const mapState = ({ tasks, cancel }: RootState) => ({
-  tasks: tasks.tasks,
-  cancel
-});
-
-const mapDispatch = { openModal };
 
 export default connect(
   mapState,

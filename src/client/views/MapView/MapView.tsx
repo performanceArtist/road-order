@@ -4,7 +4,7 @@ import { canUseDOM } from '../../utils';
 
 let Map = () => <></>;
 if (canUseDOM) {
-  Map = require('@client/features/Map/Map').default;
+  Map = require('@features/Map/view/Map').default;
 }
 
 const MapView = ({ location: { search } }) => {

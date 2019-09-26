@@ -1,4 +1,4 @@
-import { haversine } from '@client/features/Map/helpers';
+import { haversine } from '../view/helpers';
 import { MAP } from './actions';
 import track from './track';
 

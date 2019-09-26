@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import TaskPanel from '../../features/Task/TaskPanel';
+import { TaskPanel } from '@root/client/features/TaskPanel';
 
 const TaskView = () => {
   return (

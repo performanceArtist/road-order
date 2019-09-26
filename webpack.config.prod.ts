@@ -25,7 +25,9 @@ const config = {
       '@root': path.resolve(__dirname, 'src'),
       '@client': path.resolve(__dirname, 'src/client'),
       '@redux': path.resolve(__dirname, 'src/client/redux'),
-      '@components': path.resolve(__dirname, 'src/client/components')
+      '@components': path.resolve(__dirname, 'src/client/components'),
+      '@features': path.resolve(__dirname, 'src/client/features'),
+      '@elements': path.resolve(__dirname, 'src/client/elements')
     }
   },
   optimization: {

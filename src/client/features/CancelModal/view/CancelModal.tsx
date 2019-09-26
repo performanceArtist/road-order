@@ -1,17 +1,26 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import Modal from '@components/Modal/Modal';
-import Button from '@components/Button/Button';
+import { Modal } from '@features/Modal';
+import { actions as modalActions } from '@features/Modal/redux';
+const { openModal, closeModal } = modalActions;
+import Button from '@elements/Button/Button';
 
-import { openModal, closeModal } from '@redux/modal/actions';
-import { cancelWithReason, cancelWithAudio } from './redux/actions';
+import { actions } from '../redux/';
+const { cancelWithReason, cancelWithAudio } = actions;
 
 type OwnProps = {
   taskId: string;
 };
 
 type Props = OwnProps & typeof mapDispatch;
+
+const mapDispatch = {
+  openModal,
+  closeModal,
+  cancelWithReason,
+  cancelWithAudio
+};
 
 const CancelModal: React.FC<Props> = ({
   openModal,
@@ -76,13 +85,6 @@ const CancelModal: React.FC<Props> = ({
       <Modal.Footer />
     </Modal>
   );
-};
-
-const mapDispatch = {
-  openModal,
-  closeModal,
-  cancelWithReason,
-  cancelWithAudio
 };
 
 export default connect(

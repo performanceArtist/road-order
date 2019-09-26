@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import Arrow from '@components/Arrow/Arrow';
+import Arrow from '@elements/Arrow/Arrow';
 
 type Props = {
   handleSubmit: (uid: string) => void;

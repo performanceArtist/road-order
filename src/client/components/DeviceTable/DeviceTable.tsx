@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Spinner from '@components/Spinner/Spinner';
+import Spinner from '@elements/Spinner/Spinner';
 
 type Device = {
   name: string;

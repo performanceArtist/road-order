@@ -1,22 +1,23 @@
 import * as React from 'react';
 import { Component } from 'react';
-
 import * as L from 'leaflet';
 import { Map, TileLayer, Polyline, Marker } from 'react-leaflet';
-import { Icon, IconImage } from '@components/Icon/Icon';
+import { connect } from 'react-redux';
+
+import { Icon, IconImage } from '@elements/Icon/Icon';
+import Button from '@elements/Button/Button';
+import { actions } from '@features/Modal/redux';
+const { openModal } = actions;
+import { RootState } from '@redux/reducer';
 
 import {
   getRoute,
   setHasArrived,
   setMeasurementStatus,
   move
-} from '@redux/map/actions';
-import { openModal } from '@redux/modal/actions';
-import { connect } from 'react-redux';
-import { RootState } from '@redux/reducer';
+} from '../redux/actions';
 
 import Controls from './Controls';
-import Button from '@components/Button/Button';
 
 interface State {
   zoom: number;
@@ -37,6 +38,16 @@ type MapState = {
 };
 
 type Props = OwnProps & MapState & typeof mapDispatch;
+
+const mapState = ({ map }: RootState) => map;
+
+const mapDispatch = {
+  getRoute,
+  setHasArrived,
+  setMeasurementStatus,
+  move,
+  openModal
+};
 
 class MapComponent extends Component<Props, State> {
   private ref = React.createRef<HTMLDivElement>();
@@ -157,7 +168,9 @@ class MapComponent extends Component<Props, State> {
                   this.props.setMeasurementStatus(true);
                   window.location.href = '/road';
                 }}
-                onCancelClick={() => this.props.openModal('Cancel')}
+                onCancelClick={() =>
+                  this.props.openModal('Cancel', { taskId: 5 })
+                }
               />
             </div>
           </div>
@@ -166,15 +179,6 @@ class MapComponent extends Component<Props, State> {
     );
   }
 }
-
-const mapState = ({ map }: RootState) => map;
-const mapDispatch = {
-  getRoute,
-  setHasArrived,
-  setMeasurementStatus,
-  move,
-  openModal
-};
 
 export default connect(
   mapState,

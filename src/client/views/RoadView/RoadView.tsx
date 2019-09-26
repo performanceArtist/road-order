@@ -1,5 +1,6 @@
 import * as React from 'react';
-import Road from '../../features/Road';
+
+import { Road } from '@features/Road';
 
 const RoadView = () => {
   return (

@@ -20,12 +20,18 @@
       ],
       "@components/*": [
         "client/components/*"
+      ],
+      "@features/*": [
+        "client/features/*"
+      ],
+      "@elements/*": [
+        "client/elements/*"
       ]
     },
     "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
     },
     "include": [
       "./src"

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Header from '@client/layout/Header/Header';
-import ModalManager from '@client/layout/ModalManager/ModalManager';
+import { ModalManager } from '@features/Modal';
 import { Navigation } from '@client/layout/Navigation/Navigation';
 import Footer from '@client/layout/Footer/Footer';
 import { hot } from 'react-hot-loader/root';
