@@ -4,9 +4,10 @@ import * as R from 'ramda';
 
 import Button from '@elements/Button/Button';
 import { RootState } from '@redux/reducer';
-import { actions } from '@features/Modal/redux';
-const { openModal } = actions;
+import { actions as modalActions } from '@features/Modal/redux';
+const { openModal } = modalActions;
 
+import { setCurrentTask } from '../redux/actions';
 import { Task } from '../redux/types';
 import TaskInfo from './Task';
 
@@ -15,22 +16,28 @@ type OwnProps = {
   cancel: { cancelled: Array<string> };
 };
 
-type Props = OwnProps;
+type Props = OwnProps & typeof mapDispatch;
 
 const mapState = ({ tasks, cancel }: RootState) => ({
   tasks: tasks.tasks,
   cancel
 });
 
-const mapDispatch = { openModal };
+const mapDispatch = { openModal, setCurrentTask };
 
-const TaskPanel: React.FC<Props> = ({ tasks = [], cancel, openModal }) => {
+const TaskPanel: React.FC<Props> = ({
+  tasks = [],
+  cancel,
+  openModal,
+  setCurrentTask
+}) => {
   const sortByDate = R.sort(
     ({ date: fdate }, { date: sdate }) =>
       new Date(fdate).getTime() - new Date(sdate).getTime()
   );
   const mapIndexed = R.addIndex(R.map);
   const handleStartClick = ({ id, from, to, current }) => {
+    setCurrentTask(id);
     const href = `/map?from=${JSON.stringify(from)}&to=${JSON.stringify(
       to
     )}&current=${JSON.stringify(current)}`;

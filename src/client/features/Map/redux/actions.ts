@@ -25,10 +25,7 @@ export const getRoute = (from: [number, number], to: [number, number]) => ({
   payload: { from, to }
 });
 
-export const move = (coordinates?: {
-  latitude: number;
-  longitude: number;
-}) => ({
+export const move = (coordinates?: [number, number]) => ({
   type: MAP.MOVE,
   payload: coordinates
 });

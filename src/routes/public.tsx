@@ -8,7 +8,7 @@ const router = express.Router();
 
 import knex from '@root/connection';
 import config from '@root/config';
-import App from '@root/client/entries/public/app';
+import App from '@root/client/entries/public/App';
 import render from '@root/utils/render';
 
 const sendApp = (url: string, res: express.Response) => {

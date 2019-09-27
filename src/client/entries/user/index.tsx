@@ -2,10 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
-import RootContainer from './RootContainer';
+import rootReducer from '@redux/reducer';
+import rootSaga from '@redux/saga';
 
+import { getRootContainer, createStore } from '../utils';
+import App from './App';
+
+const RootContainer = getRootContainer(
+  App,
+  createStore({ rootReducer, rootSaga, browser: true })
+);
+
+/*
 if (module.hot) {
-  module.hot.accept('./RootContainer', () => {
+  module.hot.accept('', () => {
     ReactDOM.render(
       <AppContainer>
         <RootContainer />
@@ -14,6 +24,7 @@ if (module.hot) {
     );
   });
 }
+*/
 
 ReactDOM.hydrate(RootContainer, document.querySelector('.wrapper'));
 

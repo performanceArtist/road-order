@@ -103,8 +103,9 @@ const tasks = [
   }
 ];
 
-const initialState: { tasks: Array<Task> } = {
-  tasks
+const initialState: { tasks: Array<Task>; currentTaskId: string | null } = {
+  tasks,
+  currentTaskId: null
 };
 
 export default function reducer(
@@ -114,6 +115,8 @@ export default function reducer(
   switch (type) {
     case TASK.GET.SUCCESS:
       return { ...state, tasks: state.tasks.concat(payload) };
+    case TASK.SET_CURRENT:
+      return { ...state, currentTaskId: payload };
     default:
       return state;
   }

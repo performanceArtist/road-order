@@ -7,7 +7,7 @@ import knex from '@root/connection';
 const path = require('path');
 const router = express.Router();
 
-import App from '@root/client/entries/admin/app';
+import App from '@root/client/entries/admin/App';
 import render from '@root/utils/render';
 
 router.use('/admin/', (req, res, next) => {

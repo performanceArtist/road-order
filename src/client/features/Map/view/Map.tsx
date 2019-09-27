@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 
 import { Icon, IconImage } from '@elements/Icon/Icon';
 import Button from '@elements/Button/Button';
-import { actions } from '@features/Modal/redux';
-const { openModal } = actions;
+import { actions as modalActions } from '@features/Modal/redux';
+const { openModal } = modalActions;
 import { RootState } from '@redux/reducer';
 
 import {
@@ -35,11 +35,15 @@ type MapState = {
   carPosition: [number, number];
   hasArrived: boolean;
   measurementStarted: boolean;
+  currentTaskId: string;
 };
 
 type Props = OwnProps & MapState & typeof mapDispatch;
 
-const mapState = ({ map }: RootState) => map;
+const mapState = ({ map, tasks }: RootState) => ({
+  ...map,
+  currentTaskId: tasks.currentTaskId
+});
 
 const mapDispatch = {
   getRoute,
@@ -80,9 +84,10 @@ class MapComponent extends Component<Props, State> {
   }
 
   drawRoute() {
-    if (this.props.track.length === 0) return null;
+    const { track } = this.props;
+    if (track.length === 0) return null;
 
-    return <Polyline positions={this.props.track} color="green" weight={8} />;
+    return <Polyline positions={track} color="green" weight={8} />;
   }
 
   addCurrentMarker() {
@@ -126,10 +131,17 @@ class MapComponent extends Component<Props, State> {
 
   render() {
     const { zoom } = this.state;
-    const { measurementStarted, hasArrived } = this.props;
+    const {
+      setMeasurementStatus,
+      openModal,
+      measurementStarted,
+      hasArrived,
+      track,
+      carPosition,
+      currentTaskId
+    } = this.props;
 
-    const center = this.props.carPosition ||
-      this.props.track[0] || [56.472596, 84.950367];
+    const center = carPosition || track[0] || [56.472596, 84.950367];
 
     return (
       <>
@@ -149,13 +161,13 @@ class MapComponent extends Component<Props, State> {
             <div className="map__simulation-buttons">
               <Button
                 onClick={this.startSimulation}
-                disabled={this.props.track.length === 0}
+                disabled={track.length === 0}
               >
                 Начать движение
               </Button>
               <Button
                 onClick={this.stopSimulation}
-                disabled={this.props.track.length === 0}
+                disabled={track.length === 0}
               >
                 Остановиться
               </Button>
@@ -165,11 +177,12 @@ class MapComponent extends Component<Props, State> {
                 measurementStarted={measurementStarted}
                 hasArrived={hasArrived}
                 onMeasurementClick={() => {
-                  this.props.setMeasurementStatus(true);
+                  setMeasurementStatus(true);
                   window.location.href = '/road';
                 }}
                 onCancelClick={() =>
-                  this.props.openModal('Cancel', { taskId: 5 })
+                  currentTaskId &&
+                  openModal('Cancel', { taskId: currentTaskId })
                 }
               />
             </div>
