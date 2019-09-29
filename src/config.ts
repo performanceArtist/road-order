@@ -5,7 +5,7 @@ export default {
   database: {
     user: 'admin',
     host: '127.0.0.1',
-    database: 'new-condor',
+    database: 'condor',
     password: 'admin',
     port: 5432
   }

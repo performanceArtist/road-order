@@ -17,17 +17,12 @@ interface Args {
   initialState?: any;
   rootSaga: any;
   rootReducer: Reducer<any, AnyAction>;
-  browser: boolean;
 }
 
-export default ({
-  initialState = getPreloadedState(),
-  rootSaga,
-  rootReducer,
-  browser = false
-}: Args) => {
+export default ({ rootSaga, rootReducer }: Args) => (browser: boolean) => {
   let enhancer;
   const sagaMiddleware = createSagaMiddleware();
+  const initialState = browser ? getPreloadedState() : {};
 
   if (browser) {
     const composeEnhancer =

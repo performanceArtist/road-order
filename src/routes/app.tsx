@@ -8,9 +8,6 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-import routes from '@root/client/entries/user/routes';
-import createStore from '@root/client/entries/user/store';
-import App from '@root/client/entries/user/App';
 import render from '@root/utils/render';
 import config from '@root/config';
 import knex from '@root/connection';
@@ -28,6 +25,11 @@ router.use('/', async (req, res, next) => {
     if (!user) throw new Error('User not found');
     req.user = user;
 
+    const userType = req.user.role === 'admin' ? 'user' : req.user.role;
+    const routes = require(`@root/client/entries/${userType}/routes`).default;
+    const paths = routes.map(({ path }) => path);
+    getRoutes(paths);
+
     next();
   } catch (error) {
     req.user = null;
@@ -35,8 +37,11 @@ router.use('/', async (req, res, next) => {
   }
 });
 
-const renderApp = (url: string, props: any = {}) => {
-  const store = createStore();
+const renderApp = (url: string, props: any = {}, userType = 'user') => {
+  const store = require(`@root/client/entries/${userType}/store`).default(
+    false
+  );
+  const App = require(`@root/client/entries/${userType}/App`).default;
 
   const jsx = (
     <ReduxProvider store={store}>
@@ -50,16 +55,24 @@ const renderApp = (url: string, props: any = {}) => {
   const reduxState = store.getState();
   const helmetData = Helmet.renderStatic();
 
-  return render({ reactDom, reduxState, helmetData, bundle: 'user' });
+  return render({ reactDom, reduxState, helmetData, bundle: userType });
 };
 
 router.get('/map', (req, res) => {
-  res.send(renderApp(req.url, { from: req.query.from, to: req.query.to }));
+  res.send(
+    renderApp(
+      req.url,
+      { from: req.query.from, to: req.query.to },
+      req.user.role
+    )
+  );
 });
 
-const paths = routes.map(({ path }) => path);
-router.get(paths, (req, res, next) => {
-  res.send(renderApp(req.url));
-});
+function getRoutes(paths: string[]) {
+  return router.get(paths, (req, res) => {
+    const userType = req.user.role === 'admin' ? 'user' : req.user.role;
+    res.send(renderApp(req.url, {}, userType));
+  });
+}
 
 export default router;

@@ -10,6 +10,10 @@ const config = {
       '@babel/polyfill',
       path.join(__dirname, 'src/client/entries/user/index.tsx')
     ],
+    operator: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/entries/operator/index.tsx')
+    ],
     login: [
       '@babel/polyfill',
       path.join(__dirname, 'src/client/entries/public/index.tsx')

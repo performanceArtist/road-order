@@ -1,6 +1,6 @@
 interface User {
   login: string;
-  role: number;
+  role: 'admin' | 'user' | 'operator';
 }
 
 declare namespace Express {
