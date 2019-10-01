@@ -1,6 +1,6 @@
 import * as React from 'react';
 const qs = require('query-string');
-import { canUseDOM } from '../../utils';
+import { canUseDOM } from '@shared/utils';
 
 let Map = () => <></>;
 if (canUseDOM) {

@@ -3,8 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import Header from '@client/layout/Header/Header';
 import Footer from '@client/layout/Footer/Footer';
-import Index from '@client/views/Index/Index';
-import Login from '@client/views/Login/Login';
+import Index from '@client/views/public/Index/Index';
+import Login from '@client/views/public/Login/Login';
 
 const routes = [
   { path: '/', exact: true, component: Index },

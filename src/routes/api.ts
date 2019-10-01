@@ -42,6 +42,11 @@ router.post('/api/audio', upload.single('audio'), (req, res) => {
   res.status(200).send(req.body.taskId);
 });
 
+router.post('/api/mark', upload.single('audio'), (req, res) => {
+  console.log(req.body);
+  res.status(200).send(req.body.taskId);
+});
+
 router.post('/api/cancel', (req, res) => {
   const reasons = ['road-works', 'car-crash-ahead', 'mechanical-failure'];
   const { reason, taskId } = req.body;

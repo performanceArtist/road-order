@@ -25,6 +25,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
@@ -39,6 +40,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-helmet": "^5.0.9",
     "@types/react-leaflet": "^2.4.0",
+    "@types/react-loadable": "^5.5.1",
     "@types/react-redux": "^7.1.0",
     "@types/react-router-dom": "^4.3.4",
     "@types/redux": "^3.6.0",
@@ -99,6 +101,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
+    "react-loadable": "^5.5.0",
     "react-mic": "^12.4.1",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",

@@ -32,6 +32,7 @@ router.use('/', async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log(error);
     req.user = null;
     res.status(401).json({ error: 'Unauthorized' });
   }
@@ -58,20 +59,20 @@ const renderApp = (url: string, props: any = {}, userType = 'user') => {
   return render({ reactDom, reduxState, helmetData, bundle: userType });
 };
 
-router.get('/map', (req, res) => {
-  res.send(
-    renderApp(
-      req.url,
-      { from: req.query.from, to: req.query.to },
-      req.user.role
-    )
-  );
-});
-
 function getRoutes(paths: string[]) {
   return router.get(paths, (req, res) => {
     const userType = req.user.role === 'admin' ? 'user' : req.user.role;
-    res.send(renderApp(req.url, {}, userType));
+    if (req.url === '/map') {
+      res.send(
+        renderApp(
+          req.url,
+          { from: req.query.from, to: req.query.to },
+          req.user.role
+        )
+      );
+    } else {
+      res.send(renderApp(req.url, {}, userType));
+    }
   });
 }
 

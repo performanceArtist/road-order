@@ -6,7 +6,7 @@ import { actions as modalActions } from '@features/Modal/redux';
 const { openModal, closeModal } = modalActions;
 import Button from '@elements/Button/Button';
 
-import { actions } from '../redux/';
+import { actions } from '../redux';
 const { cancelWithReason, cancelWithAudio } = actions;
 
 type OwnProps = {

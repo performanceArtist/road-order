@@ -31,6 +31,7 @@ const render = ({ reactDom, reduxState, helmetData, bundle }: Args) => {
       <div class="wrapper">${reactDom}</div>
       ${reduxScript}
       <script type="text/javascript" src="commons.js"></script>
+      <script defer type="text/javascript" src="react-mic.js"></script>
       <script type="text/javascript" src="${bundle}.js"></script>
     </body>
   </html>

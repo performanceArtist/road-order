@@ -49,7 +49,8 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, 'dist/dist'),
-    filename: '[name].js'
+    filename: '[name].js',
+    chunkFilename: '[name].js'
   },
   devServer: {
     port: 3000,

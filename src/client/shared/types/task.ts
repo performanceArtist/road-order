@@ -1,4 +1,4 @@
-export type Task = {
+export interface Task {
   id: number;
   order: string;
   status: 'ready' | 'taken' | 'done';
@@ -23,4 +23,12 @@ export type Task = {
   from: [number, number];
   to: [number, number];
   current: [number, number];
-};
+}
+
+export interface AllTaskFilters {
+  startDate: Date;
+  endDate: Date;
+  kondor: number;
+}
+
+export type TaskFilters = Partial<AllTaskFilters>;

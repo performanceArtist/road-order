@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Button from '@elements/Button/Button';
 
-const RoadControl = ({ onStart, onStop }) => {
+const RoadControl = ({ onStart, onStop, onCancel, onMarkAdd, onEnd }) => {
   return (
     <div className="road-control">
       <div className="road-control__button">
@@ -12,13 +12,13 @@ const RoadControl = ({ onStart, onStop }) => {
         <Button onClick={onStop}>Стоп</Button>
       </div>
       <div className="road-control__button">
-        <Button>Завершить</Button>
+        <Button onClick={onEnd}>Завершить</Button>
       </div>
       <div className="road-control__button">
-        <Button>Отменить</Button>
+        <Button onClick={onCancel}>Отменить</Button>
       </div>
       <div className="road-control__button">
-        <Button>Добавить метку</Button>
+        <Button onClick={onMarkAdd}>Добавить метку</Button>
       </div>
     </div>
   );

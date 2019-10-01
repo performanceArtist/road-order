@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { canUseDOM } from '../../utils';
+import { canUseDOM } from '@shared/utils';
 
 function deleteCookie(name: string) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';

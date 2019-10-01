@@ -1,7 +1,7 @@
-import Index from '@client/views/Index/Index';
-import TaskView from '@client/views/TaskView/TaskView';
-import MapView from '@client/views/MapView/MapView';
-import RoadView from '@client/views/RoadView/RoadView';
+import Index from '@client/views/public/Index/Index';
+import TaskView from '@client/views/driver/TaskView/TaskView';
+import MapView from '@client/views/driver/MapView/MapView';
+import RoadView from '@client/views/driver/RoadView/RoadView';
 
 import { Icon } from '@client/layout/Navigation/Navigation';
 

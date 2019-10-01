@@ -22,7 +22,7 @@ export default function reducer(
 ) {
   switch (type) {
     case MAP.GET_ROUTE.SUCCESS:
-      return { ...state, track: payload };
+      return { ...state, track: payload, carPosition: payload[0] };
     case MAP.SET_HAS_ARRIVED:
       return { ...state, hasArrived: payload };
     case MAP.SET_MEASUREMENT_STATUS:

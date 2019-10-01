@@ -4,7 +4,7 @@ import { StateType } from 'typesafe-actions';
 import { reducer as modals } from '@features/Modal/redux';
 import { reducer as tasks } from '@features/TaskPanel/redux';
 import { reducer as map } from '@features/Map/redux';
-import { reducer as cancel } from '@features/CancelModal/redux';
+import { reducer as cancel } from '@root/client/features/RecorderDialog/redux';
 
 const rootReducer = combineReducers({
   modals,

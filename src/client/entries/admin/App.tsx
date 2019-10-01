@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Footer from '@client/layout/Footer/Footer';
-import AdminView from '@client/views/AdminView/AdminView';
+import AdminView from '@root/client/views/admin/CreateUserView/CreateUserView';
 
 const routes = [{ path: '/admin', exact: false, component: AdminView }];
 

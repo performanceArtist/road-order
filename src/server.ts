@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 import publicRouter from './routes/public';
-import appRouter from './routes/app';
+import driverRouter from './routes/app';
 import apiRouter from './routes/api';
 import adminRouter from './routes/admin';
 
@@ -22,9 +22,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(publicRouter);
-app.use(appRouter);
-app.use(apiRouter);
+app.use(driverRouter);
 app.use(adminRouter);
+app.use(apiRouter);
 
 app.get('*', (req, res) => {
   res.status(404);

@@ -1,6 +1,6 @@
-import Index from '@client/views/Index/Index';
-import TaskView from '@client/views/TaskView/TaskView';
-import TaskCreationView from '@client/views/TaskCreationView/TaskCreationView';
+import Index from '@client/views/public/Index/Index';
+import TaskView from '@client/views/operator/TaskPanelView/TaskPanelView';
+import TaskCreationView from '@client/views/operator/TaskCreationView/TaskCreationView';
 import { Icon } from '@client/layout/Navigation/Navigation';
 
 export type Route = {
@@ -27,7 +27,7 @@ export default [
   {
     path: '/create',
     title: 'Новое задание',
-    component: Index,
+    component: TaskCreationView,
     exact: true
   },
   {
