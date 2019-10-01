@@ -26,6 +26,9 @@
       ],
       "@elements/*": [
         "client/elements/*"
+      ],
+      "@shared/*": [
+        "client/shared/*"
       ]
     },
     "jsx": "react",

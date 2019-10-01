@@ -1,5 +1,6 @@
+import { Task } from '@shared/types';
+
 import { TASK } from './actions';
-import { Task } from './types';
 
 const tasks = [
   {
@@ -103,7 +104,12 @@ const tasks = [
   }
 ];
 
-const initialState: { tasks: Array<Task>; currentTaskId: string | null } = {
+interface InitialState {
+  tasks: Array<Task>;
+  currentTaskId: string | null;
+}
+
+const initialState: InitialState = {
   tasks,
   currentTaskId: null
 };

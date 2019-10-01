@@ -17,7 +17,8 @@
     "@elements": "dist/client/elements",
     "@components": "dist/client/components",
     "@features": "dist/client/features",
-    "@redux": "dist/client/redux"
+    "@redux": "dist/client/redux",
+    "@shared": "dist/client/shared"
   },
   "author": "",
   "license": "ISC",

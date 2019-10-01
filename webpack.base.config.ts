@@ -31,7 +31,8 @@ const config = {
       '@redux': path.resolve(__dirname, 'src/client/redux'),
       '@components': path.resolve(__dirname, 'src/client/components'),
       '@features': path.resolve(__dirname, 'src/client/features'),
-      '@elements': path.resolve(__dirname, 'src/client/elements')
+      '@elements': path.resolve(__dirname, 'src/client/elements'),
+      '@shared': path.resolve(__dirname, 'src/client/shared')
     }
   },
   optimization: {

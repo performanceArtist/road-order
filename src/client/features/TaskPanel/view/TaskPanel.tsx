@@ -2,14 +2,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 
+import TaskInfo from '@components/TaskInfo/TaskInfo';
 import Button from '@elements/Button/Button';
-import { RootState } from '@redux/reducer';
+import { RootState } from '@redux/user/reducer';
 import { actions as modalActions } from '@features/Modal/redux';
+import { Task } from '@shared/types';
 const { openModal } = modalActions;
 
 import { setCurrentTask } from '../redux/actions';
-import { Task } from '../redux/types';
-import TaskInfo from './Task';
 
 type OwnProps = {
   tasks: Array<Task>;

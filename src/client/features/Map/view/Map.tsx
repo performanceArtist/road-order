@@ -8,7 +8,7 @@ import { Icon, IconImage } from '@elements/Icon/Icon';
 import Button from '@elements/Button/Button';
 import { actions as modalActions } from '@features/Modal/redux';
 const { openModal } = modalActions;
-import { RootState } from '@redux/reducer';
+import { RootState } from '@redux/user/reducer';
 
 import {
   getRoute,
