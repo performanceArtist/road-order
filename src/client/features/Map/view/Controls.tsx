@@ -29,11 +29,6 @@ const Controls: React.FC<Props> = ({
           Измерить
         </Button>
       </div>
-      <div className="map-controls__button">
-        <Button disabled={!measurementStarted} onClick={onCancelClick}>
-          Отменить
-        </Button>
-      </div>
     </div>
   </div>
 );

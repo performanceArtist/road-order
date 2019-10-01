@@ -87,6 +87,7 @@ class MapComponent extends Component<Props, State> {
     const { track } = this.props;
     if (track.length === 0) return null;
 
+    this.ref.current && this.ref.current.leafletElement.invalidateSize();
     return <Polyline positions={track} color="green" weight={8} />;
   }
 

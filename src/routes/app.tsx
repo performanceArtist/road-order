@@ -64,11 +64,7 @@ function getRoutes(paths: string[]) {
     const userType = req.user.role === 'admin' ? 'user' : req.user.role;
     if (req.url === '/map') {
       res.send(
-        renderApp(
-          req.url,
-          { from: req.query.from, to: req.query.to },
-          req.user.role
-        )
+        renderApp(req.url, { from: req.query.from, to: req.query.to }, userType)
       );
     } else {
       res.send(renderApp(req.url, {}, userType));

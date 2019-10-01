@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
+import { withRouter } from 'react-router-dom';
 
 import TaskInfo from '@components/TaskInfo/TaskInfo';
 import Button from '@elements/Button/Button';
@@ -29,7 +30,8 @@ const TaskPanel: React.FC<Props> = ({
   tasks = [],
   cancel,
   openModal,
-  setCurrentTask
+  setCurrentTask,
+  history
 }) => {
   const sortByDate = R.sort(
     ({ date: fdate }, { date: sdate }) =>
@@ -41,7 +43,7 @@ const TaskPanel: React.FC<Props> = ({
     const href = `/map?from=${JSON.stringify(from)}&to=${JSON.stringify(
       to
     )}&current=${JSON.stringify(current)}`;
-    document.location.href = href;
+    history.push(href);
   };
 
   const buttons = task => (
@@ -92,4 +94,4 @@ const TaskPanel: React.FC<Props> = ({
 export default connect(
   mapState,
   mapDispatch
-)(TaskPanel);
+)(withRouter(TaskPanel));
