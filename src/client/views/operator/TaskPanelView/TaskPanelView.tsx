@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { OperatorTaskPanel } from '@features/OperatorTaskPanel';
+import { TaskPanel } from '@features/TaskPanel';
 
 const OperatorTaskPanelView = () => {
   return (
     <div>
-      <OperatorTaskPanel />
+      <TaskPanel />
     </div>
   );
 };

@@ -6,7 +6,7 @@ const config = {
   entry: {
     user: [
       '@babel/polyfill',
-      path.join(__dirname, 'src/client/entries/user/index.tsx')
+      path.join(__dirname, 'src/client/entries/driver/index.tsx')
     ],
     operator: [
       '@babel/polyfill',

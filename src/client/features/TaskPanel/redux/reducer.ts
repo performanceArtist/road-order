@@ -6,7 +6,7 @@ const tasks = [
   {
     id: 23,
     order: '12399',
-    status: 'done',
+    status: 'taken',
     start: 0,
     finish: 2000,
     forward: true,
@@ -30,7 +30,7 @@ const tasks = [
   {
     id: 25,
     order: '12401',
-    status: 'done',
+    status: 'cancelled',
     start: 0,
     finish: 2000,
     forward: true,
@@ -54,7 +54,7 @@ const tasks = [
   {
     id: 28,
     order: '12401',
-    status: 'done',
+    status: 'ready',
     start: 0,
     finish: 2000,
     forward: true,
@@ -81,7 +81,7 @@ const tasks = [
   {
     id: 34,
     order: '12401',
-    status: 'done',
+    status: 'ready',
     start: 0,
     finish: 2000,
     forward: true,

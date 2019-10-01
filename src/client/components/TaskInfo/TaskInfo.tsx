@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import MeasurementInfo from './MeasurementInfo';
+import { Task, getStatus } from '@shared/types';
 
-import { Task } from '../redux/types';
+import MeasurementInfo from './MeasurementInfo';
 
 type OwnProps = {
   task: Task;
@@ -21,7 +21,8 @@ const TaskInfo: React.FC<Props> = ({ task }) => {
     { title: 'Старт', value: task.start },
     { title: 'Финиш', value: task.finish },
     { title: 'Текущая полоса', value: task.lane },
-    { title: 'Кондор', value: task.kondor }
+    { title: 'Кондор', value: task.kondor },
+    { title: 'Статус', value: getStatus(task.status) }
   ];
 
   return (

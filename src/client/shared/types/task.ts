@@ -1,7 +1,8 @@
+export type TaskStatus = 'ready' | 'taken' | 'done' | 'cancelled';
 export interface Task {
   id: number;
   order: string;
-  status: 'ready' | 'taken' | 'done';
+  status: TaskStatus;
   start: number;
   finish: number;
   forward: boolean;
@@ -23,6 +24,21 @@ export interface Task {
   from: [number, number];
   to: [number, number];
   current: [number, number];
+}
+
+export function getStatus(status: TaskStatus) {
+  switch (status) {
+    case 'done':
+      return 'Выполнено';
+    case 'ready':
+      return 'Ожидает выполнения';
+    case 'taken':
+      return 'Выполняется';
+    case 'cancelled':
+      return 'Отменено';
+    default:
+      return 'Неизвестно';
+  }
 }
 
 export interface AllTaskFilters {

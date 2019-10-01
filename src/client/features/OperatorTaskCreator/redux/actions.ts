@@ -5,3 +5,8 @@ export const NEWTASK = {
     FAILURE: 'NEWTASK.POST.FAILURE'
   }
 };
+
+export const createTask = (formData: any) => ({
+  type: NEWTASK.POST.REQUEST,
+  payload: formData
+});

@@ -15,6 +15,8 @@ import { setCurrentTask } from '../redux/actions';
 type OwnProps = {
   tasks: Array<Task>;
   cancel: { cancelled: Array<string> };
+  onlyLastActive?: boolean;
+  filterCancelled?: boolean;
 };
 
 type Props = OwnProps & typeof mapDispatch;
@@ -31,12 +33,10 @@ const TaskPanel: React.FC<Props> = ({
   cancel,
   openModal,
   setCurrentTask,
-  history
+  history,
+  filterCancelled,
+  onlyLastActive
 }) => {
-  const sortByDate = R.sort(
-    ({ date: fdate }, { date: sdate }) =>
-      new Date(fdate).getTime() - new Date(sdate).getTime()
-  );
   const mapIndexed = R.addIndex(R.map);
   const handleStartClick = ({ id, from, to, current }) => {
     setCurrentTask(id);
@@ -64,28 +64,33 @@ const TaskPanel: React.FC<Props> = ({
   const createElements = mapIndexed((task: any, index: number) => (
     <div
       className={
-        index === 0
-          ? 'task-panel__task task-panel__task_active'
-          : 'task-panel__task'
+        onlyLastActive
+          ? index === 0
+            ? 'task-panel__task task-panel__task_active'
+            : 'task-panel__task'
+          : 'task-panel__task task-panel__task_active'
       }
       key={`task-${task.id}`}
     >
       <TaskInfo task={task} />
-      {index === 0 && buttons(task)}
+      {onlyLastActive ? index === 0 && buttons(task) : buttons(task)}
     </div>
   ));
 
-  const filterCanceled = R.filter(({ id }) => !cancel.cancelled.includes(id));
-
-  const transform = R.pipe(
-    filterCanceled,
-    sortByDate,
-    createElements
+  const sortByDate = R.sort(
+    ({ date: fdate }, { date: sdate }) =>
+      new Date(fdate).getTime() - new Date(sdate).getTime()
   );
+  const noCancelled = filterCancelled
+    ? R.filter(
+        ({ id, status }) => status === 'ready' && !cancel.cancelled.includes(id)
+      )(tasks)
+    : tasks;
+  const activeTasks = sortByDate(noCancelled);
 
   return (
     <div className="task-panel">
-      {transform(tasks)}
+      {createElements(activeTasks)}
       <div style={{ float: 'left', clear: 'both' }} />
     </div>
   );

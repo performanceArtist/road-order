@@ -1,6 +1,7 @@
 import Index from '@client/views/public/Index/Index';
 import TaskView from '@client/views/operator/TaskPanelView/TaskPanelView';
 import TaskCreationView from '@client/views/operator/TaskCreationView/TaskCreationView';
+import MapView from '@client/views/driver/MapView/MapView';
 import { Icon } from '@client/layout/Navigation/Navigation';
 
 export type Route = {
@@ -23,6 +24,11 @@ export default [
     title: 'База заданий',
     component: TaskView,
     exact: true
+  },
+  {
+    path: '/map',
+    title: 'Карта',
+    component: MapView
   },
   {
     path: '/create',

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { OperatorTaskCreation } from '@features/OperatorTaskCreation';
+import { OperatorTaskCreator } from '@root/client/features/OperatorTaskCreator';
 
 const TaskCreationView = () => {
   return (
     <div>
-      <OperatorTaskCreation />
+      <OperatorTaskCreator />
     </div>
   );
 };
