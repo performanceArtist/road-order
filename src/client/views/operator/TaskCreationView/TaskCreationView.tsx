@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { OperatorTaskCreator } from '@root/client/features/OperatorTaskCreator';
+import { canUseDOM } from '@shared/utils';
+
+let OperatorTaskCreator = () => <></>;
+if (canUseDOM) {
+  OperatorTaskCreator = require('@features/OperatorTaskCreator/view/OperatorTaskCreator')
+    .default;
+}
 
 const TaskCreationView = () => {
   return (

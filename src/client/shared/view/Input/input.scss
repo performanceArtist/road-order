@@ -1,0 +1,52 @@
+.input {
+  text-align: left;
+
+  &__label {
+    font-size: 1rem;
+    padding: 0.7rem;
+    padding-left: 0;
+    padding-top: 0;
+  }
+
+  &__input {
+    border: 1px solid $medium-grey;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    &_invalid {
+      border: 1px solid $red;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:disabled {
+      background: $light-grey;
+    }
+
+    &[type='checkbox'] {
+      width: auto;
+    }
+  }
+
+  &__input-status {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.9rem;
+  }
+
+  &_inline {
+    display: flex;
+    align-content: center;
+  }
+
+  &_inline & {
+    &__label {
+      margin-right: 0.5rem;
+    }
+  }
+}

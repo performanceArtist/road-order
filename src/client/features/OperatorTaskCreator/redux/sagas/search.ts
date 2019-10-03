@@ -5,18 +5,25 @@ import { NEWTASK } from '../actions';
 
 function* worker({ type, payload }: { type: string; payload: any }) {
   try {
-    const response = yield call(axios.post, '/api/task/create', payload);
+    const response = yield call(axios.get, '/api/location', {
+      params: {
+        search: payload
+      }
+    });
 
     yield put({
-      type: NEWTASK.POST.SUCCESS,
+      type: NEWTASK.LOCATION_SEARCH.SUCCESS,
       payload: response.data
     });
   } catch ({ response }) {
     console.log(response);
-    yield put({ type: NEWTASK.POST.FAILURE, response: response.data });
+    yield put({
+      type: NEWTASK.LOCATION_SEARCH.FAILURE,
+      response: response.data
+    });
   }
 }
 
 export default function* watcher() {
-  yield takeLatest(NEWTASK.POST.REQUEST, worker);
+  yield takeLatest(NEWTASK.LOCATION_SEARCH.REQUEST, worker);
 }

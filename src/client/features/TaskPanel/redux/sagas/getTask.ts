@@ -1,7 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import axios from 'axios';
 
-import { TASK } from './actions';
+import { TASK } from '../actions';
 
 function* getWorker(action: { type: string; payload: any }) {
   try {

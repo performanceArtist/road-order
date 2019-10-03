@@ -60,4 +60,24 @@ router.post('/api/cancel', (req, res) => {
   }
 });
 
+router.get('/api/location', (req, res) => {
+  const { search = 'Томск' } = req.query;
+
+  axios
+    .get(`http://search.maps.sputnik.ru/search`, {
+      params: {
+        q: search
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+      const data = response.data.result[0].position;
+
+      res.json([data.lat, data.lon]);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).send(error);
+    });
+});
 export default router;

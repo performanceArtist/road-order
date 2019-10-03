@@ -11,6 +11,13 @@
     }
   }
 
+  &_compact & {
+    &__map {
+      width: 52vw;
+      height: 500px;
+    }
+  }
+
   &_fullscreen & {
     &__map {
       height: 100vh;

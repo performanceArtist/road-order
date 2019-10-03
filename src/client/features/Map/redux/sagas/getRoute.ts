@@ -1,7 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import axios from 'axios';
 
-import { MAP } from './actions';
+import { MAP } from '../actions';
 
 function* getWorker(action: { type: string; payload: any }) {
   try {
