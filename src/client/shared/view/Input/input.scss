@@ -1,11 +1,11 @@
 .input {
-  text-align: left;
+  display: block;
+  margin-bottom: 0.5rem;
 
   &__label {
     font-size: 1rem;
-    padding: 0.7rem;
-    padding-left: 0;
-    padding-top: 0;
+    display: block;
+    margin: 0.5rem;
   }
 
   &__input {

@@ -17,8 +17,8 @@ const router = express.Router();
 router.get('/api/route', (req, res) => {
   const { from, to } = req.query;
   if (!from || !to) return res.status(500).send('Wrong coordinates');
-  const fromO = JSON.parse(from);
-  const toO = JSON.parse(to);
+  const fromO = typeof from === 'string' ? JSON.parse(from) : from;
+  const toO = typeof to === 'string' ? JSON.parse(to) : to;
 
   axios
     .get(
@@ -80,4 +80,9 @@ router.get('/api/location', (req, res) => {
       res.status(500).send(error);
     });
 });
+
+router.post('/api/task/create', (req, res) => {
+  res.sendStatus(200);
+});
+
 export default router;

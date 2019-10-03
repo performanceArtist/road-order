@@ -32,6 +32,10 @@ class TaskMap extends React.Component<IProps, IState> {
     this.drawRoute = this.drawRoute.bind(this);
   }
 
+  componentDidUpdate() {
+    this.ref.current.leafletElement.invalidateSize();
+  }
+
   handleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen }, () =>
       this.ref.current.leafletElement.invalidateSize()
