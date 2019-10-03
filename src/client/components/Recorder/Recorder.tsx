@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { ReactMic } from 'react-mic';
 
-import Button from '@elements/Button/Button';
+import { Button } from '@shared/view';
 
 type OwnProps = {
   onSaveClick: Function;

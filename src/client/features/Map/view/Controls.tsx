@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Button from '@elements/Button/Button';
+import { Button } from '@shared/view';
 
 type Props = {
   hasArrived: boolean;

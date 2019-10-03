@@ -73,11 +73,11 @@ const OperatorTaskCreator: React.FC<IProps> = ({
 
   return (
     <div className="operator-task-creator">
-      <div className="operator-task-creator__location-search">
-        <LocationSearch onSubmit={onSearchSubmit} />
-      </div>
       <div className="operator-task-creator__row">
         <div className="operator-task-creator__map">
+          <div className="operator-task-creator__location-search">
+            <LocationSearch onSubmit={onSearchSubmit} />
+          </div>
           <TaskMap onMapClick={onMapClick} center={location} track={track} />
         </div>
         <div className="operator-task-creator__form">

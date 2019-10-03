@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const config = {
   entry: {
-    user: [
+    driver: [
       '@babel/polyfill',
       path.join(__dirname, 'src/client/entries/driver/index.tsx')
     ],

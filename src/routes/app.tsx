@@ -25,7 +25,12 @@ router.use('/', async (req, res, next) => {
     if (!user) throw new Error('User not found');
     req.user = user;
 
-    const userType = req.user.role === 'admin' ? 'user' : req.user.role;
+    const userType =
+      req.user.role === 'admin'
+        ? 'driver'
+        : req.user.role === 'user'
+        ? 'driver'
+        : req.user.role;
     const routes = require(`@root/client/entries/${userType}/routes`).default;
     const paths = routes.map(({ path }) => path);
     getRoutes(paths);
@@ -61,7 +66,12 @@ const renderApp = (url: string, props: any = {}, userType = 'user') => {
 
 function getRoutes(paths: string[]) {
   return router.get(paths, (req, res) => {
-    const userType = req.user.role === 'admin' ? 'user' : req.user.role;
+    const userType =
+      req.user.role === 'admin'
+        ? 'driver'
+        : req.user.role === 'user'
+        ? 'driver'
+        : req.user.role;
     if (req.url === '/map') {
       res.send(
         renderApp(req.url, { from: req.query.from, to: req.query.to }, userType)

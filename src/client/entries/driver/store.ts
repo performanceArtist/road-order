@@ -1,5 +1,5 @@
-import rootReducer from '@redux/user/reducer';
-import rootSaga from '@redux/user/saga';
+import rootReducer from '@root/client/redux/driver/reducer';
+import rootSaga from '@root/client/redux/driver/saga';
 import { createStore } from '../utils';
 
 export default createStore({ rootReducer, rootSaga });

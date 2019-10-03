@@ -4,8 +4,8 @@ import * as R from 'ramda';
 import { withRouter } from 'react-router-dom';
 
 import TaskInfo from '@components/TaskInfo/TaskInfo';
-import Button from '@elements/Button/Button';
-import { RootState } from '@redux/user/reducer';
+import { Button } from '@shared/view';
+import { RootState } from '@root/client/redux/driver/reducer';
 import { actions as modalActions } from '@features/Modal/redux';
 import { Task } from '@shared/types';
 const { openModal } = modalActions;

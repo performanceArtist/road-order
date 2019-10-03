@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Modal } from '@features/Modal';
 import { actions as modalActions } from '@features/Modal/redux';
 const { openModal, closeModal } = modalActions;
-import Button from '@elements/Button/Button';
+import { Button } from '@shared/view';
 
 import { actions } from '../redux';
 const { cancelWithReason, cancelWithAudio } = actions;

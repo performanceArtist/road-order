@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { actions as modalActions } from '@features/Modal/redux';
 const { openModal, closeModal } = modalActions;
 import { markRequest } from '../redux/actions';
-import { RootState } from '@root/client/redux/user/reducer';
+import { RootState } from '@root/client/redux/driver/reducer';
 
 import RoadChart from './RoadChart';
 import RoadControl from './RoadControl';
