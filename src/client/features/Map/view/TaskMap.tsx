@@ -42,7 +42,7 @@ class TaskMap extends React.Component<IProps, IState> {
     );
   }
 
-  handleMapClick(event) {
+  handleMapClick(event: any) {
     const { onMapClick } = this.props;
 
     onMapClick(event.latlng);

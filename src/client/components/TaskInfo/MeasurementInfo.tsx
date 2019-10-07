@@ -1,12 +1,14 @@
 import * as React from 'react';
 
+import { TaskStatus } from '@shared/types';
+
 type Info = {
   title: string;
   value: string | number;
 };
 
 type Props = {
-  status: 'ready' | 'taken' | 'done';
+  status: TaskStatus;
   kondor: null | string;
   items: Array<Info>;
 };

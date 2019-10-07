@@ -29,7 +29,7 @@ router.get('/api/route', (req, res) => {
     .then(response => {
       const data = polyline
         .decode(response.data.route_geometry)
-        .map(([lat, lon]) => [lat / 10, lon / 10]);
+        .map(([lat, lon]: [number, number]) => [lat / 10, lon / 10]);
       res.send(data);
     })
     .catch(error => {

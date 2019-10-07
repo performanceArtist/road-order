@@ -1,5 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
-import axios from 'axios';
+import { takeLatest, put } from 'redux-saga/effects';
 
 import { sendAudio } from '@shared/utils';
 

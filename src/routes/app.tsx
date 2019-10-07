@@ -8,6 +8,8 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
+import { IRoute } from '@shared/types';
+
 import render from '@root/utils/render';
 import config from '@root/config';
 import knex from '@root/connection';
@@ -32,7 +34,7 @@ router.use('/', async (req, res, next) => {
         ? 'driver'
         : req.user.role;
     const routes = require(`@root/client/entries/${userType}/routes`).default;
-    const paths = routes.map(({ path }) => path);
+    const paths = routes.map(({ path }: IRoute) => path);
     getRoutes(paths);
 
     next();

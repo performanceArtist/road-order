@@ -11,7 +11,11 @@ if (canUseDOM) {
   Recorder = require('@components/Recorder/Recorder').default;
 }
 
-type Props = typeof mapDispatch;
+type OwnProps = {
+  onSaveClick(audio: any): void;
+}
+
+type Props = OwnProps & typeof mapDispatch;
 
 const mapDispatch = { closeModal };
 

@@ -55,6 +55,7 @@ const mapDispatch = {
 
 class MapComponent extends Component<Props, State> {
   private ref = React.createRef<HTMLDivElement>();
+  private timeout: NodeJS.Timer| null = null;
 
   constructor(props: Props) {
     super(props);
@@ -94,7 +95,7 @@ class MapComponent extends Component<Props, State> {
   addCurrentMarker() {
     const tryParse = () => {
       try {
-        const current = JSON.parse(this.props.current);
+        const current = JSON.parse(this.props.current.toString());
         return current;
       } catch (error) {
         return null;

@@ -5,8 +5,8 @@ import { Button } from '@shared/view';
 type Props = {
   hasArrived: boolean;
   measurementStarted: boolean;
-  onMeasurementClick: Function;
-  onCancelClick: Function;
+  onMeasurementClick(event: any): void;
+  onCancelClick(event: any): void;
 };
 
 const Controls: React.FC<Props> = ({

@@ -34,13 +34,13 @@ class Form extends React.Component<IOwnProps & RawFormProps, {}> {
     <div className="form__footer">{children}</div>
   );
 
-  handleSubmit(event) {
+  handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     const { onSubmit } = this.props;
-    const { currentTarget: target } = event;
+    const target = event.currentTarget as HTMLFormElement;
 
     const formData = [...target.elements].reduce(
-      (acc, { name, value, type, checked }) => {
+      (acc: { [key: string]: any }, { name, value, type, checked }: HTMLInputElement) => {
         if (type === 'radio') {
           acc[name] = checked;
         } else {

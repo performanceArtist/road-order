@@ -2,7 +2,7 @@ import { all } from 'redux-saga/effects';
 
 import { getTask } from '@features/TaskPanel/redux/sagas';
 import { getRoute } from '@features/Map/redux/sagas';
-import { cancel } from '@features/RecorderDialog/redux/sagas';
+import { cancel } from '@root/client/features/TaskCancel/redux/sagas';
 import { mark } from '@features/Road/redux/sagas';
 import {
   search,

@@ -70,7 +70,7 @@ const CancelModal: React.FC<Props> = ({
             <Button
               onClick={() =>
                 openModal('Recorder', {
-                  onSaveClick: audio => {
+                  onSaveClick: (audio: any) => {
                     cancelWithAudio(taskId, audio);
                     closeModal();
                   }

@@ -31,7 +31,7 @@ const Recorder: React.FC<Props> = ({ onSaveClick }) => {
       <Button onClick={() => setRecord(!record)}>
         {record ? 'Стоп' : 'Старт'}
       </Button>
-      <ReactMic record={record} onStop={audio => setAudio(audio)} />
+      <ReactMic record={record} onStop={(audio: any) => setAudio(audio)} />
       {renderAudio()}
     </div>
   );

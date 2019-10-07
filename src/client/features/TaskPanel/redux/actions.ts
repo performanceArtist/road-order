@@ -11,7 +11,7 @@ export const getTask = () => ({
   type: TASK.GET.REQUEST
 });
 
-export const setCurrentTask = (id: string) => ({
+export const setCurrentTask = (id: number) => ({
   type: TASK.SET_CURRENT,
   payload: id
 });

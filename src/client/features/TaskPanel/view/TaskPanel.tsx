@@ -13,13 +13,16 @@ const { openModal } = modalActions;
 import { setCurrentTask } from '../redux/actions';
 
 type OwnProps = {
-  tasks: Array<Task>;
-  cancel: { cancelled: Array<string> };
   onlyLastActive?: boolean;
   filterCancelled?: boolean;
 };
 
-type Props = OwnProps & typeof mapDispatch;
+type StateProps = {
+  tasks: Task[];
+  cancel: { cancelled: string[] };
+}
+
+type Props = OwnProps & StateProps & typeof mapDispatch;
 
 const mapState = ({ tasks, cancel }: RootState) => ({
   tasks: tasks.tasks,
@@ -38,7 +41,7 @@ const TaskPanel: React.FC<Props> = ({
   onlyLastActive
 }) => {
   const mapIndexed = R.addIndex(R.map);
-  const handleStartClick = ({ id, from, to, current }) => {
+  const handleStartClick = ({ id, from, to, current }: Task) => {
     setCurrentTask(id);
     const href = `/map?from=${JSON.stringify(from)}&to=${JSON.stringify(
       to
@@ -46,7 +49,7 @@ const TaskPanel: React.FC<Props> = ({
     history.push(href);
   };
 
-  const buttons = task => (
+  const buttons = (task: Task) => (
     <div className="task-panel__buttons">
       <div className="task-panel__button">
         <a onClick={() => handleStartClick(task)}>

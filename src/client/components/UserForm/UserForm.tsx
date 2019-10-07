@@ -5,7 +5,7 @@ import axios from 'axios';
 const UserForm = () => {
   const [role, setRole] = useState('');
 
-  const onSubmit = event => {
+  const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     axios
       .post('/admin/create', { role })
