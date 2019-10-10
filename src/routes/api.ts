@@ -1,6 +1,8 @@
 import * as express from 'express';
 import axios from 'axios';
 import { createAdmin } from '../controllers/user';
+import { createTask } from '../controllers/task';
+import { TaskFormData } from '@root/client/shared/types';
 
 const polyline = require('@mapbox/polyline');
 const multer = require('multer');
@@ -83,8 +85,14 @@ router.get('/api/location', (req, res) => {
     });
 });
 
-router.post('/api/task/create', (req, res) => {
-  res.sendStatus(200);
+router.post('/api/task/create', async (req, res) => {
+  try {
+    await createTask(req.body as TaskFormData);
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
 });
 
 /*

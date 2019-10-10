@@ -14,6 +14,7 @@ import {
   setTo
 } from '../redux/actions';
 import { RootState } from '@root/client/redux/operator/reducer';
+import { TaskFormData } from '@root/client/shared/types';
 
 const mapDispatch = { getLocation, createTask, getRoute, setFrom, setTo };
 
@@ -63,12 +64,12 @@ const OperatorTaskCreator: React.FC<IProps> = ({
     getLocation(search);
   };
 
-  const handleFormSubmit = (formData: any) => {
+  const handleFormSubmit = (formData: TaskFormData) => {
     createTask(formData);
   };
 
   const coordToString = (c: [number, number]) => {
-    return `lat:${c[0].toFixed(4)}, lon:${c[1].toFixed(4)}`;
+    return `[${c[0].toFixed(12)}, ${c[1].toFixed(12)}]`;
   };
 
   return (

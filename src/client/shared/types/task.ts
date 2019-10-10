@@ -12,7 +12,10 @@ export type ServerTask  = {
   id: number;
   order_number: number;
   date: Date;
-  coordinates: [number, number];
+  coordinates: {
+    from: [number, number];
+    to: [number, number];
+  },
   distance: [number, number];
   is_direction_forward: boolean;
   description: string;
@@ -22,4 +25,30 @@ export type ServerTask  = {
   road_category: RoadCategory;
   condor: CondorInfo;
   user: UserInfo;
+}
+
+export type DatabaseTask = {
+  order_number: number;
+  date?: Date;
+  coordinates: number[],
+  distance: [number, number];
+  is_direction_forward: boolean;
+  description: string;
+  lane_number: number;
+  status_id: number;
+  road_category_id: number;
+  condor_id: number;
+  user_id: number;
+  company_id: number;
+}
+
+export type TaskFormData = {
+  from: string;
+  to: string;
+  user: string;
+  category: string;
+  condor: string;
+  company: string;
+  forward: boolean;
+  backward: boolean;
 }

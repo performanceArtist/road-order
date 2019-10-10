@@ -20,6 +20,8 @@ router.use('/', async (req, res, next) => {
     if (!token) throw new Error('No auth');
 
     const payload = jwt.verify(token, config.auth.key);
+    if (!payload) throw new Error('Invalid access token');
+
     const user = await knex('users')
       .select('*')
       .where({ id: payload.id })

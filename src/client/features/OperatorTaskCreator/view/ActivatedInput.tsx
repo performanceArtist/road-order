@@ -29,6 +29,7 @@ const ActivatedInput: React.FC<IProps> = ({
         required
         readOnly
         disabled={!isActive}
+        remWidth={18.5}
       />
     </div>
   );

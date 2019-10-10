@@ -39,21 +39,27 @@ const TaskForm: React.FC<IProps> = ({
         />
       </div>
       <div className="task-form__select-group">
-        <span className="task-form__select-label">Класс:</span>
-        <select name="class">
-          <option value="1">Автомагистраль</option>
+        <span className="task-form__select-label">Водитель:</span>
+        <select name="user">
+          <option value="10">Борис Петрович</option>
         </select>
       </div>
       <div className="task-form__select-group">
-        <span className="task-form__select-label">Категория:</span>
+        <span className="task-form__select-label">Кондор:</span>
+        <select name="condor">
+          <option value="1">#1</option>
+        </select>
+      </div>
+      <div className="task-form__select-group">
+        <span className="task-form__select-label">Категория дороги:</span>
         <select name="category">
           <option value="1">IA</option>
         </select>
       </div>
       <div className="task-form__select-group">
         <span className="task-form__select-label">Заказчик:</span>
-        <select name="pod">
-          <option value="1">Компания 1</option>
+        <select name="company">
+          <option value="1">Элеси</option>
         </select>
       </div>
 
@@ -67,6 +73,7 @@ const TaskForm: React.FC<IProps> = ({
         </label>
       </div>
 
+      {/*
       <div className="task-form__checkbox-group">
         <div className="task-form__checkbox-label">Приборы</div>
         <label className="task-form__checkbox">
@@ -79,6 +86,7 @@ const TaskForm: React.FC<IProps> = ({
           Профилометр <input type="checkbox" name="prof" />
         </label>
       </div>
+      */}
       <Form.Footer>
         <Button type="submit">Создать</Button>
       </Form.Footer>

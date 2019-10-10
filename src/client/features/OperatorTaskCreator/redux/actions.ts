@@ -1,3 +1,5 @@
+import { TaskFormData } from "@root/client/shared/types";
+
 export const NEWTASK = {
   POST: {
     REQUEST: 'NEWTASK.POST.REQUEST',
@@ -18,7 +20,7 @@ export const NEWTASK = {
   SET_TO: 'NEWTASK.SET_TO'
 };
 
-export const createTask = (formData: any) => ({
+export const createTask = (formData: TaskFormData) => ({
   type: NEWTASK.POST.REQUEST,
   payload: formData
 });
