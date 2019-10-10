@@ -34,8 +34,9 @@ router.use('/', async (req, res, next) => {
     if(!group) throw new Error('No user group');
 
     req.user = {
-      login: user.login,
-      group: group.name
+      id: user.id,
+      group: group.name,
+      login: user.login
     };
 
     const userType =

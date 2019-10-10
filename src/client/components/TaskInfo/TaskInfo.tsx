@@ -1,28 +1,23 @@
 import * as React from 'react';
 
-import { Task, getStatus } from '@shared/types';
+import { ServerTask } from '@shared/types';
+import { getStatus } from '@shared/utils';
 
 import MeasurementInfo from './MeasurementInfo';
 
 type OwnProps = {
-  task: Task;
+  task: ServerTask;
 };
 
 type Props = OwnProps;
 
 const TaskInfo: React.FC<Props> = ({ task }) => {
   const items = [
-    { title: 'Регион', value: task.region },
-    { title: 'Город', value: task.city },
-    { title: 'Населённый пункт', value: task.settlement },
-    { title: 'Дорога', value: task.street },
-    { title: 'Участок', value: task.roadPartName },
-    { title: 'Кол-во полос', value: task.lanesCount },
-    { title: 'Старт', value: task.start },
-    { title: 'Финиш', value: task.finish },
-    { title: 'Текущая полоса', value: task.lane },
-    { title: 'Кондор', value: task.condor },
-    { title: 'Статус', value: getStatus(task.status) }
+    { title: 'Статус', value: getStatus(task.status) },
+    { title: 'Кол-во полос', value: task.lane_number },
+    { title: 'Описание', value: task.description },
+    { title: 'Старт', value: task.distance[0] },
+    { title: 'Финиш', value: task.distance[1] },
   ];
 
   return (
@@ -32,9 +27,7 @@ const TaskInfo: React.FC<Props> = ({ task }) => {
       </header>
       <div className="task-info__content">
         <MeasurementInfo
-          status={task.status}
-          condor={task.condor}
-          items={items.filter(({ value }) => value)}
+          items={items.filter(({ value }) => value !== undefined)}
         />
       </div>
     </div>

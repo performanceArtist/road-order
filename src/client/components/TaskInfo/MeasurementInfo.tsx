@@ -1,19 +1,15 @@
 import * as React from 'react';
 
-import { TaskStatus } from '@shared/types';
-
 type Info = {
   title: string;
   value: string | number;
 };
 
 type Props = {
-  status: TaskStatus;
-  condor: null | string;
   items: Array<Info>;
 };
 
-const MeasurementInfo: React.FC<Props> = ({ items, status }) => {
+const MeasurementInfo: React.FC<Props> = ({ items }) => {
   const info = items.map(({ title, value }) => (
     <div className="measurement-info__item" key={title}>
       <div className="measurement-info__title">{`${title}:`}</div>

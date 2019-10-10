@@ -1,1 +1,1 @@
-export { default as getTask } from './getTask';
+export { default as getTasks } from './getTasks';

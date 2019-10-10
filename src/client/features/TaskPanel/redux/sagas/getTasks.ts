@@ -5,7 +5,7 @@ import { TASK } from '../actions';
 
 function* getWorker(action: { type: string; payload: any }) {
   try {
-    const response = yield call(axios.get, '/api/task', action.payload);
+    const response = yield call(axios.get, '/api/tasks', action.payload);
     yield put({
       type: TASK.GET.SUCCESS,
       payload: response.data

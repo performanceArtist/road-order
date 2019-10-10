@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 import { withRouter } from 'react-router-dom';
@@ -7,7 +8,8 @@ import TaskInfo from '@components/TaskInfo/TaskInfo';
 import { Button } from '@shared/view';
 import { RootState } from '@root/client/redux/driver/reducer';
 import { actions as modalActions } from '@features/Modal/redux';
-import { Task } from '@shared/types';
+import { ServerTask } from '@shared/types';
+import { getTasks } from '../redux/actions';
 const { openModal } = modalActions;
 
 import { setCurrentTask } from '../redux/actions';
@@ -18,7 +20,7 @@ type OwnProps = {
 };
 
 type StateProps = {
-  tasks: Task[];
+  tasks: ServerTask[];
   cancel: { cancelled: string[] };
 }
 
@@ -29,19 +31,24 @@ const mapState = ({ tasks, cancel }: RootState) => ({
   cancel
 });
 
-const mapDispatch = { openModal, setCurrentTask };
+const mapDispatch = { openModal, setCurrentTask, getTasks };
 
 const TaskPanel: React.FC<Props> = ({
   tasks = [],
   cancel,
   openModal,
   setCurrentTask,
+  getTasks,
   history,
   filterCancelled,
   onlyLastActive
 }) => {
+  useEffect(() => {
+    getTasks();
+  }, []);
+
   const mapIndexed = R.addIndex(R.map);
-  const handleStartClick = ({ id, from, to, current }: Task) => {
+  const handleStartClick = ({ id, coordinates: { from, to, current } }: ServerTask) => {
     setCurrentTask(id);
     const href = `/map?from=${JSON.stringify(from)}&to=${JSON.stringify(
       to
@@ -49,7 +56,7 @@ const TaskPanel: React.FC<Props> = ({
     history.push(href);
   };
 
-  const buttons = (task: Task) => (
+  const buttons = (task: ServerTask) => (
     <div className="task-panel__buttons">
       <div className="task-panel__button">
         <a onClick={() => handleStartClick(task)}>

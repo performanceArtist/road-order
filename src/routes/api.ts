@@ -1,8 +1,8 @@
 import * as express from 'express';
 import axios from 'axios';
 import { createAdmin } from '../controllers/user';
-import { createTask } from '../controllers/task';
-import { TaskFormData } from '@root/client/shared/types';
+import { createTask, getServerTasks } from '../controllers/task';
+import { TaskFormData, TaskFilters } from '@root/client/shared/types';
 
 const polyline = require('@mapbox/polyline');
 const multer = require('multer');
@@ -89,6 +89,18 @@ router.post('/api/task/create', async (req, res) => {
   try {
     await createTask(req.body as TaskFormData);
     res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
+router.get('/api/tasks', async (req, res) => {
+  try {
+    const tasks = await getServerTasks({
+      user: req.user.group === 'operator' ? req.user.id : undefined
+    });
+    res.json(tasks);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });

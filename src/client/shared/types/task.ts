@@ -5,17 +5,17 @@ export type RoadClass = 'Автомагистраль' | 'Скоростная' 
 export type RoadCategory = 'IA' | 'IБ' | 'IB' | 'I' | 'II' | 'III' | 'IV' | 'V';
 export type CondorInfo = {
   id: number;
-  coordinates: [number, number];
-}
+};
 
-export type ServerTask  = {
+export type ServerTask = {
   id: number;
-  order_number: number;
+  order_number: string;
   date: Date;
   coordinates: {
     from: [number, number];
     to: [number, number];
-  },
+    current: [number, number];
+  };
   distance: [number, number];
   is_direction_forward: boolean;
   description: string;
@@ -23,14 +23,16 @@ export type ServerTask  = {
   status: TaskStatus;
   road_class: RoadClass;
   road_category: RoadCategory;
+  company: string;
   condor: CondorInfo;
   user: UserInfo;
-}
+};
 
 export type DatabaseTask = {
-  order_number: number;
+  id?: number;
+  order_number: string;
   date?: Date;
-  coordinates: number[],
+  coordinates: number[];
   distance: [number, number];
   is_direction_forward: boolean;
   description: string;
@@ -40,7 +42,7 @@ export type DatabaseTask = {
   condor_id: number;
   user_id: number;
   company_id: number;
-}
+};
 
 export type TaskFormData = {
   from: string;
@@ -51,4 +53,4 @@ export type TaskFormData = {
   company: string;
   forward: boolean;
   backward: boolean;
-}
+};

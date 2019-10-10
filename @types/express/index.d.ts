@@ -1,8 +1,9 @@
 import { UserGroup } from '@shared/types';
 
 interface RequestUser {
-  login?: string;
+  id: number;
   group: UserGroup;
+  login?: string;
 }
 
 declare namespace Express {

@@ -1,12 +1,19 @@
 import knex from '@root/connection';
 
-import { TaskFilters, TaskFormData, DatabaseTask } from '@client/shared/types';
+import {
+  TaskFilters,
+  TaskFormData,
+  DatabaseTask,
+  ServerTask,
+  CondorInfo
+} from '@client/shared/types';
 
-export async function getTasks({
+export async function getServerTasks({
   startDate,
   endDate,
-  condor
-}: Partial<TaskFilters> = {}) {
+  condor,
+  user
+}: TaskFilters): Promise<ServerTask[]> {
   const query = knex('orders')
     .select('*')
     .limit(10);
@@ -14,21 +21,111 @@ export async function getTasks({
   startDate && query.where('date', '>=', startDate);
   endDate && query.where('date', '<', endDate);
   condor && query.where({ condor_id: condor });
+  user && query.where({ user_id: user });
 
-  const orders = await query;
-  return orders;
+  const dbTasks: DatabaseTask[] = await query;
+  const serverTasks = Promise.all(dbTasks.map(getServerTask));
+
+  return serverTasks;
 }
 
-export async function getTask(id: string) {
-  return knex('orders')
+const getServerTask = async (dbTask: DatabaseTask) => {
+  const {
+    id,
+    order_number,
+    date,
+    coordinates,
+    distance,
+    is_direction_forward,
+    description,
+    lane_number,
+    condor_id,
+    status_id,
+    company_id,
+    road_category_id,
+    user_id
+  } = dbTask;
+
+  const condor = await knex('condor_diagnostics')
     .select('*')
-    .where({ id });
-}
+    .where({ condor_id, node_id: 'coordinates' })
+    .first();
+  const current = JSON.parse(condor.value) as [number, number];
+  const test = await knex('order_status').select('*');
+  const status = await knex('order_status')
+    .select('*')
+    .where({
+      id: status_id
+    })
+    .first();
+  const company = await knex('order_companies')
+    .where({
+      id: company_id
+    })
+    .first().name;
+  const user = await knex('users')
+    .where({
+      id: user_id
+    })
+    .first();
+
+  const road_category = await knex('order_road_category')
+    .where({
+      id: road_category_id
+    })
+    .first();
+
+  const road_class = await knex('road_category_class')
+    .where({
+      id: road_category.road_class_id
+    })
+    .first().name;
+
+  const serverTask: ServerTask = {
+    id,
+    date,
+    order_number,
+    coordinates: {
+      from: [coordinates[0], coordinates[1]],
+      to: [coordinates[2], coordinates[3]],
+      current
+    },
+    distance,
+    is_direction_forward,
+    description,
+    lane_number,
+    status: status.name,
+    company,
+    condor: {
+      id: condor_id
+    },
+    user: {
+      id: user_id,
+      login: user.login as string,
+      group: 'driver',
+      name: user.name as string
+    },
+    road_category: road_category.name,
+    road_class
+  };
+
+  return serverTask;
+};
 
 export async function createTask(formData: TaskFormData) {
-  const { from, to, company, condor, category, forward, backward, user } = formData;
+  const {
+    from,
+    to,
+    company,
+    condor,
+    category,
+    forward,
+    backward,
+    user
+  } = formData;
   const newTask: DatabaseTask = {
-    order_number: 12345,
+    date: new Date(),
+    order_number: '12345',
     coordinates: JSON.parse(from).concat(JSON.parse(to)),
     distance: [0, 100],
     is_direction_forward: forward,
