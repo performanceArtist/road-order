@@ -9,10 +9,11 @@ const router = express.Router();
 
 import App from '@root/client/entries/admin/App';
 import render from '@root/utils/render';
+import { User } from '../models/User';
 
 router.use('/admin/', (req, res, next) => {
   console.log(req.user);
-  if (!req.user || req.user.role !== 'admin')
+  if (!req.user || req.user.group !== 'admin')
     return res.status(401).send('<h1>Unauthorized</h1>');
   next();
 });
@@ -29,17 +30,12 @@ router.get('/admin/', (req, res) => {
   res.send(render({ reactDom, helmetData, bundle: 'admin' }));
 });
 
-const createUser = async (role: 'admin' | 'driver' | 'operator') => {
-  await knex('drivers').insert({
-    role,
-    name: 'Test',
-    uid: Math.floor(Math.random() * 1000000)
-  });
-};
-
 router.post('/admin/create', async (req, res, next) => {
   try {
-    await createUser(req.body.role);
+    const { name = 'Test', role, password } = req.body;
+    const newUser = new User({ name, group_id: role, password });
+
+    await newUser.create();
     res.status(200).end();
   } catch (error) {
     next(error);

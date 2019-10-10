@@ -1,10 +1,12 @@
-interface User {
-  login: string;
-  role: 'admin' | 'user' | 'operator';
+import { UserGroup } from '@shared/types';
+
+interface RequestUser {
+  login?: string;
+  group: UserGroup;
 }
 
 declare namespace Express {
   export interface Request {
-    user: User;
+    user: RequestUser;
   }
 }

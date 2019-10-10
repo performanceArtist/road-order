@@ -1,5 +1,7 @@
 import * as express from 'express';
 import axios from 'axios';
+import { createAdmin } from '../controllers/user';
+
 const polyline = require('@mapbox/polyline');
 const multer = require('multer');
 const path = require('path');
@@ -84,5 +86,11 @@ router.get('/api/location', (req, res) => {
 router.post('/api/task/create', (req, res) => {
   res.sendStatus(200);
 });
+
+/*
+router.get('/api/temp', async (req, res) => {
+  await createAdmin();
+  res.sendStatus(200);
+});*/
 
 export default router;

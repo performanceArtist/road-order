@@ -9,7 +9,7 @@ type Info = {
 
 type Props = {
   status: TaskStatus;
-  kondor: null | string;
+  condor: null | string;
   items: Array<Info>;
 };
 

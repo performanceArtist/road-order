@@ -1,6 +1,6 @@
 import { Icon } from '@client/layout/Navigation/Navigation';
 
-export type IRoute = {
+export type Route = {
   path: string;
   title: string;
   icon: Icon;

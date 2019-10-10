@@ -10,6 +10,7 @@ import knex from '@root/connection';
 import config from '@root/config';
 import App from '@root/client/entries/public/App';
 import render from '@root/utils/render';
+import { User } from '../models/User';
 
 const sendApp = (url: string, res: express.Response) => {
   const jsx = (
@@ -32,16 +33,19 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const { uid } = req.body;
+  const { password } = req.body;
 
   try {
-    const user = await knex('drivers')
-      .select('*')
-      .where({ uid })
+    if (!password) throw new Error('No password');
+
+    const hash = User.hash(password);
+    const user = await knex('users')
+      .where({ password: hash })
       .first();
 
-    if (!user) throw { type: 'uid', message: 'Несуществующий uid' };
-    const token = jwt.sign({ uid }, config.auth.key);
+    if (!user) throw { type: 'login', message: 'Неверный логин или пароль' };
+
+    const token = jwt.sign({ id: user.id }, config.auth.key);
     res.json({ token });
   } catch (error) {
     console.log(error);
@@ -49,7 +53,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.get('/', (req, res, next) => {
+router.use('/', (req, res, next) => {
   if (req.cookies.token) {
     next();
   } else {

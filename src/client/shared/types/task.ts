@@ -1,50 +1,25 @@
+import { UserGroup, UserInfo } from './user';
+
 export type TaskStatus = 'ready' | 'taken' | 'done' | 'cancelled';
-export interface Task {
+export type RoadClass = 'Автомагистраль' | 'Скоростная' | 'Обычная';
+export type RoadCategory = 'IA' | 'IБ' | 'IB' | 'I' | 'II' | 'III' | 'IV' | 'V';
+export type CondorInfo = {
   id: number;
-  order: string;
+  coordinates: [number, number];
+}
+
+export type ServerTask  = {
+  id: number;
+  order_number: number;
+  date: Date;
+  coordinates: [number, number];
+  distance: [number, number];
+  is_direction_forward: boolean;
+  description: string;
+  lane_number: number;
   status: TaskStatus;
-  start: number;
-  finish: number;
-  forward: boolean;
-  backward: boolean;
-  isForward: boolean;
-  lanesCount: number;
-  description: string | null;
-  lane?: number;
-  kondor: string | null;
-  roadPartName: string;
-  street: string;
-  streetId: string;
-  settlement: string;
-  settlementId: string;
-  city: string;
-  cityId: string;
-  regionId: string;
-  region: string;
-  from: [number, number];
-  to: [number, number];
-  current: [number, number];
+  road_class: RoadClass;
+  road_category: RoadCategory;
+  condor: CondorInfo;
+  user: UserInfo;
 }
-
-export function getStatus(status: TaskStatus) {
-  switch (status) {
-    case 'done':
-      return 'Выполнено';
-    case 'ready':
-      return 'Ожидает выполнения';
-    case 'taken':
-      return 'Выполняется';
-    case 'cancelled':
-      return 'Отменено';
-    default:
-      return 'Неизвестно';
-  }
-}
-
-export interface AllTaskFilters {
-  startDate: Date;
-  endDate: Date;
-  kondor: number;
-}
-
-export type TaskFilters = Partial<AllTaskFilters>;

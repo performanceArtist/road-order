@@ -12,7 +12,7 @@ const setCookie = (name: string, value: string, exdays: number) => {
 const Login = () => {
   const handleSubmit = (uid: string) => {
     axios
-      .post('/login', { uid })
+      .post('/login', { password: uid })
       .then(response => {
         const { token } = response.data;
         setCookie('token', token, 10);

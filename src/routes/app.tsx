@@ -8,7 +8,7 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-import { IRoute } from '@shared/types';
+import { Route } from '@shared/types';
 
 import render from '@root/utils/render';
 import config from '@root/config';
@@ -20,21 +20,30 @@ router.use('/', async (req, res, next) => {
     if (!token) throw new Error('No auth');
 
     const payload = jwt.verify(token, config.auth.key);
-    const user = await knex('drivers')
+    const user = await knex('users')
       .select('*')
-      .where({ uid: payload.uid })
+      .where({ id: payload.id })
       .first();
     if (!user) throw new Error('User not found');
-    req.user = user;
+    const group = await knex('user_group').select('*').where({
+      id: user.group_id
+    }).first();
+
+    if(!group) throw new Error('No user group');
+
+    req.user = {
+      login: user.login,
+      group: group.name
+    };
 
     const userType =
-      req.user.role === 'admin'
+      req.user.group === 'admin'
         ? 'driver'
-        : req.user.role === 'user'
+        : req.user.group === 'user'
         ? 'driver'
-        : req.user.role;
+        : req.user.group;
     const routes = require(`@root/client/entries/${userType}/routes`).default;
-    const paths = routes.map(({ path }: IRoute) => path);
+    const paths = routes.map(({ path }: Route) => path);
     getRoutes(paths);
 
     next();
@@ -69,11 +78,11 @@ const renderApp = (url: string, props: any = {}, userType = 'user') => {
 function getRoutes(paths: string[]) {
   return router.get(paths, (req, res) => {
     const userType =
-      req.user.role === 'admin'
+      req.user.group === 'admin'
         ? 'driver'
-        : req.user.role === 'user'
+        : req.user.group === 'user'
         ? 'driver'
-        : req.user.role;
+        : req.user.group;
     if (req.url === '/map') {
       res.send(
         renderApp(req.url, { from: req.query.from, to: req.query.to }, userType)
