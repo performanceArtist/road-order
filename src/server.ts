@@ -5,8 +5,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-// bigint type workaround
-const pg = require('pg')
+// bigint type workaround, otherwise it returns as a string
+const pg = require('pg');
 pg.types.setTypeParser(20, parseInt);
 
 import publicRouter from './routes/public';
