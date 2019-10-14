@@ -1,20 +1,29 @@
 import * as express from 'express';
 import axios from 'axios';
-import { createAdmin } from '../controllers/user';
 import { createTask, getServerTasks } from '../controllers/task';
 import { TaskFormData, TaskFilters } from '@root/client/shared/types';
 
 const polyline = require('@mapbox/polyline');
+import 'multer'; // Need this to use Express.Multer.File
 const multer = require('multer');
 const path = require('path');
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+
+type MulterRoute = (req: express.Request, file: Express.Multer.File, cb: (err: any, path: string) => void) => void;
+type MulterStorage = {
+  destination: MulterRoute;
+  filename: MulterRoute;
+}
+
+const multerStorage: MulterStorage = {
+  destination: (req, file, cb) => {
     cb(null, path.resolve('dist/uploads'));
   },
   filename: function(req, file, cb) {
     return cb(null, file.originalname);
   }
-});
+}
+
+const storage = multer.diskStorage(multerStorage);
 const upload = multer({ storage });
 const router = express.Router();
 
@@ -97,6 +106,8 @@ router.post('/api/task/create', async (req, res) => {
 
 router.get('/api/tasks', async (req, res) => {
   try {
+    if (!req.user) throw new Error('No user');
+
     const tasks = await getServerTasks({
       user: req.user.group === 'operator' ? req.user.id : undefined
     });

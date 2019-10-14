@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import TaskInfo from '@components/TaskInfo/TaskInfo';
 import { Button } from '@shared/view';
@@ -24,7 +24,7 @@ type StateProps = {
   cancel: { cancelled: string[] };
 }
 
-type Props = OwnProps & StateProps & typeof mapDispatch;
+type Props = OwnProps & StateProps & typeof mapDispatch & RouteComponentProps;
 
 const mapState = ({ tasks, cancel }: RootState) => ({
   tasks: tasks.tasks,

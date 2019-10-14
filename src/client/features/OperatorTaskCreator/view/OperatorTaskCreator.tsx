@@ -88,8 +88,8 @@ const OperatorTaskCreator: React.FC<IProps> = ({
             onActiveFieldClick={(what: ActiveField) => {
               setActive(what);
             }}
-            fromValue={from && coordToString(from)}
-            toValue={to && coordToString(to)}
+            fromValue={from ? coordToString(from) : ''}
+            toValue={to ? coordToString(to) : ''}
           />
         </div>
       </div>

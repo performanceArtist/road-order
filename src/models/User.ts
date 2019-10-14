@@ -30,10 +30,6 @@ class User {
       return error;
     }
   }
-
-  public verifyPassword(candidate: string) {
-    return bcrypt.compare(candidate, this.user.password);
-  }
 }
 
 export { User, UserType };

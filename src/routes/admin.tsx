@@ -3,8 +3,6 @@ import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import knex from '@root/connection';
-const path = require('path');
 const router = express.Router();
 
 import App from '@root/client/entries/admin/App';

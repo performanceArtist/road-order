@@ -6,8 +6,10 @@ interface RequestUser {
   login?: string;
 }
 
-declare namespace Express {
-  export interface Request {
-    user: RequestUser;
+declare global {
+  namespace Express {
+    export interface Request {
+      user?: RequestUser;
+    }
   }
 }

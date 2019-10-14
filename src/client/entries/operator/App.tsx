@@ -17,10 +17,9 @@ const App = () => {
         <ModalManager />
         <div className="app__navigation">
           <Navigation
-            links={routes.map(({ path, title, icon }) => ({
+            links={routes.map(({ path, title }) => ({
               url: path,
-              title,
-              icon
+              title
             }))}
           />
           <Profile />

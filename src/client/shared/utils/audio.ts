@@ -8,6 +8,7 @@ interface Fields {
 export function sendAudio(url: string, audio: any, fields: Fields) {
   const formData = new FormData();
   const file = new File([audio], `${Date.now()}.webM`);
+  const boundary = (formData as any)._boundary;
 
   formData.append('audio', file);
   Object.keys(fields).forEach(key => {
@@ -16,7 +17,7 @@ export function sendAudio(url: string, audio: any, fields: Fields) {
 
   return call(axios.post, url, formData, {
     headers: {
-      'Content-type': `multipart/form-data boundary=${formData._boundary}`
+      'Content-type': `multipart/form-data boundary=${boundary}`
     }
   });
 }

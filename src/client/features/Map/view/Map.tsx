@@ -55,7 +55,7 @@ const mapDispatch = {
 
 class MapComponent extends Component<Props, State> {
   private ref = React.createRef<HTMLDivElement>();
-  private timeout: NodeJS.Timer| null = null;
+  private timeout: NodeJS.Timer | null = null;
 
   constructor(props: Props) {
     super(props);
@@ -119,7 +119,7 @@ class MapComponent extends Component<Props, State> {
   startSimulation() {
     this.timeout = setInterval(() => {
       if (this.props.track.length === 0) {
-        clearInterval(this.timeout);
+        this.timeout && clearInterval(this.timeout);
         return;
       }
 

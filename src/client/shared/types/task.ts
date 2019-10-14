@@ -1,4 +1,4 @@
-import { UserGroup, UserInfo } from './user';
+import { UserInfo } from './user';
 
 export type TaskStatus = 'ready' | 'taken' | 'done' | 'cancelled';
 export type RoadClass = 'Автомагистраль' | 'Скоростная' | 'Обычная';
@@ -26,22 +26,6 @@ export type ServerTask = {
   company: string;
   condor: CondorInfo;
   user: UserInfo;
-};
-
-export type DatabaseTask = {
-  id?: number;
-  order_number: string;
-  date?: Date;
-  coordinates: number[];
-  distance: [number, number];
-  is_direction_forward: boolean;
-  description: string;
-  lane_number: number;
-  status_id: number;
-  road_category_id: number;
-  condor_id: number;
-  user_id: number;
-  company_id: number;
 };
 
 export type TaskFormData = {

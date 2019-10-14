@@ -11,6 +11,7 @@ import config from '@root/config';
 import App from '@root/client/entries/public/App';
 import render from '@root/utils/render';
 import { User } from '../models/User';
+import { DatabaseUser } from '@root/client/shared/types';
 
 const sendApp = (url: string, res: express.Response) => {
   const jsx = (
@@ -39,7 +40,7 @@ router.post('/login', async (req, res) => {
     if (!password) throw new Error('No password');
 
     const hash = User.hash(password);
-    const user = await knex('users')
+    const user: DatabaseUser = await knex('users')
       .where({ password: hash })
       .first();
 

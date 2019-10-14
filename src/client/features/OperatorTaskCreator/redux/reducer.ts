@@ -9,8 +9,8 @@ type IState = {
 
 const initialState: IState = {
   location: [56.472596, 84.950367],
-  from: null,
-  to: null,
+  from: undefined,
+  to: undefined,
   track: []
 };
 

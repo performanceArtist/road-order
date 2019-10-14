@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "./@types"],
+    "typeRoots": ["./@types", "./node_modules/@types"],
     "types": [
       "node",
       "webpack-env"
@@ -8,6 +8,7 @@
     "rootDir": "src",
     "outDir": "./dist",
     "noImplicitAny": true,
+    "strictNullChecks": true,
     "module": "commonjs",
     "target": "es6",
     "moduleResolution": "node",
@@ -37,7 +38,7 @@
     "esModuleInterop": true
     },
     "include": [
-      "./src", "./@types"
+       "./@types", "./src/**/*"
     ]
 }
-  
+

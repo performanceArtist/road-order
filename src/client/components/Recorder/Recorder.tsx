@@ -11,15 +11,21 @@ type OwnProps = {
 type Props = OwnProps;
 
 const Recorder: React.FC<Props> = ({ onSaveClick }) => {
-  const [audio, setAudio] = useState(null);
+  type Audio = {
+    blob: any;
+  } | null;
+
+  const [audio, setAudio] = useState<Audio>(null);
   const [record, setRecord] = useState(false);
 
   const renderAudio = () => {
-    if (!audio) return null;
+    if (audio === null) return null;
+    const { blob } = audio;
+
     return (
       <div className="recorder__audio">
-        <audio src={URL.createObjectURL(audio.blob)} controls />
-        <Button onClick={() => onSaveClick(audio.blob)} disabled={!audio}>
+        <audio src={URL.createObjectURL(blob)} controls />
+        <Button onClick={() => onSaveClick(blob)} disabled={!audio}>
           Отправить
         </Button>
       </div>

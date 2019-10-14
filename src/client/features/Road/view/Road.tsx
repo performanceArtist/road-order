@@ -26,19 +26,17 @@ const Road: React.FC<IProps> = ({
 }) => {
   const [speed, setSpeed] = useState(0);
   const [distance, setDistance] = useState(0);
-  const [interval, setI] = useState(null);
 
   let counter = 0;
+  let interval: NodeJS.Timer;
 
   const startSimulation = () => {
-    setI(
-      setInterval(() => {
+      interval = setInterval(() => {
         setSpeed(35 + Math.random() * 5);
         setDistance(counter * 100 + Math.random());
         if (distance > 1200) clearInterval(interval);
         counter += 1;
       }, 300)
-    );
   };
 
   return (

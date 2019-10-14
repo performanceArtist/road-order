@@ -10,7 +10,7 @@ const initialState: {
   offTrack: boolean;
 } = {
   track: [],
-  carPosition: null,
+  carPosition: undefined,
   hasArrived: false,
   measurementStarted: false,
   offTrack: false

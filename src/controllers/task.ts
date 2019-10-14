@@ -4,8 +4,7 @@ import {
   TaskFilters,
   TaskFormData,
   DatabaseTask,
-  ServerTask,
-  CondorInfo
+  ServerTask
 } from '@client/shared/types';
 
 export async function getServerTasks({
@@ -51,7 +50,6 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     .where({ condor_id, node_id: 'coordinates' })
     .first();
   const current = JSON.parse(condor.value) as [number, number];
-  const test = await knex('order_status').select('*');
   const status = await knex('order_status')
     .select('*')
     .where({
@@ -82,7 +80,7 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     .first().name;
 
   const serverTask: ServerTask = {
-    id,
+    id: id as number,
     date,
     order_number,
     coordinates: {

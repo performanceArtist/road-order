@@ -4,11 +4,10 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import Helmet from 'react-helmet';
-const path = require('path');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-import { Route } from '@shared/types';
+import { Route, DatabaseUser, DatabaseUserGroup } from '@shared/types';
 
 import render from '@root/utils/render';
 import config from '@root/config';
@@ -22,12 +21,12 @@ router.use('/', async (req, res, next) => {
     const payload = jwt.verify(token, config.auth.key);
     if (!payload) throw new Error('Invalid access token');
 
-    const user = await knex('users')
+    const user: DatabaseUser = await knex('users')
       .select('*')
       .where({ id: payload.id })
       .first();
     if (!user) throw new Error('User not found');
-    const group = await knex('user_group').select('*').where({
+    const group: DatabaseUserGroup = await knex('user_group').select('*').where({
       id: user.group_id
     }).first();
 
@@ -39,20 +38,14 @@ router.use('/', async (req, res, next) => {
       login: user.login
     };
 
-    const userType =
-      req.user.group === 'admin'
-        ? 'driver'
-        : req.user.group === 'user'
-        ? 'driver'
-        : req.user.group;
-    const routes = require(`@root/client/entries/${userType}/routes`).default;
+    const routes = require(`@root/client/entries/${req.user.group}/routes`).default;
     const paths = routes.map(({ path }: Route) => path);
     getRoutes(paths);
 
     next();
   } catch (error) {
     console.log(error);
-    req.user = null;
+    req.user = undefined;
     res.status(401).json({ error: 'Unauthorized' });
   }
 });
@@ -80,18 +73,16 @@ const renderApp = (url: string, props: any = {}, userType = 'user') => {
 
 function getRoutes(paths: string[]) {
   return router.get(paths, (req, res) => {
-    const userType =
-      req.user.group === 'admin'
-        ? 'driver'
-        : req.user.group === 'user'
-        ? 'driver'
-        : req.user.group;
+    if(!req.user) {
+      return res.status(500);
+    }
+
     if (req.url === '/map') {
       res.send(
-        renderApp(req.url, { from: req.query.from, to: req.query.to }, userType)
+        renderApp(req.url, { from: req.query.from, to: req.query.to }, req.user.group)
       );
     } else {
-      res.send(renderApp(req.url, {}, userType));
+      res.send(renderApp(req.url, {}, req.user.group));
     }
   });
 }

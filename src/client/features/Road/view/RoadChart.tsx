@@ -8,8 +8,8 @@ type Props = {
 };
 
 const RoadChart: React.FC<Props> = ({ max, min, current }) => {
-  const canvasRef = React.useRef(null);
-  const containerRef = React.useRef(null);
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const config = {
     width: 800,
@@ -18,7 +18,10 @@ const RoadChart: React.FC<Props> = ({ max, min, current }) => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    if (!canvas) {
+      return;
+    }
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     ctx.fillStyle = '#f4f4f4';
     ctx.fillRect(0, 0, config.width, config.height);

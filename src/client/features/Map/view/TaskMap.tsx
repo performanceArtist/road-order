@@ -16,8 +16,10 @@ type IProps = {
   onMapClick(coordinates: L.LatLng): void;
 };
 
+type LeafletDiv = HTMLDivElement & { leafletElement: any };
+
 class TaskMap extends React.Component<IProps, IState> {
-  private ref = React.createRef<HTMLDivElement>();
+  private ref = React.createRef<LeafletDiv>();
 
   constructor(props: IProps) {
     super(props);
@@ -33,12 +35,12 @@ class TaskMap extends React.Component<IProps, IState> {
   }
 
   componentDidUpdate() {
-    this.ref.current.leafletElement.invalidateSize();
+    this.ref.current && this.ref.current.leafletElement.invalidateSize();
   }
 
   handleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen }, () =>
-      this.ref.current.leafletElement.invalidateSize()
+    this.ref.current && this.ref.current.leafletElement.invalidateSize()
     );
   }
 
