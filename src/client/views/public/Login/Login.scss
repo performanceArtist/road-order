@@ -1,0 +1,9 @@
+.login-view {
+  display: flex;
+  justify-content: flex-end;
+
+  &__reminder {
+    width: 37%;
+    text-align: center;
+  }
+}

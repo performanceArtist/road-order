@@ -8,10 +8,10 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 import { Route, DatabaseUser, DatabaseUserGroup } from '@shared/types';
-
 import render from '@root/utils/render';
 import config from '@root/config';
 import knex from '@root/connection';
+import scripts from '@client/entries/dependencies';
 
 router.use('/', async (req, res, next) => {
   try {
@@ -51,24 +51,26 @@ router.use('/', async (req, res, next) => {
 });
 
 const renderApp = (url: string, props: any = {}, userType = 'user') => {
-  const store = require(`@root/client/entries/${userType}/store`).default(
-    false
-  );
+  const store = require(`@root/client/entries/${userType}/store`).default(false);
+  const reduxState = store.getState();
   const App = require(`@root/client/entries/${userType}/App`).default;
 
-  const jsx = (
-    <ReduxProvider store={store}>
-      <StaticRouter location={`${url}`}>
+  const withRouter = (
+    <StaticRouter location={`${url}`}>
         <App props={props} />
       </StaticRouter>
-    </ReduxProvider>
   );
 
+  const jsx = reduxState ? (
+    <ReduxProvider store={store}>
+      {withRouter}
+    </ReduxProvider>
+  ) : withRouter;
+
   const reactDom = renderToString(jsx);
-  const reduxState = store.getState();
   const helmetData = Helmet.renderStatic();
 
-  return render({ reactDom, reduxState, helmetData, bundle: userType });
+  return render({ reactDom, reduxState, helmetData, bundle: userType, scripts: scripts[userType] });
 };
 
 function getRoutes(paths: string[]) {

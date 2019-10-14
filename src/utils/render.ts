@@ -3,9 +3,13 @@ type Args = {
   bundle: string;
   reduxState?: any;
   helmetData?: any;
+  scripts?: string[];
 };
 
-const render = ({ reactDom, reduxState, helmetData, bundle }: Args) => {
+const script = (name: string) =>
+  `<script type="text/javascript" src="${name}.js"></script>`;
+
+const render = ({ reactDom, reduxState, helmetData, bundle, scripts = [] }: Args) => {
   const reduxScript = reduxState
     ? `<script>
   window.__PRELOADED_STATE__ = ${JSON.stringify(reduxState).replace(
@@ -30,9 +34,7 @@ const render = ({ reactDom, reduxState, helmetData, bundle }: Args) => {
     <body>
       <div class="wrapper">${reactDom}</div>
       ${reduxScript}
-      <script type="text/javascript" src="commons.js"></script>
-      <script defer type="text/javascript" src="react-mic.js"></script>
-      <script type="text/javascript" src="${bundle}.js"></script>
+      ${[bundle, 'commons', ...scripts].map(script).join('')}
     </body>
   </html>
   `;

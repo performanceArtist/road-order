@@ -10,5 +10,5 @@ export type Route = {
 };
 
 export default [
-  { path: '/', exact: false, component: AdminView }
+  { path: '/', title: 'Create user', exact: false, component: AdminView }
 ];

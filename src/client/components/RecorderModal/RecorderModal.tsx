@@ -1,15 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { canUseDOM } from '@shared/utils';
+import Recorder from '@components/Recorder/RecorderEntry';
 import { Modal } from '@features/Modal';
 import { actions } from '@features/Modal/redux';
 const { closeModal } = actions;
-
-let Recorder = () => <></>;
-if (canUseDOM) {
-  Recorder = require('@components/Recorder/Recorder').default;
-}
 
 type OwnProps = {
   onSaveClick(audio: any): void;

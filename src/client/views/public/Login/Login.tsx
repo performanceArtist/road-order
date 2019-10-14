@@ -24,8 +24,15 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <Keyboard handleSubmit={handleSubmit} />
+    <div className="login-view">
+      <div>
+        <Keyboard handleSubmit={handleSubmit} />
+      </div>
+      <div className="login-view__reminder">
+        <h3>Админ: 123</h3>
+        <h3>Оператор: 1234</h3>
+        <h3>Водитель: 12345</h3>
+      </div>
     </div>
   );
 };
