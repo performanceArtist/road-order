@@ -53,8 +53,10 @@ const mapDispatch = {
   openModal
 };
 
+type LeafletDiv = HTMLDivElement & { leafletElement: any };
+
 class MapComponent extends Component<Props, State> {
-  private ref = React.createRef<HTMLDivElement>();
+  private ref = React.createRef<LeafletDiv>();
   private timeout: NodeJS.Timer | null = null;
 
   constructor(props: Props) {
@@ -80,7 +82,7 @@ class MapComponent extends Component<Props, State> {
 
   handleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen }, () =>
-      this.ref.current.leafletElement.invalidateSize()
+      this.ref.current&& this.ref.current.leafletElement.invalidateSize()
     );
   }
 
@@ -149,7 +151,7 @@ class MapComponent extends Component<Props, State> {
       <>
         <div className={this.state.fullscreen ? 'map map_fullscreen' : 'map'}>
           <div className="map__map">
-            <Map center={center} zoom={zoom} ref={this.ref} maxZoom={19}>
+            <Map center={center} zoom={zoom} ref={this.ref as any} maxZoom={19}>
               <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

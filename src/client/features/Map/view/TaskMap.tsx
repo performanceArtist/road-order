@@ -74,7 +74,7 @@ class TaskMap extends React.Component<IProps, IState> {
           <Map
             center={center}
             zoom={zoom}
-            ref={this.ref}
+            ref={this.ref as any}
             maxZoom={19}
             onclick={this.handleMapClick}
           >

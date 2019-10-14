@@ -3,7 +3,13 @@ const qs = require('query-string');
 
 import { Map } from '@features/Map';
 
-const MapView = ({ location: { search } }) => {
+type Props = {
+  location: {
+    search: string;
+  }
+}
+
+const MapView: React.FC<Props> = ({ location: { search } }) => {
   const query = qs.parse(search);
   const { from, to, current } = query;
 

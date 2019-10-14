@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { ReactMic } from 'react-mic';
+const { ReactMic } = require('react-mic');
 
 import { Button } from '@shared/view';
 
