@@ -16,8 +16,8 @@ export const NEWTASK = {
     SUCCESS: 'NEWTASK.GET_ROUTE.SUCCESS',
     FAILURE: 'NEWTASK.GET_ROUTE.FAILURE'
   },
-  SET_FROM: 'NEWTASK.SET_FROM',
-  SET_TO: 'NEWTASK.SET_TO'
+  ADD_ROUTE_POINT: 'ADD_ROUTE_POINT',
+  REMOVE_LAST_ROUTE_POINT: 'REMOVE_LAST_ROUTE_POINT'
 };
 
 export const createTask = (formData: TaskFormData) => ({
@@ -30,17 +30,16 @@ export const getLocation = (search: string) => ({
   payload: search
 });
 
-export const setFrom = (payload: [number, number]) => ({
-  type: NEWTASK.SET_FROM,
+export const addRoutePoint = (payload: [number, number]) => ({
+  type: NEWTASK.ADD_ROUTE_POINT,
   payload
 });
 
-export const setTo = (payload: [number, number]) => ({
-  type: NEWTASK.SET_TO,
-  payload
+export const removeLastRoutePoint = () => ({
+  type: NEWTASK.REMOVE_LAST_ROUTE_POINT
 });
 
-export const getRoute = (from: [number, number], to: [number, number]) => ({
+export const getRoute = (points: [number, number][]) => ({
   type: NEWTASK.GET_ROUTE.REQUEST,
-  payload: { from, to }
+  payload: points
 });

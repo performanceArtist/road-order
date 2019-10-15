@@ -35,6 +35,5 @@ export type TaskFormData = {
   category: string;
   condor: string;
   company: string;
-  forward: boolean;
-  backward: boolean;
+  direction: 'forward' | 'backward';
 };

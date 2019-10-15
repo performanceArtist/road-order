@@ -5,9 +5,10 @@ import { NEWTASK } from '../actions';
 
 function* getWorker(action: { type: string; payload: any }) {
   try {
-    console.log(action.payload);
     const response = yield call(axios.get, '/api/route', {
-      params: action.payload
+      params: {
+        points: JSON.stringify(action.payload)
+      }
     });
 
     yield put({

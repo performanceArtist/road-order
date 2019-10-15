@@ -14,12 +14,12 @@ module.exports = merge(baseConfig, {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/client/entries/driver/index.html',
-      filename: `index.html`,
+      filename: `driver.html`,
       chunks: []
     }),
     new HtmlWebpackPlugin({
       template: 'src/client/entries/operator/index.html',
-      filename: `operator.html`,
+      filename: `index.html`,
       chunks: []
     })
   ]

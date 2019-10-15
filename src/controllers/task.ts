@@ -117,8 +117,7 @@ export async function createTask(formData: TaskFormData) {
     company,
     condor,
     category,
-    forward,
-    backward,
+    direction,
     user
   } = formData;
   const newTask: DatabaseTask = {
@@ -126,7 +125,7 @@ export async function createTask(formData: TaskFormData) {
     order_number: '12345',
     coordinates: JSON.parse(from).concat(JSON.parse(to)),
     distance: [0, 100],
-    is_direction_forward: forward,
+    is_direction_forward: direction === 'forward',
     description: 'Test',
     lane_number: 1,
     status_id: 1,

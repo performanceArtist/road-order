@@ -28,16 +28,15 @@ const upload = multer({ storage });
 const router = express.Router();
 
 router.get('/api/route', (req, res) => {
-  const { from, to } = req.query;
-  if (!from || !to) return res.status(500).send('Wrong coordinates');
-  const fromO = typeof from === 'string' ? JSON.parse(from) : from;
-  const toO = typeof to === 'string' ? JSON.parse(to) : to;
+  const { points: rawPoints } = req.query;
+  const points: [number, number][] | undefined = JSON.parse(rawPoints);
+
+  if (!points || points.length < 2) return res.status(500).send('Wrong coordinates');
+  const locs = points.map(([lat, lon]) => `loc=${lat},${lon}`).join('&');
 
   axios
     .get(
-      `http://routes.maps.sputnik.ru/osrm/router/viaroute?loc=${fromO[0]},${
-        fromO[1]
-      }&loc=${toO[0]},${toO[1]}`
+      `http://routes.maps.sputnik.ru/osrm/router/viaroute?${locs}`
     )
     .then(response => {
       const data = polyline

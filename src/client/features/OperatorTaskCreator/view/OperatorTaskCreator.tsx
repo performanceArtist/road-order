@@ -10,13 +10,13 @@ import {
   getLocation,
   createTask,
   getRoute,
-  setFrom,
-  setTo
+  addRoutePoint,
+  removeLastRoutePoint
 } from '../redux/actions';
 import { RootState } from '@root/client/redux/operator/reducer';
 import { TaskFormData } from '@root/client/shared/types';
 
-const mapDispatch = { getLocation, createTask, getRoute, setFrom, setTo };
+const mapDispatch = { getLocation, createTask, getRoute, addRoutePoint, removeLastRoutePoint };
 
 const mapState = ({ newTask }: RootState) => ({
   newTask
@@ -25,8 +25,7 @@ const mapState = ({ newTask }: RootState) => ({
 interface IStateProps {
   newTask: {
     location: [number, number];
-    from?: [number, number];
-    to?: [number, number];
+    routePoints: [number, number][];
     track: [number, number][];
   };
 }
@@ -34,31 +33,31 @@ interface IStateProps {
 type IProps = typeof mapDispatch & IStateProps;
 
 const OperatorTaskCreator: React.FC<IProps> = ({
+  newTask,
   getLocation,
   getRoute,
   createTask,
-  setFrom,
-  setTo,
-  newTask
+  addRoutePoint,
+  removeLastRoutePoint
 }) => {
   type ActiveField = 'from' | 'to';
   const [active, setActive] = useState<ActiveField>('from');
-  const { from, to, location, track } = newTask;
+  const { routePoints, location, track } = newTask;
+  const from = routePoints[0];
+  const to = routePoints.length > 1 ? routePoints[routePoints.length - 1] : undefined;
 
   const onMapClick = ({ lat, lng }: L.LatLng) => {
+    addRoutePoint([lat, lng]);
     if (active === 'from') {
-      setFrom([lat, lng]);
       setActive('to');
-    } else {
-      setTo([lat, lng]);
     }
   };
 
   useEffect(() => {
     if (from && to) {
-      getRoute(from, to);
+      getRoute(routePoints);
     }
-  }, [from, to]);
+  }, [routePoints]);
 
   const onSearchSubmit = (search: string) => {
     getLocation(search);
@@ -68,7 +67,12 @@ const OperatorTaskCreator: React.FC<IProps> = ({
     createTask(formData);
   };
 
+  const handleUndo = () => {
+    removeLastRoutePoint();
+  }
+
   const coordToString = (c: [number, number]) => {
+    console.log(c);
     return `[${c[0].toFixed(12)}, ${c[1].toFixed(12)}]`;
   };
 
@@ -88,6 +92,7 @@ const OperatorTaskCreator: React.FC<IProps> = ({
             onActiveFieldClick={(what: ActiveField) => {
               setActive(what);
             }}
+            onUndoButtonClick={handleUndo}
             fromValue={from ? coordToString(from) : ''}
             toValue={to ? coordToString(to) : ''}
           />

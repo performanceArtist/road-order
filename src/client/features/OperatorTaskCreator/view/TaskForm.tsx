@@ -7,6 +7,7 @@ import ActivatedInput from './ActivatedInput';
 type IProps = {
   onSubmit(formData: any): void;
   onActiveFieldClick(what: 'from' | 'to'): void;
+  onUndoButtonClick(): void;
   activeField?: 'from' | 'to';
   fromValue: string;
   toValue: string;
@@ -15,6 +16,7 @@ type IProps = {
 const TaskForm: React.FC<IProps> = ({
   onSubmit,
   onActiveFieldClick,
+  onUndoButtonClick,
   activeField,
   fromValue,
   toValue
@@ -38,6 +40,7 @@ const TaskForm: React.FC<IProps> = ({
           isActive={activeField === 'to'}
         />
       </div>
+      <Button onClick={onUndoButtonClick}>Назад</Button>
       <div className="task-form__select-group">
         <span className="task-form__select-label">Водитель:</span>
         <select name="user">
@@ -66,10 +69,10 @@ const TaskForm: React.FC<IProps> = ({
       <div className="task-form__checkbox-group">
         <div className="task-form__checkbox-label">Направления</div>
         <label className="task-form__checkbox">
-          Прямое <input type="checkbox" name="forward" />
+          Прямое <input type="radio" name="direction" value="forward" />
         </label>
         <label className="task-form__checkbox">
-          Обратное <input type="checkbox" name="backward" />
+          Обратное <input type="radio" name="direction" value="backward" />
         </label>
       </div>
 
