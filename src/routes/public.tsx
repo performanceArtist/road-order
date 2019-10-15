@@ -9,7 +9,7 @@ const router = express.Router();
 import knex from '@root/connection';
 import config from '@root/config';
 import App from '@root/client/entries/public/App';
-import render from '@root/utils/render';
+import render from '@root/utils/renderHTML';
 import { User } from '../models/User';
 import { DatabaseUser } from '@root/client/shared/types';
 

@@ -1,17 +1,11 @@
 import * as express from 'express';
-import * as React from 'react';
-import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import { Provider as ReduxProvider } from 'react-redux';
-import Helmet from 'react-helmet';
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 import { Route, DatabaseUser, DatabaseUserGroup } from '@shared/types';
-import render from '@root/utils/render';
+import renderApp from '@root/utils/renderApp';
 import config from '@root/config';
 import knex from '@root/connection';
-import scripts from '@client/entries/dependencies';
 
 router.use('/', async (req, res, next) => {
   try {
@@ -49,29 +43,6 @@ router.use('/', async (req, res, next) => {
     res.status(401).json({ error: 'Unauthorized' });
   }
 });
-
-const renderApp = (url: string, props: any = {}, userType = 'user') => {
-  const store = require(`@root/client/entries/${userType}/store`).default(false);
-  const reduxState = store.getState();
-  const App = require(`@root/client/entries/${userType}/App`).default;
-
-  const withRouter = (
-    <StaticRouter location={`${url}`}>
-        <App props={props} />
-      </StaticRouter>
-  );
-
-  const jsx = reduxState ? (
-    <ReduxProvider store={store}>
-      {withRouter}
-    </ReduxProvider>
-  ) : withRouter;
-
-  const reactDom = renderToString(jsx);
-  const helmetData = Helmet.renderStatic();
-
-  return render({ reactDom, reduxState, helmetData, bundle: userType, scripts: scripts[userType] });
-};
 
 function getRoutes(paths: string[]) {
   return router.get(paths, (req, res) => {

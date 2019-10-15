@@ -10,7 +10,7 @@ const pg = require('pg');
 pg.types.setTypeParser(20, parseInt);
 
 import publicRouter from './routes/public';
-import driverRouter from './routes/app';
+import appRouter from './routes/app';
 import apiRouter from './routes/api';
 import adminRouter from './routes/admin';
 
@@ -25,9 +25,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(publicRouter);
-app.use(driverRouter);
-app.use(adminRouter);
+app.use(appRouter);
 app.use(apiRouter);
+app.use(adminRouter);
 
 app.get('*', (req, res) => {
   res.status(404);
