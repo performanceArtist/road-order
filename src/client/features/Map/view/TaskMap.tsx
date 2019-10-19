@@ -4,6 +4,7 @@ import { Map, TileLayer, Polyline, Marker } from 'react-leaflet';
 import { connect } from 'react-redux';
 
 import { Icon, IconImage } from '@elements/Icon/Icon';
+import { GPSCoordinates, GPSTrack } from '@shared/types';
 
 interface IState {
   zoom: number;
@@ -11,8 +12,8 @@ interface IState {
 }
 
 type IProps = {
-  center?: [number, number];
-  track?: Array<[number, number]>;
+  center?: GPSCoordinates;
+  track?: GPSTrack;
   onMapClick(coordinates: L.LatLng): void;
 };
 
@@ -39,8 +40,9 @@ class TaskMap extends React.Component<IProps, IState> {
   }
 
   handleFullscreen() {
-    this.setState({ fullscreen: !this.state.fullscreen }, () =>
-    this.ref.current && this.ref.current.leafletElement.invalidateSize()
+    this.setState(
+      { fullscreen: !this.state.fullscreen },
+      () => this.ref.current && this.ref.current.leafletElement.invalidateSize()
     );
   }
 

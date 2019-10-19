@@ -4,7 +4,14 @@ import { getTasks } from '@features/TaskPanel/redux/sagas';
 import { getRoute } from '@features/Map/redux/sagas';
 import { cancel } from '@root/client/features/TaskCancel/redux/sagas';
 import { mark } from '@features/Road/redux/sagas';
+import socket from '@redux/io/socket';
 
 export default function* rootSaga() {
-  yield all([getTasks(), getRoute(), cancel(), mark()]);
+  yield all([
+    getTasks(),
+    getRoute(),
+    cancel(),
+    mark(),
+    socket.startStopChannel()
+  ]);
 }

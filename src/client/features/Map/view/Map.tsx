@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import { Icon, IconImage } from '@elements/Icon/Icon';
 import { Button } from '@shared/view';
+import { GPSTrack } from '@shared/types';
 import { actions as modalActions } from '@features/Modal/redux';
 const { openModal } = modalActions;
 import { RootState } from '@root/client/redux/driver/reducer';
@@ -20,7 +21,7 @@ import {
 import * as taskSelectors from '@features/TaskPanel/redux/selectors';
 
 import Controls from './Controls';
-import { ServerTask } from '@root/client/shared/types';
+import { ServerTask } from '@shared/types';
 
 interface State {
   zoom: number;
@@ -28,13 +29,13 @@ interface State {
 }
 
 type MapState = {
-  track: [number, number][];
-  route?: [number, number][];
-  routePath: [number, number][];
+  track: GPSTrack;
+  route?: GPSTrack;
+  routePath: GPSTrack;
   hasArrived: boolean;
   measurementStarted: boolean;
   currentTaskId: number | null;
-  task?: ServerTask
+  task?: ServerTask;
 };
 
 type Props = MapState & typeof mapDispatch;
@@ -91,12 +92,13 @@ class MapComponent extends Component<Props, State> {
   }
 
   handleFullscreen() {
-    this.setState({ fullscreen: !this.state.fullscreen }, () =>
-      this.ref.current && this.ref.current.leafletElement.invalidateSize()
+    this.setState(
+      { fullscreen: !this.state.fullscreen },
+      () => this.ref.current && this.ref.current.leafletElement.invalidateSize()
     );
   }
 
-  drawRoute(route: [number, number][], color = 'green', z = false) {
+  drawRoute(route: GPSTrack, color = 'green', z = false) {
     if (route.length === 0) return null;
 
     this.ref.current && this.ref.current.leafletElement.invalidateSize();
@@ -149,7 +151,9 @@ class MapComponent extends Component<Props, State> {
       task
     } = this.props;
 
-    const center = task ? task.current_position : track[0] || [56.472596, 84.950367];
+    const center = task
+      ? task.current_position
+      : track[0] || [56.472596, 84.950367];
 
     return (
       <div className={fullscreen ? 'map map_fullscreen' : 'map'}>
@@ -173,10 +177,7 @@ class MapComponent extends Component<Props, State> {
             >
               Начать движение
             </Button>
-            <Button
-              onClick={this.stopSimulation}
-              disabled={track.length === 0}
-            >
+            <Button onClick={this.stopSimulation} disabled={track.length === 0}>
               Остановиться
             </Button>
           </div>
@@ -189,8 +190,7 @@ class MapComponent extends Component<Props, State> {
                 window.location.href = '/road';
               }}
               onCancelClick={() =>
-                currentTaskId &&
-                openModal('Cancel', { taskId: currentTaskId })
+                currentTaskId && openModal('Cancel', { taskId: currentTaskId })
               }
             />
           </div>

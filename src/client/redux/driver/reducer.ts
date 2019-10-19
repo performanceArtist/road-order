@@ -6,11 +6,16 @@ import { reducer as tasks } from '@features/TaskPanel/redux';
 import { reducer as map } from '@features/Map/redux';
 import { reducer as cancel } from '@root/client/features/TaskCancel/redux';
 
+import condor from '../condor/reducer';
+import io from '../io/reducer';
+
 const rootReducer = combineReducers({
   modals,
   tasks,
   map,
-  cancel
+  cancel,
+  condor,
+  io
 });
 
 export type RootState = StateType<typeof rootReducer>;

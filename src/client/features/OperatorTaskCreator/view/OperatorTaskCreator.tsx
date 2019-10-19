@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as L from 'leaflet';
 
 import { TaskMap } from '@features/Map';
+import { RootState } from '@root/client/redux/operator/reducer';
+import { TaskFormData, GPSTrack, GPSCoordinates } from '@shared/types';
 
 import TaskForm from './TaskForm';
 import LocationSearch from './LocationSearch';
@@ -13,10 +15,14 @@ import {
   addRoutePoint,
   removeLastRoutePoint
 } from '../redux/actions';
-import { RootState } from '@root/client/redux/operator/reducer';
-import { TaskFormData } from '@root/client/shared/types';
 
-const mapDispatch = { getLocation, createTask, getRoute, addRoutePoint, removeLastRoutePoint };
+const mapDispatch = {
+  getLocation,
+  createTask,
+  getRoute,
+  addRoutePoint,
+  removeLastRoutePoint
+};
 
 const mapState = ({ newTask }: RootState) => ({
   newTask
@@ -24,9 +30,9 @@ const mapState = ({ newTask }: RootState) => ({
 
 interface IStateProps {
   newTask: {
-    location: [number, number];
-    routePoints: [number, number][];
-    track: [number, number][];
+    location: GPSCoordinates;
+    routePoints: GPSTrack;
+    track: GPSTrack;
   };
 }
 
@@ -44,7 +50,8 @@ const OperatorTaskCreator: React.FC<IProps> = ({
   const [active, setActive] = useState<ActiveField>('from');
   const { routePoints, location, track } = newTask;
   const from = routePoints[0];
-  const to = routePoints.length > 1 ? routePoints[routePoints.length - 1] : undefined;
+  const to =
+    routePoints.length > 1 ? routePoints[routePoints.length - 1] : undefined;
 
   const onMapClick = ({ lat, lng }: L.LatLng) => {
     addRoutePoint([lat, lng]);
@@ -69,10 +76,9 @@ const OperatorTaskCreator: React.FC<IProps> = ({
 
   const handleUndo = () => {
     removeLastRoutePoint();
-  }
+  };
 
-  const coordToString = (c: [number, number]) => {
-    console.log(c);
+  const coordToString = (c: GPSCoordinates) => {
     return `[${c[0].toFixed(12)}, ${c[1].toFixed(12)}]`;
   };
 

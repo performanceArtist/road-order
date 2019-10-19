@@ -4,11 +4,10 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const socketIO = require('socket.io');
 // bigint type workaround, otherwise it returns as a string
 const pg = require('pg');
 pg.types.setTypeParser(20, parseInt);
-const dotenv = require('dotenv');
-dotenv.config();
 
 import publicRouter from './routes/public';
 import appRouter from './routes/app';
@@ -36,3 +35,9 @@ app.get('*', (req, res) => {
 });
 
 const server = app.listen(5000, () => console.log('Listening on port 5000!'));
+
+export const io = socketIO(server);
+
+io.on('connection', (socket: any) => {
+  console.log('Connection opened');
+});

@@ -1,3 +1,5 @@
+import { GPSTrack, GPSCoordinates } from '@shared/types';
+
 export const MAP = {
   SET_HAS_ARRIVED: 'MAP.SET_HAS_ARRIVED',
   SET_MEASUREMENT_STATUS: 'MAP.SET_MEASUREMENT_STATUS',
@@ -25,18 +27,17 @@ export const setHasArrived = (arrived: boolean) => ({
   payload: arrived
 });
 
-export const getRoute = (points: [number, number][]) => ({
+export const getRoute = (points: GPSTrack) => ({
   type: MAP.GET_ROUTE.REQUEST,
   payload: points
 });
 
-
-export const getRoutePath = (points: [number, number][]) => ({
+export const getRoutePath = (points: GPSTrack) => ({
   type: MAP.GET_ROUTE_PATH.REQUEST,
   payload: points
 });
 
-export const move = (coordinates?: [number, number]) => ({
+export const move = (coordinates?: GPSCoordinates) => ({
   type: MAP.MOVE,
   payload: coordinates
 });

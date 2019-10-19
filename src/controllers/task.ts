@@ -6,7 +6,8 @@ import {
   TaskFilters,
   TaskFormData,
   DatabaseTask,
-  ServerTask
+  ServerTask,
+  GPSCoordinates
 } from '@client/shared/types';
 
 export async function getServerTasks({
@@ -51,7 +52,7 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     .select('*')
     .where({ condor_id, node_id: 'coordinates' })
     .first();
-  const current = JSON.parse(condor.value) as [number, number];
+  const current = JSON.parse(condor.value) as GPSCoordinates;
   const status = await knex('order_status')
     .select('*')
     .where({
@@ -81,13 +82,14 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     })
     .first().name;
 
-  const pairs = <T>(arr: T[]) => arr.reduce((acc, cur, i) => {
-    if (i % 2 === 0) {
-      return R.append([cur], acc);
-    } else {
-      return R.adjust(acc.length - 1, R.append(cur), acc);
-    }
-  }, []);
+  const pairs = <T>(arr: T[]) =>
+    arr.reduce((acc, cur, i) => {
+      if (i % 2 === 0) {
+        return R.append([cur], acc);
+      } else {
+        return R.adjust(acc.length - 1, R.append(cur), acc);
+      }
+    }, []);
 
   const serverTask: ServerTask = {
     id: id as number,
@@ -120,14 +122,7 @@ const getServerTask = async (dbTask: DatabaseTask) => {
 };
 
 export async function createTask(formData: TaskFormData) {
-  const {
-    company,
-    condor,
-    category,
-    direction,
-    user,
-    routePoints
-  } = formData;
+  const { company, condor, category, direction, user, routePoints } = formData;
   const newTask: DatabaseTask = {
     date: new Date(),
     order_number: '12345',

@@ -1,18 +1,30 @@
 import * as express from 'express';
 import axios from 'axios';
 import { createTask, getServerTasks } from '../controllers/task';
-import { TaskFormData, TaskFilters } from '@root/client/shared/types';
+import {
+  TaskFormData,
+  TaskFilters,
+  GPSTrack,
+  GPSCoordinates
+} from '@shared/types';
 
 const polyline = require('@mapbox/polyline');
 import 'multer'; // Need this to use Express.Multer.File
+import { getCondorInfo } from '@root/controllers/condor';
+import knex from '@root/connection';
+import config from '@root/config';
 const multer = require('multer');
 const path = require('path');
 
-type MulterRoute = (req: express.Request, file: Express.Multer.File, cb: (err: any, path: string) => void) => void;
+type MulterRoute = (
+  req: express.Request,
+  file: Express.Multer.File,
+  cb: (err: any, path: string) => void
+) => void;
 type MulterStorage = {
   destination: MulterRoute;
   filename: MulterRoute;
-}
+};
 
 const multerStorage: MulterStorage = {
   destination: (req, file, cb) => {
@@ -21,17 +33,18 @@ const multerStorage: MulterStorage = {
   filename: function(req, file, cb) {
     return cb(null, file.originalname);
   }
-}
+};
 
 const storage = multer.diskStorage(multerStorage);
 const upload = multer({ storage });
 const router = express.Router();
 
 router.get('/api/route', (req, res) => {
-  const points: [number, number][] = JSON.parse(req.query.points);
+  const points: GPSTrack = JSON.parse(req.query.points);
 
   console.log(req.query);
-  if (!points || points.length < 2) return res.status(500).send('Wrong coordinates');
+  if (!points || points.length < 2)
+    return res.status(500).send('Wrong coordinates');
   const locs = points.map(([lat, lon]) => `loc=${lat},${lon}`).join('&');
 
   axios
@@ -41,7 +54,7 @@ router.get('/api/route', (req, res) => {
     .then(response => {
       const data = polyline
         .decode(response.data.route_geometry)
-        .map(([lat, lon]: [number, number]) => [lat / 10, lon / 10]);
+        .map(([lat, lon]: GPSCoordinates) => [lat / 10, lon / 10]);
       console.log(response.data);
       res.send(data);
     })
@@ -118,6 +131,37 @@ router.post('/api/task/create', async (req, res) => {
     res.status(500).json({ error });
   }
 });
+
+router.get('/api/condor', async (req, res) => {
+  try {
+    const condor = await getCondorInfo();
+    res.json(condor);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
+router.post('/api/simulate/movement', (req, res) => {
+  const { route }: { route: GPSTrack } = req.body;
+  let index = 0;
+
+  const interval: NodeJS.Timeout = setInterval(async () => {
+    const coordinates = route[index];
+    if (!coordinates) {
+      return clearInterval(interval);
+    }
+    await knex('condor_diagnostics')
+      .update({ value: JSON.stringify(coordinates) })
+      .where({
+        node_id: 'coordinates',
+        condor_id: config.condor.id
+      });
+    index += 1;
+  }, 300);
+});
+
+router.post('/api/simulate/measurement', async (req, res) => {});
 
 /*
 router.get('/api/temp', async (req, res) => {

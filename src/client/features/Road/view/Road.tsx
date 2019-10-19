@@ -4,16 +4,17 @@ import { useState } from 'react';
 
 import { actions as modalActions } from '@features/Modal/redux';
 const { openModal, closeModal } = modalActions;
-import { markRequest } from '../redux/actions';
 import { RootState } from '@root/client/redux/driver/reducer';
+import { GPSCoordinates } from '@shared/types';
 
 import RoadChart from './RoadChart';
 import RoadControl from './RoadControl';
 import SpeedBar from './SpeedBar';
+import { markRequest } from '../redux/actions';
 
 interface IStateProps {
   taskId: string;
-  carPosition: [number, number];
+  carPosition: GPSCoordinates;
 }
 
 type IProps = IStateProps & typeof mapDispatch;
@@ -31,12 +32,12 @@ const Road: React.FC<IProps> = ({
   let interval: NodeJS.Timer;
 
   const startSimulation = () => {
-      interval = setInterval(() => {
-        setSpeed(35 + Math.random() * 5);
-        setDistance(counter * 100 + Math.random());
-        if (distance > 1200) clearInterval(interval);
-        counter += 1;
-      }, 300)
+    interval = setInterval(() => {
+      setSpeed(35 + Math.random() * 5);
+      setDistance(counter * 100 + Math.random());
+      if (distance > 1200) clearInterval(interval);
+      counter += 1;
+    }, 300);
   };
 
   return (

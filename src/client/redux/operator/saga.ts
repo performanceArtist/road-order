@@ -9,6 +9,7 @@ import {
   create,
   getTrack
 } from '@features/OperatorTaskCreator/redux/sagas';
+import socket from '@redux/io/socket';
 
 export default function* rootSaga() {
   yield all([
@@ -18,6 +19,7 @@ export default function* rootSaga() {
     mark(),
     search(),
     create(),
-    getTrack()
+    getTrack(),
+    socket.startStopChannel()
   ]);
 }

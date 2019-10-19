@@ -1,18 +1,18 @@
+import { GPSTrack } from '@shared/types';
+
 import { UserInfo } from './user';
+import { GPSCoordinates } from './gps';
 
 export type TaskStatus = 'ready' | 'taken' | 'done' | 'cancelled';
 export type RoadClass = 'Автомагистраль' | 'Скоростная' | 'Обычная';
 export type RoadCategory = 'IA' | 'IБ' | 'IB' | 'I' | 'II' | 'III' | 'IV' | 'V';
-export type CondorInfo = {
-  id: number;
-};
 
 export type ServerTask = {
   id: number;
   order_number: string;
   date: Date;
-  current_position: [number, number],
-  route: [number, number][],
+  current_position: GPSCoordinates;
+  route: GPSTrack;
   distance: [number, number];
   is_direction_forward: boolean;
   description: string;
@@ -21,7 +21,7 @@ export type ServerTask = {
   road_class: RoadClass;
   road_category: RoadCategory;
   company: string;
-  condor: CondorInfo;
+  condor: number;
   user: UserInfo;
 };
 
@@ -33,5 +33,5 @@ export type TaskFormData = {
   condor: string;
   company: string;
   direction: 'forward' | 'backward';
-  routePoints: [number, number][];
+  routePoints: GPSTrack;
 };

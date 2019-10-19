@@ -1,4 +1,4 @@
-import { TaskFilters } from "@root/client/shared/types";
+import { TaskFilters } from '@root/client/shared/types';
 
 export const TASK = {
   SET_CURRENT: 'TASK.SET_CURRENT',

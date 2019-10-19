@@ -1,11 +1,13 @@
+import { GPSTrack } from '@shared/types';
+
 import { haversine } from '../view/helpers';
 import { MAP } from './actions';
 import track from './track';
 
 const initialState: {
-  track: [number, number][];
-  routePath: [number, number][];
-  route: [number, number][];
+  track: GPSTrack;
+  routePath: GPSTrack;
+  route: GPSTrack;
   hasArrived: boolean;
   measurementStarted: boolean;
   offTrack: boolean;

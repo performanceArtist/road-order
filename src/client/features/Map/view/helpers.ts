@@ -1,3 +1,5 @@
+import { GPSTrack, GPSCoordinates } from '@shared/types';
+
 function pointDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
   const p = 0.017453292519943295;
   const a =
@@ -10,10 +12,7 @@ function pointDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
   return 12742 * Math.asin(Math.sqrt(a));
 }
 
-export function haversine(
-  list: Array<[number, number]>,
-  point: [number, number]
-) {
+export function haversine(list: GPSTrack, point: GPSCoordinates) {
   const res = list.map(p => pointDistance(point[0], point[1], p[0], p[1]));
   const index = res.indexOf(Math.min(...res));
   return index;

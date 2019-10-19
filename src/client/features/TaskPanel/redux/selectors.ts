@@ -1,5 +1,5 @@
-import { RootState } from "@root/client/redux/driver/reducer";
-import { ServerTask } from "@root/client/shared/types";
+import { RootState } from '@root/client/redux/driver/reducer';
+import { ServerTask } from '@shared/types';
 
 import { InitialState } from './reducer';
 
@@ -16,7 +16,7 @@ export function selectCurrentTaskId(state: RootState): number | null {
 }
 
 export function selectCurrentTask(state: RootState) {
-  const currentTaskId = selectCurrentTaskId(state)
+  const currentTaskId = selectCurrentTaskId(state);
   const tasks = selectTasks(state);
 
   return tasks.find(({ id }) => id === currentTaskId);

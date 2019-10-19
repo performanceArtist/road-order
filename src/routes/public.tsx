@@ -11,7 +11,7 @@ import config from '@root/config';
 import App from '@root/client/entries/public/App';
 import render from '@root/utils/renderHTML';
 import { User } from '../models/User';
-import { DatabaseUser } from '@root/client/shared/types';
+import { DatabaseUser } from '@shared/types';
 
 const sendApp = (url: string, res: express.Response) => {
   const jsx = (

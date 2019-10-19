@@ -1,4 +1,4 @@
-import { TaskFormData } from "@root/client/shared/types";
+import { TaskFormData, GPSTrack, GPSCoordinates } from '@shared/types';
 
 export const NEWTASK = {
   POST: {
@@ -30,7 +30,7 @@ export const getLocation = (search: string) => ({
   payload: search
 });
 
-export const addRoutePoint = (payload: [number, number]) => ({
+export const addRoutePoint = (payload: GPSCoordinates) => ({
   type: NEWTASK.ADD_ROUTE_POINT,
   payload
 });
@@ -39,7 +39,7 @@ export const removeLastRoutePoint = () => ({
   type: NEWTASK.REMOVE_LAST_ROUTE_POINT
 });
 
-export const getRoute = (points: [number, number][]) => ({
+export const getRoute = (points: GPSTrack) => ({
   type: NEWTASK.GET_ROUTE.REQUEST,
   payload: points
 });
