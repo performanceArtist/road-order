@@ -48,12 +48,12 @@ const TaskPanel: React.FC<Props> = ({
   }, []);
 
   const mapIndexed = R.addIndex(R.map);
-  const handleStartClick = ({ id, coordinates: { from, to, current } }: ServerTask) => {
+  const handleStartClick = ({ id, route, current_position }: ServerTask) => {
     setCurrentTask(id);
-    const href = `/map?from=${JSON.stringify(from)}&to=${JSON.stringify(
-      to
-    )}&current=${JSON.stringify(current)}`;
-    history.push(href);
+    const task = tasks.find(({ id: taskId }) => taskId === id);
+    if (!task) return;
+
+    history.push('/map', { route: task.route });
   };
 
   const buttons = (task: ServerTask) => (

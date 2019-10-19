@@ -4,7 +4,7 @@ export type DatabaseTask = {
   id?: number;
   order_number: string;
   date: Date;
-  coordinates: number[];
+  route: number[];
   distance: [number, number];
   is_direction_forward: boolean;
   description: string;

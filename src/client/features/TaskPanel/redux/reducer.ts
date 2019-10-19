@@ -2,9 +2,9 @@ import { ServerTask } from '@shared/types';
 
 import { TASK } from './actions';
 
-interface InitialState {
+export interface InitialState {
   tasks: ServerTask[];
-  currentTaskId: string | null;
+  currentTaskId: number | null;
 }
 
 const initialState: InitialState = {

@@ -43,6 +43,8 @@ class Form extends React.Component<IOwnProps & RawFormProps, {}> {
       (acc: { [key: string]: any }, { name, value, type, checked }: HTMLInputElement) => {
         if (type === 'checkbox') {
           acc[name] = checked;
+        } if (type === 'radio') {
+          if (checked) acc[name] = value;
         } else {
           if (type !== 'submit' && value) acc[name] = value;
         }

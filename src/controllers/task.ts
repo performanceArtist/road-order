@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import knex from '@root/connection';
 
 import {
@@ -33,7 +35,7 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     id,
     order_number,
     date,
-    coordinates,
+    route,
     distance,
     is_direction_forward,
     description,
@@ -79,15 +81,20 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     })
     .first().name;
 
+  const pairs = <T>(arr: T[]) => arr.reduce((acc, cur, i) => {
+    if (i % 2 === 0) {
+      return R.append([cur], acc);
+    } else {
+      return R.adjust(acc.length - 1, R.append(cur), acc);
+    }
+  }, []);
+
   const serverTask: ServerTask = {
     id: id as number,
     date,
     order_number,
-    coordinates: {
-      from: [coordinates[0], coordinates[1]],
-      to: [coordinates[2], coordinates[3]],
-      current
-    },
+    route: pairs(route),
+    current_position: current,
     distance,
     is_direction_forward,
     description,
@@ -107,23 +114,24 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     road_class
   };
 
+  console.log('task', serverTask);
+
   return serverTask;
 };
 
 export async function createTask(formData: TaskFormData) {
   const {
-    from,
-    to,
     company,
     condor,
     category,
     direction,
-    user
+    user,
+    routePoints
   } = formData;
   const newTask: DatabaseTask = {
     date: new Date(),
     order_number: '12345',
-    coordinates: JSON.parse(from).concat(JSON.parse(to)),
+    route: R.flatten(routePoints),
     distance: [0, 100],
     is_direction_forward: direction === 'forward',
     description: 'Test',

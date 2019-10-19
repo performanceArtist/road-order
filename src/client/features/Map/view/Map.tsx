@@ -12,41 +12,44 @@ import { RootState } from '@root/client/redux/driver/reducer';
 
 import {
   getRoute,
+  getRoutePath,
   setHasArrived,
   setMeasurementStatus,
   move
 } from '../redux/actions';
+import * as taskSelectors from '@features/TaskPanel/redux/selectors';
 
 import Controls from './Controls';
+import { ServerTask } from '@root/client/shared/types';
 
 interface State {
   zoom: number;
   fullscreen: boolean;
 }
 
-type OwnProps = {
-  from?: [number, number];
-  to?: [number, number];
-  current: [number, number];
-};
-
 type MapState = {
-  track: Array<[number, number]>;
-  carPosition: [number, number];
+  track: [number, number][];
+  route?: [number, number][];
+  routePath: [number, number][];
   hasArrived: boolean;
   measurementStarted: boolean;
-  currentTaskId: string;
+  currentTaskId: number | null;
+  task?: ServerTask
 };
 
-type Props = OwnProps & MapState & typeof mapDispatch;
+type Props = MapState & typeof mapDispatch;
 
-const mapState = ({ map, tasks }: RootState) => ({
-  ...map,
-  currentTaskId: tasks.currentTaskId
-});
+const mapState = (state: RootState): MapState => {
+  return {
+    ...state.map,
+    currentTaskId: taskSelectors.selectCurrentTaskId(state),
+    task: taskSelectors.selectCurrentTask(state)
+  };
+};
 
 const mapDispatch = {
   getRoute,
+  getRoutePath,
   setHasArrived,
   setMeasurementStatus,
   move,
@@ -73,39 +76,36 @@ class MapComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { from, to } = this.props;
+    const { task, getRoute, getRoutePath, hasArrived } = this.props;
 
-    if (!from || !to) return;
+    if (task && hasArrived) {
+      getRoute(task.route);
+    }
 
-    this.props.getRoute(from, to);
+    if (task && task.route && !hasArrived) {
+      const path = task.is_direction_forward
+        ? [task.current_position, task.route[0]]
+        : [task.current_position, task.route[task.route.length - 1]];
+      getRoutePath(path);
+    }
   }
 
   handleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen }, () =>
-      this.ref.current&& this.ref.current.leafletElement.invalidateSize()
+      this.ref.current && this.ref.current.leafletElement.invalidateSize()
     );
   }
 
-  drawRoute() {
-    const { track } = this.props;
-    if (track.length === 0) return null;
+  drawRoute(route: [number, number][], color = 'green', z = false) {
+    if (route.length === 0) return null;
 
     this.ref.current && this.ref.current.leafletElement.invalidateSize();
-    return <Polyline positions={track} color="green" weight={8} />;
+    return <Polyline positions={route} color={color} weight={8} z={z} />;
   }
 
   addCurrentMarker() {
-    const tryParse = () => {
-      try {
-        const current = JSON.parse(this.props.current.toString());
-        return current;
-      } catch (error) {
-        return null;
-      }
-    };
-
-    const current = this.props.carPosition || tryParse();
-    if (!current) return;
+    const { task } = this.props;
+    if (!task) return;
 
     return (
       <Marker
@@ -113,19 +113,22 @@ class MapComponent extends Component<Props, State> {
         icon={L.icon({
           iconUrl: 'images/car-icon.png'
         })}
-        position={L.latLng(current[0], current[1])}
+        position={L.latLng(task.current_position[0], task.current_position[1])}
       />
     );
   }
 
   startSimulation() {
+    const { track, task, move } = this.props;
+    if (!task) return;
+
     this.timeout = setInterval(() => {
-      if (this.props.track.length === 0) {
+      if (track.length === 0) {
         this.timeout && clearInterval(this.timeout);
         return;
       }
 
-      this.props.move(this.props.carPosition);
+      move(task.current_position);
     }, 150);
   }
 
@@ -134,65 +137,65 @@ class MapComponent extends Component<Props, State> {
   }
 
   render() {
-    const { zoom } = this.state;
+    const { zoom, fullscreen } = this.state;
     const {
       setMeasurementStatus,
       openModal,
       measurementStarted,
       hasArrived,
       track,
-      carPosition,
-      currentTaskId
+      routePath,
+      currentTaskId,
+      task
     } = this.props;
 
-    const center = carPosition || track[0] || [56.472596, 84.950367];
+    const center = task ? task.current_position : track[0] || [56.472596, 84.950367];
 
     return (
-      <>
-        <div className={this.state.fullscreen ? 'map map_fullscreen' : 'map'}>
-          <div className="map__map">
-            <Map center={center} zoom={zoom} ref={this.ref as any} maxZoom={19}>
-              <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {this.drawRoute()}
-              {this.addCurrentMarker()}
-            </Map>
-            <div className="map__fullscreen-button">
-              <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
-            </div>
-            <div className="map__simulation-buttons">
-              <Button
-                onClick={this.startSimulation}
-                disabled={track.length === 0}
-              >
-                Начать движение
-              </Button>
-              <Button
-                onClick={this.stopSimulation}
-                disabled={track.length === 0}
-              >
-                Остановиться
-              </Button>
-            </div>
-            <div className="map__controls">
-              <Controls
-                measurementStarted={measurementStarted}
-                hasArrived={hasArrived}
-                onMeasurementClick={() => {
-                  setMeasurementStatus(true);
-                  window.location.href = '/road';
-                }}
-                onCancelClick={() =>
-                  currentTaskId &&
-                  openModal('Cancel', { taskId: currentTaskId })
-                }
-              />
-            </div>
+      <div className={fullscreen ? 'map map_fullscreen' : 'map'}>
+        <div className="map__map">
+          <Map center={center} zoom={zoom} ref={this.ref as any} maxZoom={19}>
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {this.drawRoute(track, 'red', true)}
+            {this.drawRoute(routePath, 'yellow')}
+            {this.addCurrentMarker()}
+          </Map>
+          <div className="map__fullscreen-button">
+            <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
+          </div>
+          <div className="map__simulation-buttons">
+            <Button
+              onClick={this.startSimulation}
+              disabled={track.length === 0}
+            >
+              Начать движение
+            </Button>
+            <Button
+              onClick={this.stopSimulation}
+              disabled={track.length === 0}
+            >
+              Остановиться
+            </Button>
+          </div>
+          <div className="map__controls">
+            <Controls
+              measurementStarted={measurementStarted}
+              hasArrived={hasArrived}
+              onMeasurementClick={() => {
+                setMeasurementStatus(true);
+                window.location.href = '/road';
+              }}
+              onCancelClick={() =>
+                currentTaskId &&
+                openModal('Cancel', { taskId: currentTaskId })
+              }
+            />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

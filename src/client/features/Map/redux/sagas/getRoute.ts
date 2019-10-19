@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeEvery, call, put} from 'redux-saga/effects';
 import axios from 'axios';
 
 import { MAP } from '../actions';
@@ -6,11 +6,13 @@ import { MAP } from '../actions';
 function* getWorker(action: { type: string; payload: any }) {
   try {
     const response = yield call(axios.get, '/api/route', {
-      params: action.payload
+      params: {
+        points: JSON.stringify(action.payload)
+      }
     });
 
     yield put({
-      type: MAP.GET_ROUTE.SUCCESS,
+      type: action.type === MAP.GET_ROUTE.REQUEST ? MAP.GET_ROUTE.SUCCESS : MAP.GET_ROUTE_PATH.SUCCESS,
       payload: response.data
     });
   } catch ({ response }) {
@@ -20,5 +22,5 @@ function* getWorker(action: { type: string; payload: any }) {
 }
 
 export default function* getWatcher() {
-  yield takeLatest(MAP.GET_ROUTE.REQUEST, getWorker);
+  yield takeEvery([MAP.GET_ROUTE.REQUEST, MAP.GET_ROUTE_PATH.REQUEST], getWorker);
 }

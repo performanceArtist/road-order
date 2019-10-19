@@ -28,20 +28,21 @@ const upload = multer({ storage });
 const router = express.Router();
 
 router.get('/api/route', (req, res) => {
-  const { points: rawPoints } = req.query;
-  const points: [number, number][] | undefined = JSON.parse(rawPoints);
+  const points: [number, number][] = JSON.parse(req.query.points);
 
+  console.log(req.query);
   if (!points || points.length < 2) return res.status(500).send('Wrong coordinates');
   const locs = points.map(([lat, lon]) => `loc=${lat},${lon}`).join('&');
 
   axios
     .get(
-      `http://routes.maps.sputnik.ru/osrm/router/viaroute?${locs}`
+      `http://routes.maps.sputnik.ru/osrm/router/viaroute?${locs}&instructions=true`
     )
     .then(response => {
       const data = polyline
         .decode(response.data.route_geometry)
         .map(([lat, lon]: [number, number]) => [lat / 10, lon / 10]);
+      console.log(response.data);
       res.send(data);
     })
     .catch(error => {
@@ -76,7 +77,7 @@ router.get('/api/location', (req, res) => {
   const { search = 'Томск' } = req.query;
 
   axios
-    .get(`http://search.maps.sputnik.ru/search`, {
+    .get('http://search.maps.sputnik.ru/search', {
       params: {
         q: search
       }
@@ -93,16 +94,6 @@ router.get('/api/location', (req, res) => {
     });
 });
 
-router.post('/api/task/create', async (req, res) => {
-  try {
-    await createTask(req.body as TaskFormData);
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-});
-
 router.get('/api/tasks', async (req, res) => {
   try {
     if (!req.user) throw new Error('No user');
@@ -111,6 +102,17 @@ router.get('/api/tasks', async (req, res) => {
       user: req.user.group === 'operator' ? req.user.id : undefined
     });
     res.json(tasks);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
+router.post('/api/task/create', async (req, res) => {
+  try {
+    console.log(req.body);
+    await createTask(req.body as TaskFormData);
+    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });

@@ -3,14 +3,16 @@ import { MAP } from './actions';
 import track from './track';
 
 const initialState: {
-  track: Array<[number, number]>;
-  carPosition?: [number, number];
+  track: [number, number][];
+  routePath: [number, number][];
+  route: [number, number][];
   hasArrived: boolean;
   measurementStarted: boolean;
   offTrack: boolean;
 } = {
   track: [],
-  carPosition: undefined,
+  routePath: [],
+  route: [],
   hasArrived: false,
   measurementStarted: false,
   offTrack: false
@@ -23,6 +25,8 @@ export default function reducer(
   switch (type) {
     case MAP.GET_ROUTE.SUCCESS:
       return { ...state, track: payload, carPosition: payload[0] };
+    case MAP.GET_ROUTE_PATH.SUCCESS:
+      return { ...state, routePath: payload };
     case MAP.SET_HAS_ARRIVED:
       return { ...state, hasArrived: payload };
     case MAP.SET_MEASUREMENT_STATUS:

@@ -11,11 +11,8 @@ export type ServerTask = {
   id: number;
   order_number: string;
   date: Date;
-  coordinates: {
-    from: [number, number];
-    to: [number, number];
-    current: [number, number];
-  };
+  current_position: [number, number],
+  route: [number, number][],
   distance: [number, number];
   is_direction_forward: boolean;
   description: string;
@@ -36,4 +33,5 @@ export type TaskFormData = {
   condor: string;
   company: string;
   direction: 'forward' | 'backward';
+  routePoints: [number, number][];
 };

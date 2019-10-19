@@ -7,6 +7,11 @@ export const MAP = {
     REQUEST: 'MAP.GET_ROUTE.REQUEST',
     SUCCESS: 'MAP.GET_ROUTE.SUCCESS',
     FAILURE: 'MAP.GET_ROUTE.FAILURE'
+  },
+  GET_ROUTE_PATH: {
+    REQUEST: 'MAP.GET_ROUTE_PATH.REQUEST',
+    SUCCESS: 'MAP.GET_ROUTE_PATH.SUCCESS',
+    FAILURE: 'MAP.GET_ROUTE_PATH.FAILURE'
   }
 };
 
@@ -20,9 +25,15 @@ export const setHasArrived = (arrived: boolean) => ({
   payload: arrived
 });
 
-export const getRoute = (from: [number, number], to: [number, number]) => ({
+export const getRoute = (points: [number, number][]) => ({
   type: MAP.GET_ROUTE.REQUEST,
-  payload: { from, to }
+  payload: points
+});
+
+
+export const getRoutePath = (points: [number, number][]) => ({
+  type: MAP.GET_ROUTE_PATH.REQUEST,
+  payload: points
 });
 
 export const move = (coordinates?: [number, number]) => ({

@@ -64,7 +64,7 @@ const OperatorTaskCreator: React.FC<IProps> = ({
   };
 
   const handleFormSubmit = (formData: TaskFormData) => {
-    createTask(formData);
+    createTask({ ...formData, routePoints });
   };
 
   const handleUndo = () => {

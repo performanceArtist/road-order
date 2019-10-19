@@ -7,6 +7,8 @@ const path = require('path');
 // bigint type workaround, otherwise it returns as a string
 const pg = require('pg');
 pg.types.setTypeParser(20, parseInt);
+const dotenv = require('dotenv');
+dotenv.config();
 
 import publicRouter from './routes/public';
 import appRouter from './routes/app';
