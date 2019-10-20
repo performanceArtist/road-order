@@ -1,8 +1,4 @@
-export type ApiAction = {
-  REQUEST: string;
-  SUCCESS: string;
-  FAILURE: string;
-};
+import { ApiAction } from '@shared/types';
 
 export type ActionTree = {
   [key: string]: string | ApiAction | ActionTree;

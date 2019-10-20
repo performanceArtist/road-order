@@ -1,20 +1,12 @@
-import { GPSTrack, GPSCoordinates } from '@shared/types';
+import { GPSTrack, ApiRequest } from '@shared/types';
+import { apiAction } from '@shared/utils';
 
 export const MAP = {
   SET_HAS_ARRIVED: 'MAP.SET_HAS_ARRIVED',
   SET_MEASUREMENT_STATUS: 'MAP.SET_MEASUREMENT_STATUS',
-  MOVE: 'MAP.MOVE',
-  SET_CAR_POSITION: 'MAP.SET_CAR_POSITION',
-  GET_ROUTE: {
-    REQUEST: 'MAP.GET_ROUTE.REQUEST',
-    SUCCESS: 'MAP.GET_ROUTE.SUCCESS',
-    FAILURE: 'MAP.GET_ROUTE.FAILURE'
-  },
-  GET_ROUTE_PATH: {
-    REQUEST: 'MAP.GET_ROUTE_PATH.REQUEST',
-    SUCCESS: 'MAP.GET_ROUTE_PATH.SUCCESS',
-    FAILURE: 'MAP.GET_ROUTE_PATH.FAILURE'
-  }
+  GET_ROUTE: apiAction('MAP', 'GET_ROUTE'),
+  GET_ROUTE_PATH: apiAction('MAP', 'GET_ROUTE_PATH'),
+  SIMULATE_MOVEMENT: apiAction('MAP', 'SIMULATE_MOVEMENT')
 };
 
 export const setMeasurementStatus = (start: boolean) => ({
@@ -27,17 +19,17 @@ export const setHasArrived = (arrived: boolean) => ({
   payload: arrived
 });
 
-export const getRoute = (points: GPSTrack) => ({
+export const getRoute = (points: GPSTrack): ApiRequest => ({
   type: MAP.GET_ROUTE.REQUEST,
-  payload: points
+  payload: { points }
 });
 
-export const getRoutePath = (points: GPSTrack) => ({
+export const getRoutePath = (points: GPSTrack): ApiRequest => ({
   type: MAP.GET_ROUTE_PATH.REQUEST,
-  payload: points
+  payload: { points }
 });
 
-export const move = (coordinates?: GPSCoordinates) => ({
-  type: MAP.MOVE,
-  payload: coordinates
+export const simulateMovement = (route: GPSTrack): ApiRequest => ({
+  type: MAP.SIMULATE_MOVEMENT.REQUEST,
+  payload: { route }
 });

@@ -26,28 +26,13 @@ export default function reducer(
 ) {
   switch (type) {
     case MAP.GET_ROUTE.SUCCESS:
-      return { ...state, track: payload, carPosition: payload[0] };
+      return { ...state, track: payload };
     case MAP.GET_ROUTE_PATH.SUCCESS:
       return { ...state, routePath: payload };
     case MAP.SET_HAS_ARRIVED:
       return { ...state, hasArrived: payload };
     case MAP.SET_MEASUREMENT_STATUS:
       return { ...state, measurementStarted: payload };
-    case MAP.MOVE:
-      const next = payload || state.track[1];
-      if (!next) return state;
-
-      const closest = haversine(state.track, next);
-      const track = state.track.slice(closest + 1, state.track.length);
-
-      return {
-        ...state,
-        carPosition: track.length > 0 ? track[0] : state.carPosition,
-        track,
-        hasArrived: track.length === 0
-      };
-    case MAP.SET_CAR_POSITION:
-      return { ...state, carPosition: payload };
     default:
       return state;
   }

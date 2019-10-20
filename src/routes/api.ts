@@ -40,9 +40,8 @@ const upload = multer({ storage });
 const router = express.Router();
 
 router.get('/api/route', (req, res) => {
-  const points: GPSTrack = JSON.parse(req.query.points);
+  const points: GPSTrack = req.query.points.map(JSON.parse);
 
-  console.log(req.query);
   if (!points || points.length < 2)
     return res.status(500).send('Wrong coordinates');
   const locs = points.map(([lat, lon]) => `loc=${lat},${lon}`).join('&');
@@ -142,23 +141,35 @@ router.get('/api/condor', async (req, res) => {
   }
 });
 
-router.post('/api/simulate/movement', (req, res) => {
-  const { route }: { route: GPSTrack } = req.body;
+router.post('/api/simulate/movement', async (req, res) => {
+  let interval: NodeJS.Timeout | undefined = undefined;
+
+  const route = req.body.route as GPSTrack;
+  console.log(route, req.body);
+  if (!route) res.status(500).json({ error: 'No route param' });
+
   let index = 0;
 
-  const interval: NodeJS.Timeout = setInterval(async () => {
-    const coordinates = route[index];
-    if (!coordinates) {
-      return clearInterval(interval);
+  interval = setInterval(async () => {
+    try {
+      const coordinates = route[index];
+      if (!coordinates) {
+        return interval && clearInterval(interval);
+      }
+      await knex('condor_diagnostics')
+        .update({ value: JSON.stringify(coordinates) })
+        .where({
+          node_id: 'coordinates',
+          condor_id: config.condor.id
+        });
+      index += 1;
+    } catch (error) {
+      console.log(error);
+      return interval && clearInterval(interval);
     }
-    await knex('condor_diagnostics')
-      .update({ value: JSON.stringify(coordinates) })
-      .where({
-        node_id: 'coordinates',
-        condor_id: config.condor.id
-      });
-    index += 1;
   }, 300);
+
+  res.send('ok');
 });
 
 router.post('/api/simulate/measurement', async (req, res) => {});

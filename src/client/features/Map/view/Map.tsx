@@ -6,22 +6,22 @@ import { connect } from 'react-redux';
 
 import { Icon, IconImage } from '@elements/Icon/Icon';
 import { Button } from '@shared/view';
-import { GPSTrack } from '@shared/types';
+import { GPSTrack, GPSCoordinates } from '@shared/types';
 import { actions as modalActions } from '@features/Modal/redux';
 const { openModal } = modalActions;
 import { RootState } from '@root/client/redux/driver/reducer';
+import { ServerTask } from '@shared/types';
+import * as taskSelectors from '@features/TaskPanel/redux/selectors';
 
 import {
   getRoute,
   getRoutePath,
   setHasArrived,
   setMeasurementStatus,
-  move
+  simulateMovement
 } from '../redux/actions';
-import * as taskSelectors from '@features/TaskPanel/redux/selectors';
-
 import Controls from './Controls';
-import { ServerTask } from '@shared/types';
+import { inRadius } from './helpers';
 
 interface State {
   zoom: number;
@@ -36,6 +36,7 @@ type MapState = {
   measurementStarted: boolean;
   currentTaskId: number | null;
   task?: ServerTask;
+  carPosition: GPSCoordinates;
 };
 
 type Props = MapState & typeof mapDispatch;
@@ -44,7 +45,8 @@ const mapState = (state: RootState): MapState => {
   return {
     ...state.map,
     currentTaskId: taskSelectors.selectCurrentTaskId(state),
-    task: taskSelectors.selectCurrentTask(state)
+    task: taskSelectors.selectCurrentTask(state),
+    carPosition: state.condor.coordinates
   };
 };
 
@@ -53,8 +55,8 @@ const mapDispatch = {
   getRoutePath,
   setHasArrived,
   setMeasurementStatus,
-  move,
-  openModal
+  openModal,
+  simulateMovement
 };
 
 type LeafletDiv = HTMLDivElement & { leafletElement: any };
@@ -73,21 +75,34 @@ class MapComponent extends Component<Props, State> {
 
     this.handleFullscreen = this.handleFullscreen.bind(this);
     this.startSimulation = this.startSimulation.bind(this);
-    this.stopSimulation = this.stopSimulation.bind(this);
   }
 
   componentDidMount() {
-    const { task, getRoute, getRoutePath, hasArrived } = this.props;
-
-    if (task && hasArrived) {
-      getRoute(task.route);
-    }
+    const {
+      task,
+      getRoute,
+      getRoutePath,
+      hasArrived,
+      routePath,
+      carPosition,
+      setHasArrived
+    } = this.props;
 
     if (task && task.route && !hasArrived) {
       const path = task.is_direction_forward
         ? [task.current_position, task.route[0]]
         : [task.current_position, task.route[task.route.length - 1]];
       getRoutePath(path);
+    }
+
+    if (
+      routePath.length !== 0 &&
+      inRadius(carPosition, routePath[routePath.length - 1], 0.3)
+    ) {
+      setHasArrived(true);
+      if (task) {
+        getRoute(task.route);
+      }
     }
   }
 
@@ -98,16 +113,15 @@ class MapComponent extends Component<Props, State> {
     );
   }
 
-  drawRoute(route: GPSTrack, color = 'green', z = false) {
+  drawRoute(route: GPSTrack, color = 'green') {
     if (route.length === 0) return null;
 
     this.ref.current && this.ref.current.leafletElement.invalidateSize();
-    return <Polyline positions={route} color={color} weight={8} z={z} />;
+    return <Polyline positions={route} color={color} weight={8} />;
   }
 
   addCurrentMarker() {
-    const { task } = this.props;
-    if (!task) return;
+    const { carPosition } = this.props;
 
     return (
       <Marker
@@ -115,27 +129,15 @@ class MapComponent extends Component<Props, State> {
         icon={L.icon({
           iconUrl: 'images/car-icon.png'
         })}
-        position={L.latLng(task.current_position[0], task.current_position[1])}
+        position={L.latLng(carPosition[0], carPosition[1])}
       />
     );
   }
 
   startSimulation() {
-    const { track, task, move } = this.props;
-    if (!task) return;
+    const { routePath, simulateMovement } = this.props;
 
-    this.timeout = setInterval(() => {
-      if (track.length === 0) {
-        this.timeout && clearInterval(this.timeout);
-        return;
-      }
-
-      move(task.current_position);
-    }, 150);
-  }
-
-  stopSimulation() {
-    if (this.timeout) clearTimeout(this.timeout);
+    simulateMovement(routePath);
   }
 
   render() {
@@ -148,12 +150,10 @@ class MapComponent extends Component<Props, State> {
       track,
       routePath,
       currentTaskId,
-      task
+      carPosition
     } = this.props;
 
-    const center = task
-      ? task.current_position
-      : track[0] || [56.472596, 84.950367];
+    const center = carPosition || track[0] || [56.472596, 84.950367];
 
     return (
       <div className={fullscreen ? 'map map_fullscreen' : 'map'}>
@@ -163,8 +163,8 @@ class MapComponent extends Component<Props, State> {
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {this.drawRoute(track, 'red', true)}
-            {this.drawRoute(routePath, 'yellow')}
+            {hasArrived && this.drawRoute(track, 'red')}
+            {!hasArrived && this.drawRoute(routePath, 'yellow')}
             {this.addCurrentMarker()}
           </Map>
           <div className="map__fullscreen-button">
@@ -173,12 +173,9 @@ class MapComponent extends Component<Props, State> {
           <div className="map__simulation-buttons">
             <Button
               onClick={this.startSimulation}
-              disabled={track.length === 0}
+              disabled={routePath.length === 0 || hasArrived}
             >
               Начать движение
-            </Button>
-            <Button onClick={this.stopSimulation} disabled={track.length === 0}>
-              Остановиться
             </Button>
           </div>
           <div className="map__controls">

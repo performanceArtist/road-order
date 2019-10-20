@@ -68,7 +68,7 @@ const Road: React.FC<IProps> = ({
 
 const mapState = (state: RootState): IStateProps => ({
   taskId: state.tasks.currentTaskId,
-  carPosition: state.map.carPosition
+  carPosition: state.condor.coordinates
 });
 
 const mapDispatch = {

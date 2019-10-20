@@ -9,6 +9,8 @@ const socketIO = require('socket.io');
 const pg = require('pg');
 pg.types.setTypeParser(20, parseInt);
 
+import { condorInit } from './controllers/condor';
+
 import publicRouter from './routes/public';
 import appRouter from './routes/app';
 import apiRouter from './routes/api';
@@ -38,6 +40,11 @@ const server = app.listen(5000, () => console.log('Listening on port 5000!'));
 
 export const io = socketIO(server);
 
-io.on('connection', (socket: any) => {
+io.on('connection', async (socket: any) => {
   console.log('Connection opened');
+  try {
+    await condorInit();
+  } catch (error) {
+    console.log(error);
+  }
 });

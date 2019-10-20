@@ -17,3 +17,15 @@ export function haversine(list: GPSTrack, point: GPSCoordinates) {
   const index = res.indexOf(Math.min(...res));
   return index;
 }
+
+export function inRadius(
+  target: GPSCoordinates,
+  point: GPSCoordinates,
+  r: number
+) {
+  return (
+    Math.sqrt(
+      Math.pow(target[0] - point[0], 2) + Math.pow(target[1] - point[1], 2)
+    ) < r
+  );
+}

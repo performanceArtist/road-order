@@ -1,4 +1,9 @@
-import { TaskFormData, GPSTrack, GPSCoordinates } from '@shared/types';
+import {
+  TaskFormData,
+  GPSTrack,
+  GPSCoordinates,
+  ApiRequest
+} from '@shared/types';
 
 export const NEWTASK = {
   POST: {
@@ -20,16 +25,6 @@ export const NEWTASK = {
   REMOVE_LAST_ROUTE_POINT: 'REMOVE_LAST_ROUTE_POINT'
 };
 
-export const createTask = (formData: TaskFormData) => ({
-  type: NEWTASK.POST.REQUEST,
-  payload: formData
-});
-
-export const getLocation = (search: string) => ({
-  type: NEWTASK.LOCATION_SEARCH.REQUEST,
-  payload: search
-});
-
 export const addRoutePoint = (payload: GPSCoordinates) => ({
   type: NEWTASK.ADD_ROUTE_POINT,
   payload
@@ -39,7 +34,17 @@ export const removeLastRoutePoint = () => ({
   type: NEWTASK.REMOVE_LAST_ROUTE_POINT
 });
 
-export const getRoute = (points: GPSTrack) => ({
+export const createTask = (formData: TaskFormData): ApiRequest => ({
+  type: NEWTASK.POST.REQUEST,
+  payload: formData
+});
+
+export const getLocation = (search: string): ApiRequest => ({
+  type: NEWTASK.LOCATION_SEARCH.REQUEST,
+  payload: { search }
+});
+
+export const getRoute = (points: GPSTrack): ApiRequest => ({
   type: NEWTASK.GET_ROUTE.REQUEST,
-  payload: points
+  payload: { points }
 });

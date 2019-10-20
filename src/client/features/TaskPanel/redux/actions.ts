@@ -1,4 +1,4 @@
-import { TaskFilters } from '@root/client/shared/types';
+import { TaskFilters, ApiAction, ApiRequest } from '@root/client/shared/types';
 
 export const TASK = {
   SET_CURRENT: 'TASK.SET_CURRENT',
@@ -9,7 +9,7 @@ export const TASK = {
   }
 };
 
-export const getTasks = (filters?: TaskFilters) => ({
+export const getTasks = (filters?: TaskFilters): ApiRequest => ({
   type: TASK.GET.REQUEST,
   payload: filters
 });

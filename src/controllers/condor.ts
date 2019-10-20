@@ -1,4 +1,5 @@
 import knex from '@root/connection';
+import { io } from '@root/server';
 import {
   CondorInfo,
   DatabaseCondorInfo,
@@ -42,4 +43,17 @@ export function toCondorInfo(info: DatabaseCondorInfo[]): CondorInfo {
     speed: getInfoValue<number>(speed, 0),
     coordinates: getInfoValue<GPSCoordinates>(coordinates, [0, 0])
   };
+}
+
+export async function condorInit() {
+  const infos: DatabaseCondorInfo[] = await knex('condor_diagnostics')
+    .select('*')
+    .where({ condor_id: config.condor.id });
+
+  infos.forEach(info => {
+    io.emit('message', {
+      type: 'new_diagnostic',
+      payload: inferInfoValue(info)
+    });
+  });
 }

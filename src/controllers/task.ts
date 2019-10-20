@@ -103,9 +103,7 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     lane_number,
     status: status.name,
     company,
-    condor: {
-      id: condor_id
-    },
+    condor: condor_id,
     user: {
       id: user_id,
       login: user.login as string,
