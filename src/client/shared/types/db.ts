@@ -49,3 +49,9 @@ export type DatabaseMeasurement = {
   coleinost: [number, number];
   order_job_id: number;
 };
+
+export type DatabaseJob = {
+  id: number;
+  description: string;
+  order_id: number;
+};

@@ -47,6 +47,7 @@
     "@types/react-leaflet": "^2.4.0",
     "@types/react-redux": "^7.1.0",
     "@types/react-router-dom": "^4.3.4",
+    "@types/recharts": "^1.7.1",
     "@types/redux": "^3.6.0",
     "@types/redux-saga": "^0.10.5",
     "@types/socket.io": "^2.1.4",
@@ -111,6 +112,7 @@
     "react-mic": "^12.4.1",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
+    "recharts": "^1.8.3",
     "redux": "^4.0.4",
     "redux-saga": "^1.0.5",
     "socket.io": "^2.3.0"

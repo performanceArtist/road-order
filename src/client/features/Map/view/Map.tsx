@@ -18,7 +18,8 @@ import {
   getRoutePath,
   setHasArrived,
   setMeasurementStatus,
-  simulateMovement
+  simulateMovement,
+  simulateMeasurement
 } from '../redux/actions';
 import Controls from './Controls';
 import { inRadius } from './helpers';
@@ -30,7 +31,7 @@ interface State {
 
 type MapState = {
   track: GPSTrack;
-  route?: GPSTrack;
+  route: GPSTrack;
   routePath: GPSTrack;
   hasArrived: boolean;
   measurementStarted: boolean;
@@ -56,14 +57,14 @@ const mapDispatch = {
   setHasArrived,
   setMeasurementStatus,
   openModal,
-  simulateMovement
+  simulateMovement,
+  simulateMeasurement
 };
 
 type LeafletDiv = HTMLDivElement & { leafletElement: any };
 
 class MapComponent extends Component<Props, State> {
   private ref = React.createRef<LeafletDiv>();
-  private timeout: NodeJS.Timer | null = null;
 
   constructor(props: Props) {
     super(props);
@@ -75,18 +76,13 @@ class MapComponent extends Component<Props, State> {
 
     this.handleFullscreen = this.handleFullscreen.bind(this);
     this.startSimulation = this.startSimulation.bind(this);
+    this.startMeasurementSimulation = this.startMeasurementSimulation.bind(
+      this
+    );
   }
 
   componentDidMount() {
-    const {
-      task,
-      getRoute,
-      getRoutePath,
-      hasArrived,
-      routePath,
-      carPosition,
-      setHasArrived
-    } = this.props;
+    const { task, getRoutePath, hasArrived } = this.props;
 
     if (task && task.route && !hasArrived) {
       const path = task.is_direction_forward
@@ -94,13 +90,28 @@ class MapComponent extends Component<Props, State> {
         : [task.current_position, task.route[task.route.length - 1]];
       getRoutePath(path);
     }
+  }
+
+  componentDidUpdate() {
+    const {
+      routePath,
+      carPosition,
+      setHasArrived,
+      hasArrived,
+      getRoute,
+      route,
+      task
+    } = this.props;
+
+    if (!task) return;
 
     if (
+      !hasArrived &&
       routePath.length !== 0 &&
-      inRadius(carPosition, routePath[routePath.length - 1], 0.3)
+      inRadius(carPosition, routePath[routePath.length - 1], 0.00001)
     ) {
       setHasArrived(true);
-      if (task) {
+      if (task && route.length === 0) {
         getRoute(task.route);
       }
     }
@@ -140,6 +151,13 @@ class MapComponent extends Component<Props, State> {
     simulateMovement(routePath);
   }
 
+  startMeasurementSimulation() {
+    const { task, track, simulateMeasurement } = this.props;
+    if (!task) return;
+
+    simulateMeasurement(track, task.id);
+  }
+
   render() {
     const { zoom, fullscreen } = this.state;
     const {
@@ -170,15 +188,21 @@ class MapComponent extends Component<Props, State> {
           <div className="map__fullscreen-button">
             <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
           </div>
-          <div className="map__simulation-buttons">
+          <div className="map__simulation-buttons" />
+          <div className="map__controls">
             <Button
               onClick={this.startSimulation}
               disabled={routePath.length === 0 || hasArrived}
             >
               Начать движение
             </Button>
-          </div>
-          <div className="map__controls">
+            <Button
+              onClick={this.startMeasurementSimulation}
+              disabled={!hasArrived}
+            >
+              Начать измерение
+            </Button>
+            {/*
             <Controls
               measurementStarted={measurementStarted}
               hasArrived={hasArrived}
@@ -189,7 +213,7 @@ class MapComponent extends Component<Props, State> {
               onCancelClick={() =>
                 currentTaskId && openModal('Cancel', { taskId: currentTaskId })
               }
-            />
+            />*/}
           </div>
         </div>
       </div>

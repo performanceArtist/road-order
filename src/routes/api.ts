@@ -1,20 +1,18 @@
 import * as express from 'express';
 import axios from 'axios';
-import { createTask, getServerTasks } from '../controllers/task';
-import {
-  TaskFormData,
-  TaskFilters,
-  GPSTrack,
-  GPSCoordinates
-} from '@shared/types';
 
 const polyline = require('@mapbox/polyline');
 import 'multer'; // Need this to use Express.Multer.File
-import { getCondorInfo } from '@root/controllers/condor';
-import knex from '@root/connection';
-import config from '@root/config';
 const multer = require('multer');
 const path = require('path');
+
+import { TaskFormData, GPSTrack, GPSCoordinates } from '@shared/types';
+import { getCondorInfo } from '@root/controllers/condor';
+import { createTask, getServerTasks } from '@root/controllers/task';
+import {
+  simulateMovement,
+  simulateMeasurement
+} from '@root/controllers/simulation';
 
 type MulterRoute = (
   req: express.Request,
@@ -51,10 +49,10 @@ router.get('/api/route', (req, res) => {
       `http://routes.maps.sputnik.ru/osrm/router/viaroute?${locs}&instructions=true`
     )
     .then(response => {
+      // fix comma position
       const data = polyline
         .decode(response.data.route_geometry)
         .map(([lat, lon]: GPSCoordinates) => [lat / 10, lon / 10]);
-      console.log(response.data);
       res.send(data);
     })
     .catch(error => {
@@ -68,7 +66,6 @@ router.post('/api/audio', upload.single('audio'), (req, res) => {
 });
 
 router.post('/api/mark', upload.single('audio'), (req, res) => {
-  console.log(req.body);
   res.status(200).send(req.body.taskId);
 });
 
@@ -95,7 +92,6 @@ router.get('/api/location', (req, res) => {
       }
     })
     .then(response => {
-      console.log(response.data);
       const data = response.data.result[0].position;
 
       res.json([data.lat, data.lon]);
@@ -122,7 +118,6 @@ router.get('/api/tasks', async (req, res) => {
 
 router.post('/api/task/create', async (req, res) => {
   try {
-    console.log(req.body);
     await createTask(req.body as TaskFormData);
     res.sendStatus(200);
   } catch (error) {
@@ -142,37 +137,22 @@ router.get('/api/condor', async (req, res) => {
 });
 
 router.post('/api/simulate/movement', async (req, res) => {
-  let interval: NodeJS.Timeout | undefined = undefined;
-
   const route = req.body.route as GPSTrack;
-  console.log(route, req.body);
   if (!route) res.status(500).json({ error: 'No route param' });
 
-  let index = 0;
-
-  interval = setInterval(async () => {
-    try {
-      const coordinates = route[index];
-      if (!coordinates) {
-        return interval && clearInterval(interval);
-      }
-      await knex('condor_diagnostics')
-        .update({ value: JSON.stringify(coordinates) })
-        .where({
-          node_id: 'coordinates',
-          condor_id: config.condor.id
-        });
-      index += 1;
-    } catch (error) {
-      console.log(error);
-      return interval && clearInterval(interval);
-    }
-  }, 300);
+  simulateMovement(route);
 
   res.send('ok');
 });
 
-router.post('/api/simulate/measurement', async (req, res) => {});
+router.post('/api/simulate/measurement', async (req, res) => {
+  const route = req.body.route as GPSTrack;
+  const orderId = req.body.taskId as number;
+
+  simulateMeasurement(route, orderId);
+
+  res.send('ok');
+});
 
 /*
 router.get('/api/temp', async (req, res) => {

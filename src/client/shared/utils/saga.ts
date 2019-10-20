@@ -11,7 +11,6 @@ type Args = {
 export function request({ url, method = 'get', apiAction }: Args) {
   let action: ApiAction | undefined = undefined;
   let response;
-
   function* worker({ type, payload }: ApiRequest) {
     try {
       if (method === 'get') {

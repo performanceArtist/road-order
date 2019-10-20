@@ -11,6 +11,7 @@ import {
 } from 'redux-saga/effects';
 
 import { updateCondor } from '@redux/condor/actions';
+import { addMeasurement } from '../measurements/actions';
 
 import { IO } from './actions';
 import config from '@root/config';
@@ -63,7 +64,7 @@ class Socket {
             emit(updateCondor(payload));
             break;
           case 'new_measurement':
-            emit('ee');
+            emit(addMeasurement(payload));
             break;
           default:
             break;

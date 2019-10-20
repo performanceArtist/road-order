@@ -6,7 +6,8 @@ export const MAP = {
   SET_MEASUREMENT_STATUS: 'MAP.SET_MEASUREMENT_STATUS',
   GET_ROUTE: apiAction('MAP', 'GET_ROUTE'),
   GET_ROUTE_PATH: apiAction('MAP', 'GET_ROUTE_PATH'),
-  SIMULATE_MOVEMENT: apiAction('MAP', 'SIMULATE_MOVEMENT')
+  SIMULATE_MOVEMENT: apiAction('MAP', 'SIMULATE_MOVEMENT'),
+  SIMULATE_MEASUREMENT: apiAction('MAP', 'SIMULATE_MEASUREMENT')
 };
 
 export const setMeasurementStatus = (start: boolean) => ({
@@ -32,4 +33,9 @@ export const getRoutePath = (points: GPSTrack): ApiRequest => ({
 export const simulateMovement = (route: GPSTrack): ApiRequest => ({
   type: MAP.SIMULATE_MOVEMENT.REQUEST,
   payload: { route }
+});
+
+export const simulateMeasurement = (route: GPSTrack, taskId: number) => ({
+  type: MAP.SIMULATE_MEASUREMENT.REQUEST,
+  payload: { route, taskId }
 });

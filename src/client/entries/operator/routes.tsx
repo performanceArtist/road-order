@@ -2,6 +2,7 @@ import Index from '@client/views/public/Index/Index';
 import TaskView from '@client/views/operator/TaskPanelView/TaskPanelView';
 import TaskCreationView from '@client/views/operator/TaskCreationView/TaskCreationView';
 import MapView from '@client/views/driver/MapView/MapView';
+import MeasurementView from '@client/views/operator/MeasurementView/MeasurementView';
 
 export default [
   {
@@ -29,8 +30,8 @@ export default [
   },
   {
     path: '/history',
-    title: 'История измерений',
-    component: Index,
+    title: 'Измерения',
+    component: MeasurementView,
     exact: true
   },
   {

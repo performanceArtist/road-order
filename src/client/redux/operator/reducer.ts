@@ -9,6 +9,7 @@ import { reducer as newTask } from '@features/OperatorTaskCreator/redux';
 
 import condor from '../condor/reducer';
 import io from '../io/reducer';
+import measurements from '../measurements/reducer';
 
 const rootReducer = combineReducers({
   modals,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   cancel,
   newTask,
   io,
-  condor
+  condor,
+  measurements
 });
 
 export type RootState = StateType<typeof rootReducer>;

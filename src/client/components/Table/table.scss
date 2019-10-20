@@ -1,0 +1,26 @@
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+
+  &__cell,
+  &__head-cell {
+    border: 0.05rem solid #aaaaaa;
+    text-align: center;
+    padding: 0.5rem;
+  }
+
+  &__cell_invalid {
+    background: $danger;
+  }
+
+  &__head-cell {
+    font-size: 0.8rem;
+  }
+
+  &__row:nth-child(even) {
+    background-color: $light-grey;
+  }
+}
