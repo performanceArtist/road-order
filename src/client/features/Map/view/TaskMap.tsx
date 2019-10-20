@@ -12,7 +12,7 @@ interface IState {
 }
 
 type IProps = {
-  center?: GPSCoordinates;
+  location?: GPSCoordinates;
   track?: GPSTrack;
   onMapClick(coordinates: L.LatLng): void;
 };
@@ -33,6 +33,7 @@ class TaskMap extends React.Component<IProps, IState> {
     this.handleFullscreen = this.handleFullscreen.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
     this.drawRoute = this.drawRoute.bind(this);
+    this.markLocation = this.markLocation.bind(this);
   }
 
   componentDidUpdate() {
@@ -60,8 +61,25 @@ class TaskMap extends React.Component<IProps, IState> {
     return <Polyline positions={track} color="green" weight={8} />;
   }
 
+  markLocation() {
+    const { location } = this.props;
+    if (!location) return null;
+
+    return (
+      <Marker
+        key={Math.random()}
+        icon={L.icon({
+          iconUrl: 'images/baloon.png',
+          iconSize: new L.Point(60, 60),
+          iconAnchor: new L.Point(55, 55)
+        })}
+        position={L.latLng(location[0], location[1])}
+      />
+    );
+  }
+
   render() {
-    const center = this.props.center || [56.472596, 84.950367];
+    const center = this.props.location || [56.472596, 84.950367];
     const { zoom } = this.state;
 
     const baseClass = 'map map_compact';
@@ -85,6 +103,7 @@ class TaskMap extends React.Component<IProps, IState> {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {this.drawRoute()}
+            {this.markLocation()}
           </Map>
           <div className="map__fullscreen-button">
             <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />

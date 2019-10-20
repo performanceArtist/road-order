@@ -32,7 +32,13 @@ const MeasurementInfo: React.FC<Props> = ({ measurements }) => {
         keyX="distance"
         keyY="density"
         data={density}
-        key={density.length}
+        key={`density-${density.length}`}
+      />
+      <Chart
+        keyX="distance"
+        keyY="thickness"
+        data={thickness}
+        key={`thickness-${thickness.length}`}
       />
     </div>
   );

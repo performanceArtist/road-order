@@ -2,13 +2,13 @@ import { NEWTASK } from './actions';
 import { GPSTrack, GPSCoordinates } from '@shared/types';
 
 type IState = {
-  location: GPSCoordinates;
+  location?: GPSCoordinates;
   routePoints: GPSTrack;
   track: GPSTrack;
 };
 
 const initialState: IState = {
-  location: [56.472596, 84.950367],
+  location: undefined,
   routePoints: [],
   track: []
 };
