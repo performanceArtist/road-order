@@ -23,6 +23,7 @@ import {
 } from '../redux/actions';
 import Controls from './Controls';
 import { inRadius } from './helpers';
+import Speed from './Speed';
 
 interface State {
   zoom: number;
@@ -38,6 +39,7 @@ type MapState = {
   currentTaskId: number | null;
   task?: ServerTask;
   carPosition: GPSCoordinates;
+  speed: number;
 };
 
 type Props = MapState & typeof mapDispatch;
@@ -47,7 +49,8 @@ const mapState = (state: RootState): MapState => {
     ...state.map,
     currentTaskId: taskSelectors.selectCurrentTaskId(state),
     task: taskSelectors.selectCurrentTask(state),
-    carPosition: state.condor.coordinates
+    carPosition: state.condor.coordinates,
+    speed: state.condor.speed
   };
 };
 
@@ -168,7 +171,8 @@ class MapComponent extends Component<Props, State> {
       track,
       routePath,
       currentTaskId,
-      carPosition
+      carPosition,
+      speed
     } = this.props;
 
     const center = carPosition || track[0] || [56.472596, 84.950367];
@@ -214,6 +218,9 @@ class MapComponent extends Component<Props, State> {
                 currentTaskId && openModal('Cancel', { taskId: currentTaskId })
               }
             />*/}
+            <div className="map__speed">
+              <Speed speed={speed} />
+            </div>
           </div>
         </div>
       </div>

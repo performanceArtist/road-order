@@ -66,6 +66,12 @@
     padding: 0.5rem;
   }
 
+  &__speed {
+    position: absolute;
+    bottom: 0;
+    right: 35rem;
+  }
+
   .leaflet-right {
     left: 0;
     right: auto;

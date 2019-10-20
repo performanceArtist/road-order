@@ -25,6 +25,12 @@ export function simulateMovement(
           node_id: 'coordinates',
           condor_id: config.condor.id
         });
+      await knex('condor_diagnostics')
+        .update({ value: Math.random() * 10 + 40 })
+        .where({
+          node_id: 'speed',
+          condor_id: config.condor.id
+        });
       callback && (await callback(index));
       index += 1;
     } catch (error) {

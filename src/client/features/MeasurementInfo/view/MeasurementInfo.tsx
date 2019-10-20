@@ -16,14 +16,24 @@ const mapState = (state: RootState): MapState => ({
 });
 
 const MeasurementInfo: React.FC<Props> = ({ measurements }) => {
-  const data = measurements.map(({ distance, density }) => ({
+  const density = measurements.map(({ distance, density }) => ({
     distance,
     density
   }));
 
+  const thickness = measurements.map(({ distance, thickness }) => ({
+    distance,
+    thickness
+  }));
+
   return (
-    <div>
-      <Chart keyX="distance" keyY="density" data={data} />
+    <div className="measurement-info">
+      <Chart
+        keyX="distance"
+        keyY="density"
+        data={density}
+        key={density.length}
+      />
     </div>
   );
 };

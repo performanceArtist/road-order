@@ -15,6 +15,7 @@ import { markRequest } from '../redux/actions';
 interface IStateProps {
   taskId: string;
   carPosition: GPSCoordinates;
+  speed: number;
 }
 
 type IProps = IStateProps & typeof mapDispatch;
@@ -23,9 +24,9 @@ const Road: React.FC<IProps> = ({
   openModal,
   taskId,
   carPosition,
+  speed,
   markRequest
 }) => {
-  const [speed, setSpeed] = useState(0);
   const [distance, setDistance] = useState(0);
 
   let counter = 0;
@@ -33,7 +34,6 @@ const Road: React.FC<IProps> = ({
 
   const startSimulation = () => {
     interval = setInterval(() => {
-      setSpeed(35 + Math.random() * 5);
       setDistance(counter * 100 + Math.random());
       if (distance > 1200) clearInterval(interval);
       counter += 1;
@@ -68,7 +68,8 @@ const Road: React.FC<IProps> = ({
 
 const mapState = (state: RootState): IStateProps => ({
   taskId: state.tasks.currentTaskId,
-  carPosition: state.condor.coordinates
+  carPosition: state.condor.coordinates,
+  speed: state.condor.speed
 });
 
 const mapDispatch = {

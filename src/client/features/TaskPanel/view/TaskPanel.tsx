@@ -9,10 +9,10 @@ import { Button } from '@shared/view';
 import { RootState } from '@root/client/redux/driver/reducer';
 import { actions as modalActions } from '@features/Modal/redux';
 import { ServerTask } from '@shared/types';
-import { getTasks } from '../redux/actions';
 const { openModal } = modalActions;
+import { setHasArrived } from '@features/Map/redux/actions';
 
-import { setCurrentTask } from '../redux/actions';
+import { setCurrentTask, getTasks } from '../redux/actions';
 
 type OwnProps = {
   onlyLastActive?: boolean;
@@ -22,7 +22,7 @@ type OwnProps = {
 type StateProps = {
   tasks: ServerTask[];
   cancel: { cancelled: string[] };
-}
+};
 
 type Props = OwnProps & StateProps & typeof mapDispatch & RouteComponentProps;
 
@@ -31,13 +31,14 @@ const mapState = ({ tasks, cancel }: RootState) => ({
   cancel
 });
 
-const mapDispatch = { openModal, setCurrentTask, getTasks };
+const mapDispatch = { openModal, setCurrentTask, getTasks, setHasArrived };
 
 const TaskPanel: React.FC<Props> = ({
   tasks = [],
   cancel,
   openModal,
   setCurrentTask,
+  setHasArrived,
   getTasks,
   history,
   filterCancelled,
@@ -49,6 +50,7 @@ const TaskPanel: React.FC<Props> = ({
 
   const mapIndexed = R.addIndex(R.map);
   const handleStartClick = ({ id, route, current_position }: ServerTask) => {
+    setHasArrived(false);
     setCurrentTask(id);
     const task = tasks.find(({ id: taskId }) => taskId === id);
     if (!task) return;
