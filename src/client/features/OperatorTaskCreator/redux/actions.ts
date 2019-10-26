@@ -4,26 +4,15 @@ import {
   GPSCoordinates,
   ApiRequest
 } from '@shared/types';
+import { a, actionTree } from '@shared/utils';
 
-export const NEWTASK = {
-  POST: {
-    REQUEST: 'NEWTASK.POST.REQUEST',
-    SUCCESS: 'NEWTASK.POST.SUCCESS',
-    FAILURE: 'NEWTASK.POST.FAILURE'
-  },
-  LOCATION_SEARCH: {
-    REQUEST: 'NEWTASK.LOCATION_SEARCH.REQUEST',
-    SUCCESS: 'NEWTASK.LOCATION_SEARCH.SUCCESS',
-    FAILURE: 'NEWTASK.LOCATION_SEARCH.FAILURE'
-  },
-  GET_ROUTE: {
-    REQUEST: 'NEWTASK.GET_ROUTE.REQUEST',
-    SUCCESS: 'NEWTASK.GET_ROUTE.SUCCESS',
-    FAILURE: 'NEWTASK.GET_ROUTE.FAILURE'
-  },
-  ADD_ROUTE_POINT: 'ADD_ROUTE_POINT',
-  REMOVE_LAST_ROUTE_POINT: 'REMOVE_LAST_ROUTE_POINT'
-};
+export const NEWTASK = actionTree('NEWTASK')({
+  ADD_ROUTE_POINT: a.plain,
+  REMOVE_LAST_ROUTE_POINT: a.plain,
+  POST: a.api,
+  LOCATION_SEARCH: a.api,
+  GET_ROUTE: a.api
+});
 
 export const addRoutePoint = (payload: GPSCoordinates) => ({
   type: NEWTASK.ADD_ROUTE_POINT,

@@ -9,6 +9,7 @@
     "server:dev": "ts-node-dev --respawn --transpileOnly -r tsconfig-paths/register index.ts",
     "dev": "NODE_ENV=development concurrently -n \"CLIENT,SERVER\" -c \"green,red\" \"npm run client:dev\" \"npm run server:dev\"",
     "client:build": "webpack --mode=production --config webpack.config.prod.ts",
+    "client:dev-build": "webpack --mode=development --config webpack.config.dev.ts",
     "server:build": "tsc --project ./",
     "build": "concurrently -n \"CLIENT,SERVER\" -c \"green,red\" \"npm run client:build\" \"npm run server:build\"",
     "start": "NODE_ENV=production node -r ./tsconfig-paths-bootstrap.js dist/main.js"

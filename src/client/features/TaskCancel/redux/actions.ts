@@ -1,15 +1,9 @@
-export const CANCEL = {
-  WITH_REASON: {
-    REQUEST: 'CANCEL.WITH_REASON.REQUEST',
-    SUCCESS: 'CANCEL.WITH_REASON.SUCCESS',
-    FAILURE: 'CANCEL.WITH_REASON.FAILURE'
-  },
-  SEND_MARK: {
-    REQUEST: 'CANCEL.SEND_MARK.REQUEST',
-    SUCCESS: 'CANCEL.SEND_MARK.SUCCESS',
-    FAILURE: 'CANCEL.SEND_MARK.FAILURE'
-  }
-};
+import { a, actionTree } from '@shared/utils';
+
+export const CANCEL = actionTree('CANCEL')({
+  WITH_REASON: a.api,
+  SEND_MARK: a.api
+});
 
 export const cancelWithReason = (
   taskId: string,

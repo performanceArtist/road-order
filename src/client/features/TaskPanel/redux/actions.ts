@@ -1,13 +1,10 @@
-import { TaskFilters, ApiAction, ApiRequest } from '@root/client/shared/types';
+import { TaskFilters, ApiRequest } from '@root/client/shared/types';
+import { a, actionTree } from '@shared/utils';
 
-export const TASK = {
-  SET_CURRENT: 'TASK.SET_CURRENT',
-  GET: {
-    REQUEST: 'TASK.GET.REQUEST',
-    SUCCESS: 'TASK.GET.SUCCESS',
-    FAILURE: 'TASK.GET.FAILURE'
-  }
-};
+export const TASK = actionTree('TASK')({
+  SET_CURRENT: a.plain,
+  GET: a.api
+});
 
 export const getTasks = (filters?: TaskFilters): ApiRequest => ({
   type: TASK.GET.REQUEST,

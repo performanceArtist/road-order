@@ -1,14 +1,14 @@
 import { GPSTrack, ApiRequest } from '@shared/types';
-import { apiAction } from '@shared/utils';
+import { a, actionTree } from '@shared/utils';
 
-export const MAP = {
-  SET_HAS_ARRIVED: 'MAP.SET_HAS_ARRIVED',
-  SET_MEASUREMENT_STATUS: 'MAP.SET_MEASUREMENT_STATUS',
-  GET_ROUTE: apiAction('MAP', 'GET_ROUTE'),
-  GET_ROUTE_PATH: apiAction('MAP', 'GET_ROUTE_PATH'),
-  SIMULATE_MOVEMENT: apiAction('MAP', 'SIMULATE_MOVEMENT'),
-  SIMULATE_MEASUREMENT: apiAction('MAP', 'SIMULATE_MEASUREMENT')
-};
+export const MAP = actionTree('MAP')({
+  SET_HAS_ARRIVED: a.plain,
+  SET_MEASUREMENT_STATUS: a.plain,
+  GET_ROUTE: a.api,
+  GET_ROUTE_PATH: a.api,
+  SIMULATE_MOVEMENT: a.api,
+  SIMULATE_MEASUREMENT: a.api
+});
 
 export const setMeasurementStatus = (start: boolean) => ({
   type: MAP.SET_MEASUREMENT_STATUS,

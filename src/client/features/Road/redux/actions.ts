@@ -1,10 +1,8 @@
-export const ROAD = {
-  MARK: {
-    REQUEST: 'ROAD.MARK.REQUEST',
-    SUCCESS: 'ROAD.MARK.SUCCESS',
-    FAILURE: 'ROAD.MARK.FAILURE'
-  }
-};
+import { a, actionTree } from '@shared/utils';
+
+export const ROAD = actionTree('ROAD')({
+  MARK: a.api
+});
 
 interface MarkRequestPayload {
   audio: any;

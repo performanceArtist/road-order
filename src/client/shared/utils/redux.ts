@@ -1,48 +1,58 @@
-import { ApiAction } from '@shared/types';
+export class ApiAction {
+  REQUEST: string;
+  SUCCESS: string;
+  FAILURE: string;
 
-export type ActionTree = {
-  [key: string]: string | ApiAction | ActionTree;
-};
+  constructor(base: string, action: string) {
+    this.REQUEST = `${base}.${action}.REQUEST`;
+    this.SUCCESS = `${base}.${action}.SUCCESS`;
+    this.FAILURE = `${base}.${action}.FAILURE`;
+  }
+}
 
 export type ActionModel = {
   [key: string]: ActionType;
 };
 
-export type ActionType = 'api' | 'plain' | ActionModel;
+export type ActionType = ApiAction | string | ActionModel;
 
-export const apiAction = (base: string, action: string): ApiAction => {
-  return {
-    REQUEST: `${base}.${action}.REQUEST`,
-    SUCCESS: `${base}.${action}.SUCCESS`,
-    FAILURE: `${base}.${action}.FAILURE`
-  };
-};
+export const actionTree = (base: string) => <T extends ActionModel>(
+  model: T
+): T => {
+  const result = Object.keys(model).reduce<ActionModel>(
+    (acc, cur) => {
+      const action = model[cur];
 
-export const actionTree = (base: string) => (
-  model: ActionModel
-): ActionTree => {
-  const tree: ActionTree = {};
-
-  return Object.keys(model).reduce((acc, cur) => {
-    switch (model[cur]) {
-      case 'plain':
+      if (action instanceof ApiAction) {
+        acc[cur] = new ApiAction(base, cur);
+      } else if (typeof action === 'object') {
+        acc[cur] = actionTree(`${base}.${cur}`)(model[cur] as T);
+      } else if (typeof action === 'string') {
         acc[cur] = `${base}.${cur}`;
-        break;
-      case 'api':
-        acc[cur] = apiAction(base, cur);
-        break;
-      default:
-        if (typeof model[cur] === 'object') {
-          acc[cur] = actionTree(`${base}.${cur}`)(model[cur] as ActionModel);
-        }
-        break;
+      }
+
+      return acc;
+    },
+    {} as ActionModel
+  );
+
+  return result as T;
+};
+
+export const a = {
+  api: new ApiAction('', ''),
+  plain: ''
+};
+
+/*
+const example = actionTree('TODO')({
+  ADD: a.plain,
+  FETCH: a.api,
+  KEK: {
+    POK: a.api,
+    NESTED: {
+      TEST: a.api
     }
-
-    return acc;
-  }, tree);
-};
-
-export const a: { [key: string]: ActionType } = {
-  api: 'api',
-  plain: 'plain'
-};
+  }
+});
+*/
