@@ -5,7 +5,7 @@ type Props = {
   height?: number;
   color?: string;
   direction?: 'left' | 'right' | 'top' | 'bottom';
-}
+};
 
 const Arrow: React.FC<Props> = ({
   width = 2,

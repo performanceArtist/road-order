@@ -9,7 +9,13 @@ type Args = {
 const script = (name: string) =>
   `<script type="text/javascript" src="${name}.js"></script>`;
 
-const render = ({ reactDom, reduxState, helmetData, bundle, scripts = [] }: Args) => {
+export const renderHTML = ({
+  reactDom,
+  reduxState,
+  helmetData,
+  bundle,
+  scripts = []
+}: Args) => {
   const reduxScript = reduxState
     ? `<script>
   window.__PRELOADED_STATE__ = ${JSON.stringify(reduxState).replace(
@@ -39,5 +45,3 @@ const render = ({ reactDom, reduxState, helmetData, bundle, scripts = [] }: Args
   </html>
   `;
 };
-
-export default render;

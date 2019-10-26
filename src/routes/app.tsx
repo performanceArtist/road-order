@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 import { Route, DatabaseUser, DatabaseUserGroup } from '@shared/types';
-import renderApp from '@root/utils/renderApp';
+import { renderApp } from '@root/utils';
 import config from '@root/config';
 import knex from '@root/connection';
 

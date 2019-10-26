@@ -9,7 +9,7 @@ const router = express.Router();
 import knex from '@root/connection';
 import config from '@root/config';
 import App from '@root/client/entries/login/App';
-import render from '@root/utils/renderHTML';
+import { renderHTML } from '@root/utils';
 import { User } from '../models/User';
 import { DatabaseUser } from '@shared/types';
 
@@ -22,7 +22,7 @@ const sendApp = (url: string, res: express.Response) => {
   const reactDom = renderToString(jsx);
   const helmetData = Helmet.renderStatic();
 
-  res.send(render({ reactDom, helmetData, bundle: 'login' }));
+  res.send(renderHTML({ reactDom, helmetData, bundle: 'login' }));
 };
 
 router.get('/login', (req, res) => {

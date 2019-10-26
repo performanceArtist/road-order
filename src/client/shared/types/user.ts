@@ -4,4 +4,4 @@ export type UserInfo = {
   login: string;
   name: string;
   group: UserGroup;
-}
+};

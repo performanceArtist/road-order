@@ -1,2 +1,4 @@
-import loadable from '@loadable/component'
-export default loadable(() => import(/* webpackChunkName: "recorder" */ './Recorder'));
+import loadable from '@loadable/component';
+export default loadable(() =>
+  import(/* webpackChunkName: "recorder" */ './Recorder')
+);

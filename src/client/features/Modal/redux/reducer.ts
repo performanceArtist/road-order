@@ -6,10 +6,7 @@ import RecorderModal from '@components/RecorderModal/RecorderModal';
 
 import { MODAL } from './actions';
 
-export const ModalMap: Record<
-  string,
-  ConnectedComponentClass<any, any>
-> = {
+export const ModalMap: Record<string, ConnectedComponentClass<any, any>> = {
   Error: ErrorModal,
   Cancel: CancelModal,
   Recorder: RecorderModal

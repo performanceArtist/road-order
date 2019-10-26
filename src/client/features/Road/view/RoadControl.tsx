@@ -3,14 +3,20 @@ import * as React from 'react';
 import { Button } from '@shared/view';
 
 type Props = {
-  onStart(event: any): void,
-  onStop(event: any): void,
-  onCancel(event: any): void,
-  onMarkAdd(event: any): void,
-  onEnd(event: any): void
-}
+  onStart(event: any): void;
+  onStop(event: any): void;
+  onCancel(event: any): void;
+  onMarkAdd(event: any): void;
+  onEnd(event: any): void;
+};
 
-const RoadControl: React.FC<Props> = ({ onStart, onStop, onCancel, onMarkAdd, onEnd }) => {
+const RoadControl: React.FC<Props> = ({
+  onStart,
+  onStop,
+  onCancel,
+  onMarkAdd,
+  onEnd
+}) => {
   return (
     <div className="road-control">
       <div className="road-control__button">

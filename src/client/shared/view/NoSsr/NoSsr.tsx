@@ -2,14 +2,10 @@ import React from 'react';
 
 import { canUseDOM } from '@shared/utils';
 
-type Props = {
+type Props = {};
 
-}
-
-const NoSsr: React.FC<Props> = ({  }) => {
-
-
+const NoSsr: React.FC<Props> = ({}) => {
   return null;
-}
+};
 
 export default NoSsr;

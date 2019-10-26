@@ -28,7 +28,7 @@ const Profile = () => {
   useEffect(() => {
     if (!canUseDOM) return;
     const login = getCookie('login');
-    login !=='undefined' && setUsername(login);
+    login !== 'undefined' && setUsername(login);
   }, []);
 
   return (

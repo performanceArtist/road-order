@@ -40,10 +40,14 @@ class Form extends React.Component<IOwnProps & RawFormProps, {}> {
     const target = event.currentTarget as HTMLFormElement;
 
     const formData = [...target.elements].reduce(
-      (acc: { [key: string]: any }, { name, value, type, checked }: HTMLInputElement) => {
+      (
+        acc: { [key: string]: any },
+        { name, value, type, checked }: HTMLInputElement
+      ) => {
         if (type === 'checkbox') {
           acc[name] = checked;
-        } if (type === 'radio') {
+        }
+        if (type === 'radio') {
           if (checked) acc[name] = value;
         } else {
           if (type !== 'submit' && value) acc[name] = value;

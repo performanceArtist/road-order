@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div className="container">
       <main className="app">
-      <div className="app__navigation">
+        <div className="app__navigation">
           <Navigation
             links={routes.map(({ path, title }) => ({
               url: path,

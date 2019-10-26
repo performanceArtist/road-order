@@ -8,7 +8,7 @@ const { closeModal } = actions;
 
 type OwnProps = {
   onSaveClick(audio: any): void;
-}
+};
 
 type Props = OwnProps & typeof mapDispatch;
 

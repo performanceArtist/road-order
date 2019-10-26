@@ -17,7 +17,7 @@ const TaskInfo: React.FC<Props> = ({ task }) => {
     { title: 'Кол-во полос', value: task.lane_number },
     { title: 'Описание', value: task.description },
     { title: 'Старт', value: task.distance[0] },
-    { title: 'Финиш', value: task.distance[1] },
+    { title: 'Финиш', value: task.distance[1] }
   ];
 
   return (

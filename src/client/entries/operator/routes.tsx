@@ -14,8 +14,7 @@ export default [
   {
     path: '/tasks',
     title: 'База заданий',
-    component: TaskView,
-    exact: true
+    component: TaskView
   },
   {
     path: '/map',
@@ -25,19 +24,16 @@ export default [
   {
     path: '/create',
     title: 'Новое задание',
-    component: TaskCreationView,
-    exact: true
+    component: TaskCreationView
   },
   {
     path: '/history',
     title: 'Измерения',
-    component: MeasurementView,
-    exact: true
+    component: MeasurementView
   },
   {
     path: '/calibration',
     title: 'Калибровка',
-    component: Index,
-    exact: true
+    component: Index
   }
 ];

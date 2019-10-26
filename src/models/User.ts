@@ -16,13 +16,19 @@ class User {
   }
 
   static hash(str: string) {
-    const hash = crypto.createHash('md5').update(str).digest("hex");
+    const hash = crypto
+      .createHash('md5')
+      .update(str)
+      .digest('hex');
     return hash;
   }
 
   public async create() {
     try {
-      const hash = crypto.createHash('md5').update(this.user.password).digest("hex");
+      const hash = crypto
+        .createHash('md5')
+        .update(this.user.password)
+        .digest('hex');
       this.user.password = hash;
       await knex('users').insert(this.user);
       return null;

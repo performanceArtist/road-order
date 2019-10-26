@@ -7,4 +7,3 @@ export type Route = {
   component: React.Component;
   exact: boolean;
 };
-
