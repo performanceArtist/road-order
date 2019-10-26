@@ -1,3 +1,21 @@
-# React-redux + Node-express + Typescript
+# React-redux + redux-saga + Node-express + Typescript
 
-Simple example/boilerplate.
+## Scripts
+
+Development with hot reloading(runs server/client concurrently):
+
+```
+npm run dev
+```
+
+Build:
+
+```
+npm run build
+```
+
+Start app:
+
+```
+npm run start
+```

@@ -6,8 +6,8 @@ export async function showUsers() {
   try {
     const users = await knex('users').select('*');
     console.log(users);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -20,8 +20,8 @@ export async function createAdmin() {
       group_id: 2
     });
     await admin.create();
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -29,7 +29,7 @@ export async function createUser(user: UserType) {
   try {
     const newUser = new User(user);
     await newUser.create();
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 }

@@ -44,7 +44,7 @@ router.use('/', async (req, res, next) => {
   } catch (error) {
     console.log(error);
     req.user = undefined;
-    res.status(401).json({ error: 'Unauthorized' });
+    next(error);
   }
 });
 

@@ -23,7 +23,6 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(publicRouter);
@@ -35,6 +34,24 @@ app.get('*', (req, res) => {
   res.status(404);
   res.end();
 });
+
+app.use(
+  (
+    error: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.log(error);
+    if (process.env.NODE_ENV === 'development') {
+      res.send(error.stack || error.toString());
+    } else {
+      res
+        .status(error.statusCode || error.status || 500)
+        .send('<h1>Something went wrong</h1>');
+    }
+  }
+);
 
 const server = app.listen(5000, () => console.log('Listening on port 5000!'));
 

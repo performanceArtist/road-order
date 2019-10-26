@@ -27,7 +27,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!canUseDOM) return;
-    //setUsername(getCookie('login'));
+    setUsername(getCookie('login'));
   }, []);
 
   return (
@@ -37,7 +37,6 @@ const Profile = () => {
       <div
         className="profile__logout-icon"
         onClick={() => {
-          console.log('hay');
           deleteCookie('token');
           if (canUseDOM) window.location.href = '/';
         }}
