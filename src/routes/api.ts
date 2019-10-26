@@ -1,18 +1,18 @@
 import * as express from 'express';
-import axios from 'axios';
 
-const polyline = require('@mapbox/polyline');
 import 'multer'; // Need this to use Express.Multer.File
 const multer = require('multer');
 const path = require('path');
 
-import { TaskFormData, GPSTrack, GPSCoordinates } from '@shared/types';
+import { TaskFormData, GPSTrack } from '@shared/types';
 import { getCondorInfo } from '@root/controllers/condor';
 import { createTask, getServerTasks } from '@root/controllers/task';
 import {
   simulateMovement,
   simulateMeasurement
 } from '@root/controllers/simulation';
+import { getRoute, findLocation } from '@root/controllers/route';
+import { asyncHandler } from '../utils';
 
 type MulterRoute = (
   req: express.Request,
@@ -37,29 +37,14 @@ const storage = multer.diskStorage(multerStorage);
 const upload = multer({ storage });
 const router = express.Router();
 
-router.get('/api/route', (req, res) => {
-  const points: GPSTrack = req.query.points.map(JSON.parse);
-
-  if (!points || points.length < 2)
-    return res.status(500).send('Wrong coordinates');
-  const locs = points.map(([lat, lon]) => `loc=${lat},${lon}`).join('&');
-
-  axios
-    .get(
-      `http://routes.maps.sputnik.ru/osrm/router/viaroute?${locs}&instructions=true`
-    )
-    .then(response => {
-      // fix comma position
-      const data = polyline
-        .decode(response.data.route_geometry)
-        .map(([lat, lon]: GPSCoordinates) => [lat / 10, lon / 10]);
-      res.send(data);
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(500).send(error);
-    });
-});
+router.get(
+  '/api/route',
+  asyncHandler(async (req, res) => {
+    const points: GPSTrack = req.query.points.map(JSON.parse);
+    const route = await getRoute(points);
+    res.json(route);
+  })
+);
 
 router.post('/api/audio', upload.single('audio'), (req, res) => {
   res.status(200).send(req.body.taskId);
@@ -82,59 +67,42 @@ router.post('/api/cancel', (req, res) => {
   }
 });
 
-router.get('/api/location', (req, res) => {
-  const { search = 'Томск' } = req.query;
+router.get(
+  '/api/location',
+  asyncHandler(async (req, res) => {
+    const { search = 'Томск' } = req.query;
+    const location = await findLocation(search);
+    res.json(location);
+  })
+);
 
-  axios
-    .get('http://search.maps.sputnik.ru/search', {
-      params: {
-        q: search
-      }
-    })
-    .then(response => {
-      const data = response.data.result[0].position;
-
-      res.json([data.lat, data.lon]);
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(500).send(error);
-    });
-});
-
-router.get('/api/tasks', async (req, res) => {
-  try {
+router.get(
+  '/api/tasks',
+  asyncHandler(async (req, res) => {
     if (!req.user) throw new Error('No user');
 
     const tasks = await getServerTasks({
       user: req.user.group === 'operator' ? req.user.id : undefined
     });
     res.json(tasks);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-});
+  })
+);
 
-router.post('/api/task/create', async (req, res) => {
-  try {
+router.post(
+  '/api/task/create',
+  asyncHandler(async (req, res) => {
     await createTask(req.body as TaskFormData);
     res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-});
+  })
+);
 
-router.get('/api/condor', async (req, res) => {
-  try {
+router.get(
+  '/api/condor',
+  asyncHandler(async (req, res) => {
     const condor = await getCondorInfo();
     res.json(condor);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-});
+  })
+);
 
 router.post('/api/simulate/movement', async (req, res) => {
   const route = req.body.route as GPSTrack;
@@ -159,5 +127,17 @@ router.get('/api/temp', async (req, res) => {
   await createAdmin();
   res.sendStatus(200);
 });*/
+
+router.use(
+  (
+    error: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.log(error);
+    res.status(error.statusCode || error.status || 500).json({ error });
+  }
+);
 
 export default router;
