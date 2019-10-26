@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as L from 'leaflet';
 
-import { TaskMap } from '@features/Map';
+import TaskMap from './TaskMapEntry';
 import { RootState } from '@root/client/redux/operator/reducer';
 import { TaskFormData, GPSTrack, GPSCoordinates } from '@shared/types';
 

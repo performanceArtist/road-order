@@ -52,7 +52,7 @@ const config = {
           {
             loader: 'sass-loader',
             options: {
-              data: '@import "./globals";',
+              data: '@import "./src/client/globals";',
               includePaths: [path.join(__dirname, 'src')]
             }
           }
