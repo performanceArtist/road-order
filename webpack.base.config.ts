@@ -1,26 +1,13 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+import { makeEntries, makeFolderAlias } from './webpack.utils';
 
 const config = {
-  entry: {
-    driver: [
-      '@babel/polyfill',
-      path.join(__dirname, 'src/client/entries/driver/index.tsx')
-    ],
-    operator: [
-      '@babel/polyfill',
-      path.join(__dirname, 'src/client/entries/operator/index.tsx')
-    ],
-    login: [
-      '@babel/polyfill',
-      path.join(__dirname, 'src/client/entries/public/index.tsx')
-    ],
-    admin: [
-      '@babel/polyfill',
-      path.join(__dirname, 'src/client/entries/admin/index.tsx')
-    ]
-  },
+  entry: makeEntries(
+    ['driver', 'operator', 'login', 'admin'],
+    'src/client/entries'
+  ),
   resolve: {
     modules: ['node_modules', 'client'],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -28,11 +15,7 @@ const config = {
       'react-dom': '@hot-loader/react-dom',
       '@root': path.resolve(__dirname, 'src'),
       '@client': path.resolve(__dirname, 'src/client'),
-      '@redux': path.resolve(__dirname, 'src/client/redux'),
-      '@components': path.resolve(__dirname, 'src/client/components'),
-      '@features': path.resolve(__dirname, 'src/client/features'),
-      '@elements': path.resolve(__dirname, 'src/client/elements'),
-      '@shared': path.resolve(__dirname, 'src/client/shared')
+      ...makeFolderAlias('src/client')
     }
   },
   optimization: {
@@ -51,15 +34,6 @@ const config = {
     path: path.resolve(__dirname, 'dist/dist'),
     filename: '[name].js',
     chunkFilename: '[name].js'
-  },
-  devServer: {
-    port: 3000,
-    open: true,
-    historyApiFallback: true,
-    publicPath: '/',
-    proxy: {
-      '/': 'http://localhost:5000'
-    }
   },
   module: {
     rules: [

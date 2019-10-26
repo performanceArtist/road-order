@@ -8,7 +8,7 @@ const router = express.Router();
 
 import knex from '@root/connection';
 import config from '@root/config';
-import App from '@root/client/entries/public/App';
+import App from '@root/client/entries/login/App';
 import render from '@root/utils/renderHTML';
 import { User } from '../models/User';
 import { DatabaseUser } from '@shared/types';
@@ -36,22 +36,17 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res) => {
   const { password } = req.body;
 
-  try {
-    if (!password) throw new Error('No password');
+  if (!password) throw new Error('No password');
 
-    const hash = User.hash(password);
-    const user: DatabaseUser = await knex('users')
-      .where({ password: hash })
-      .first();
+  const hash = User.hash(password);
+  const user: DatabaseUser = await knex('users')
+    .where({ password: hash })
+    .first();
 
-    if (!user) throw { type: 'login', message: 'Неверный логин или пароль' };
+  if (!user) throw { type: 'login', message: 'Неверный логин или пароль' };
 
-    const token = jwt.sign({ id: user.id }, config.auth.key);
-    res.json({ token });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
+  const token = jwt.sign({ id: user.id }, config.auth.key);
+  res.json({ token });
 });
 
 router.use('/', (req, res, next) => {

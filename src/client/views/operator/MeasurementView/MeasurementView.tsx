@@ -4,7 +4,7 @@ import { MeasurementInfo } from '@features/MeasurementInfo';
 
 const MeasurementView = () => {
   return (
-    <div>
+    <div className="measurement-view">
       <MeasurementInfo />
     </div>
   );

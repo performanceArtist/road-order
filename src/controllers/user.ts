@@ -1,4 +1,3 @@
-
 import knex from '@root/connection';
 
 import { User, UserType } from '@root/models/User';

@@ -24,9 +24,10 @@ const Input: React.FC<IProps & RawInputProps> = ({
   <label className={modifier ? `input input_${modifier}` : 'input'}>
     {label ? <div className="input__label">{label}</div> : null}
     <input
+      type="text"
       {...props}
       className={error ? 'input__input input__input_invalid' : 'input__input'}
-      style={{ width: `${remWidth}rem` }}
+      style={remWidth ? { width: `${remWidth}rem` } : {}}
     />
     {status && <div className="input__input-status">{status}</div>}
   </label>

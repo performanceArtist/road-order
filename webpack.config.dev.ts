@@ -1,8 +1,18 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 import baseConfig from './webpack.base.config';
+import { makeHTMLPages } from './webpack.utils';
 
 module.exports = merge(baseConfig, {
+  devServer: {
+    port: 3000,
+    open: true,
+    publicPath: '/',
+    historyApiFallback: true,
+    proxy: {
+      '/': 'http://localhost:5000'
+    },
+    disableHostCheck: true
+  },
   entry: {
     rhl: 'react-hot-loader/patch'
   },
@@ -11,16 +21,5 @@ module.exports = merge(baseConfig, {
       'react-dom': '@hot-loader/react-dom'
     }
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/client/entries/driver/index.html',
-      filename: `driver.html`,
-      chunks: []
-    }),
-    new HtmlWebpackPlugin({
-      template: 'src/client/entries/operator/index.html',
-      filename: `index.html`,
-      chunks: []
-    })
-  ]
+  plugins: makeHTMLPages(['driver', 'operator'], 'src/client/entries')
 });

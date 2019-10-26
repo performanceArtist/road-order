@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import Router from './Router';
 import { Provider } from 'react-redux';
 
 function getRootContainer(App: React.FC, store: any = null): any {
   const withRouter = (
-    <BrowserRouter>
+    <Router>
       <App />
-    </BrowserRouter>
+    </Router>
   );
 
   if (!store) return withRouter;

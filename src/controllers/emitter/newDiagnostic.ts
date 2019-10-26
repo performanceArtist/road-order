@@ -4,7 +4,7 @@ import config from '@root/config';
 
 import { inferInfoValue } from '../condor';
 
-export default async function(info: DatabaseCondorInfo) {
+export default function(info: DatabaseCondorInfo) {
   if (info.condor_id == config.condor.id) {
     io.emit('message', {
       type: 'new_diagnostic',
