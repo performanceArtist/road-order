@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 import { Map, TileLayer, Polyline, Marker } from 'react-leaflet';
 import { connect } from 'react-redux';
 
-import { Icon, IconImage } from '@elements/Icon/Icon';
+import { Icon, IconImage } from '@components/Icon/Icon';
 import { Button } from '@shared/view';
 import { GPSTrack, GPSCoordinates } from '@shared/types';
 import { actions as modalActions } from '@features/Modal/redux';

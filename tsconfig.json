@@ -25,9 +25,6 @@
     "@features/*": [
       "client/features/*"
     ],
-    "@elements/*": [
-      "client/elements/*"
-    ],
     "@shared/*": [
       "client/shared/*"
     ]

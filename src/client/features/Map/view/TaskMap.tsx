@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as L from 'leaflet';
 import { Map, TileLayer, Polyline, Marker } from 'react-leaflet';
-import { connect } from 'react-redux';
 
-import { Icon, IconImage } from '@elements/Icon/Icon';
+import { Icon, IconImage } from '@components/Icon/Icon';
 import { GPSCoordinates, GPSTrack } from '@shared/types';
 
 interface IState {
