@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router } from '../utils';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 ReactDOM.hydrate(
-  <Router>
+  <BrowserRouter>
     <App />
-  </Router>,
+  </BrowserRouter>,
   document.querySelector('.wrapper')
 );
 
