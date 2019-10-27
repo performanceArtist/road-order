@@ -37,15 +37,6 @@ const storage = multer.diskStorage(multerStorage);
 const upload = multer({ storage });
 const router = express.Router();
 
-router.get(
-  '/api/route',
-  asyncHandler(async (req, res) => {
-    const points: GPSTrack = req.query.points.map(JSON.parse);
-    const route = await getRoute(points);
-    res.json(route);
-  })
-);
-
 router.post('/api/audio', upload.single('audio'), (req, res) => {
   res.status(200).send(req.body.taskId);
 });
@@ -66,6 +57,15 @@ router.post('/api/cancel', (req, res) => {
     res.json(taskId);
   }
 });
+
+router.get(
+  '/api/route',
+  asyncHandler(async (req, res) => {
+    const points: GPSTrack = req.query.points.map(JSON.parse);
+    const route = await getRoute(points);
+    res.json(route);
+  })
+);
 
 router.get(
   '/api/location',

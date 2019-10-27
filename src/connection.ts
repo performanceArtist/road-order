@@ -11,6 +11,7 @@ const knex = require('knex')({
   const connection = await knex.client.acquireRawConnection();
   connection.query('LISTEN new_diagnostic');
   connection.query('LISTEN new_measurement');
+  connection.query('LISTEN update_order');
   connection.on(
     'notification',
     async (data: { payload: string; channel: string }) => {

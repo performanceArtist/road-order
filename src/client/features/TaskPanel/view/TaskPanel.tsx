@@ -12,7 +12,7 @@ import { ServerTask } from '@shared/types';
 const { openModal } = modalActions;
 import { setHasArrived } from '@features/Map/redux/actions';
 
-import { setCurrentTask, getTasks } from '../redux/actions';
+import { setCurrentTask } from '../redux/actions';
 
 type OwnProps = {
   onlyLastActive?: boolean;
@@ -31,7 +31,7 @@ const mapState = ({ tasks, cancel }: RootState) => ({
   cancel
 });
 
-const mapDispatch = { openModal, setCurrentTask, getTasks, setHasArrived };
+const mapDispatch = { openModal, setCurrentTask, setHasArrived };
 
 const TaskPanel: React.FC<Props> = ({
   tasks = [],
@@ -39,15 +39,10 @@ const TaskPanel: React.FC<Props> = ({
   openModal,
   setCurrentTask,
   setHasArrived,
-  getTasks,
   history,
   filterCancelled,
   onlyLastActive
 }) => {
-  useEffect(() => {
-    getTasks();
-  }, []);
-
   const mapIndexed = R.addIndex(R.map);
   const handleStartClick = ({ id, route, current_position }: ServerTask) => {
     setHasArrived(false);

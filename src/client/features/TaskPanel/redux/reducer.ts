@@ -21,6 +21,14 @@ export default function reducer(
       return { ...state, tasks: payload };
     case TASK.SET_CURRENT:
       return { ...state, currentTaskId: payload };
+    case TASK.UPDATE_STATUS:
+      const { id, status } = payload;
+      return {
+        ...state,
+        tasks: state.tasks.map(task =>
+          task.id === id ? { ...task, status } : task
+        )
+      };
     default:
       return state;
   }

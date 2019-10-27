@@ -7,7 +7,7 @@ import { Navigation } from '@client/layout/Navigation/Navigation';
 import Footer from '@client/layout/Footer/Footer';
 import { hot } from 'react-hot-loader/root';
 import Profile from '@components/Profile/Profile';
-import StartChannel from '@shared/view/StartChannel/StartChannel';
+import Bootstrapper from '@root/client/shared/view/Bootstrapper/Bootstrapper';
 
 import routes from './routes';
 
@@ -16,7 +16,7 @@ const App = () => {
     <div className="container">
       <main className="app">
         <ModalManager />
-        <StartChannel />
+        <Bootstrapper />
         <div className="app__navigation">
           <Navigation
             links={routes.map(({ path, title }) => ({
