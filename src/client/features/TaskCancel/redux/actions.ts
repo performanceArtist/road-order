@@ -1,3 +1,4 @@
+import { DatabaseRouteMarkType, GPSCoordinates } from '@shared/types';
 import { a, actionTree } from '@shared/utils';
 
 export const CANCEL = actionTree('CANCEL')({
@@ -7,20 +8,27 @@ export const CANCEL = actionTree('CANCEL')({
 
 export const cancelWithReason = (
   taskId: string,
-  reason: 'road-works' | 'car-crash-ahead' | 'mechanical-failure'
+  markType: DatabaseRouteMarkType,
+  coordinates: GPSCoordinates
 ) => ({
   type: CANCEL.WITH_REASON.REQUEST,
   payload: {
     taskId,
-    reason
+    markType,
+    coordinates
   }
 });
 
-export const cancelWithAudio = (taskId: string, audio: any) => ({
+export const cancelWithAudio = (
+  taskId: string,
+  audio: any,
+  coordinates: GPSCoordinates
+) => ({
   type: CANCEL.WITH_REASON.REQUEST,
   payload: {
     audio,
-    reason: 'in-audio',
-    taskId
+    markType: 'cancel_with-audio',
+    taskId,
+    coordinates
   }
 });

@@ -12,7 +12,7 @@ import {
 
 import { updateCondor } from '@redux/condor/actions';
 import { addMeasurement } from '../measurements/actions';
-import { updateTaskStatus } from '@features/TaskPanel/redux/actions';
+import { updateTaskStatus, addTask } from '@features/TaskPanel/redux/actions';
 
 import { IO } from './actions';
 import config from '@root/config';
@@ -66,6 +66,9 @@ class Socket {
             break;
           case 'new_measurement':
             emit(addMeasurement(payload));
+            break;
+          case 'new_order':
+            emit(addTask(payload));
             break;
           case 'update_order':
             emit(updateTaskStatus(payload));

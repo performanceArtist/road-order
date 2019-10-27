@@ -7,7 +7,9 @@ import {
   TaskFormData,
   DatabaseTask,
   ServerTask,
-  GPSCoordinates
+  GPSCoordinates,
+  DatabaseRouteMark,
+  DatabaseRouteMarkType
 } from '@client/shared/types';
 
 export async function getServerTasks({
@@ -31,7 +33,7 @@ export async function getServerTasks({
   return serverTasks;
 }
 
-const getServerTask = async (dbTask: DatabaseTask) => {
+export const getServerTask = async (dbTask: DatabaseTask) => {
   const {
     id,
     order_number,
@@ -135,4 +137,34 @@ export async function createTask(formData: TaskFormData) {
   };
 
   await knex('orders').insert(newTask);
+}
+
+export async function roadMark(args: {
+  taskId: number;
+  markType: DatabaseRouteMarkType;
+  coordinates: GPSCoordinates;
+  audioPath?: string;
+}) {
+  const { taskId, markType, coordinates, audioPath } = args;
+
+  const markTypeId = await knex('route_mark_type')
+    .select('*')
+    .where({ name: markType })
+    .first();
+
+  const newMark: Omit<DatabaseRouteMark, 'id'> = {
+    coordinates:
+      typeof coordinates === 'string' ? JSON.parse(coordinates) : coordinates,
+    mark_type_id: markTypeId.id,
+    order_id: taskId,
+    audio_path: audioPath
+  };
+
+  await knex('order_route-marks').insert(newMark);
+
+  if (markType !== 'mark') {
+    await knex('orders')
+      .update({ status_id: 5 })
+      .where({ id: taskId });
+  }
 }

@@ -29,6 +29,8 @@ export default function reducer(
           task.id === id ? { ...task, status } : task
         )
       };
+    case TASK.ADD:
+      return { ...state, tasks: state.tasks.concat(payload) };
     default:
       return state;
   }

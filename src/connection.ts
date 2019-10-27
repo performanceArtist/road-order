@@ -12,6 +12,7 @@ const knex = require('knex')({
   connection.query('LISTEN new_diagnostic');
   connection.query('LISTEN new_measurement');
   connection.query('LISTEN update_order');
+  connection.query('LISTEN new_order');
   connection.on(
     'notification',
     async (data: { payload: string; channel: string }) => {

@@ -4,13 +4,27 @@ import axios from 'axios';
 import { sendAudio } from '@shared/utils';
 
 import { CANCEL } from '../actions';
+import {
+  DatabaseRouteMarkType,
+  GPSCoordinates
+} from '@root/client/shared/types';
 
+type CancelPayload = {
+  taskId: number;
+  markType: DatabaseRouteMarkType;
+  coordinates: GPSCoordinates;
+  audio?: any;
+};
 function* worker({ type, payload }: { type: string; payload: any }) {
   try {
     let response;
-    if (payload.reason === 'in-audio') {
-      const { audio, taskId } = payload;
-      response = yield sendAudio('/api/audio', audio, { taskId });
+    if (payload.markType === 'cancel_with-audio') {
+      const { audio, taskId, coordinates, markType }: CancelPayload = payload;
+      response = yield sendAudio('/api/audio-cancel', audio, {
+        taskId,
+        coordinates,
+        markType
+      });
     } else {
       response = yield call(axios.post, '/api/cancel', payload);
     }

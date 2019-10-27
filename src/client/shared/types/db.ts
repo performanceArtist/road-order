@@ -1,4 +1,5 @@
 import { UserGroup } from './user';
+import { GPSCoordinates } from './gps';
 
 export type DatabaseTask = {
   id?: number;
@@ -54,4 +55,20 @@ export type DatabaseJob = {
   id: number;
   description: string;
   order_id: number;
+};
+
+export type DatabaseRouteMarkType =
+  | 'cancel_with-audio'
+  | 'cancel_roadworks'
+  | 'cancel_car-crash-ahead'
+  | 'cancel_condor-malfunction'
+  | 'mark';
+
+export type DatabaseRouteMark = {
+  id: number;
+  coordinates: GPSCoordinates;
+  mark_type_id: number;
+  order_id: number;
+  audio_path?: string;
+  comment?: string;
 };

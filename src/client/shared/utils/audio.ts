@@ -12,7 +12,9 @@ export function sendAudio(url: string, audio: any, fields: Fields) {
 
   formData.append('audio', file);
   Object.keys(fields).forEach(key => {
-    formData.append(key, fields[key]);
+    const value =
+      fields[key] instanceof Array ? JSON.stringify(fields[key]) : fields[key];
+    formData.append(key, value);
   });
 
   return call(axios.post, url, formData, {

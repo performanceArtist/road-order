@@ -6,7 +6,7 @@ const path = require('path');
 
 import { TaskFormData, GPSTrack } from '@shared/types';
 import { getCondorInfo } from '@root/controllers/condor';
-import { createTask, getServerTasks } from '@root/controllers/task';
+import { createTask, getServerTasks, roadMark } from '@root/controllers/task';
 import {
   simulateMovement,
   simulateMeasurement
@@ -37,26 +37,28 @@ const storage = multer.diskStorage(multerStorage);
 const upload = multer({ storage });
 const router = express.Router();
 
-router.post('/api/audio', upload.single('audio'), (req, res) => {
-  res.status(200).send(req.body.taskId);
-});
-
 router.post('/api/mark', upload.single('audio'), (req, res) => {
   res.status(200).send(req.body.taskId);
 });
 
-router.post('/api/cancel', (req, res) => {
-  const reasons = ['road-works', 'car-crash-ahead', 'mechanical-failure'];
-  const { reason, taskId } = req.body;
+router.post(
+  '/api/audio-cancel',
+  upload.single('audio'),
+  asyncHandler(async (req, res) => {
+    console.log(req.body);
+    await roadMark({ ...req.body, audioPath: req.file.filename });
+    res.status(200).send('ok');
+  })
+);
 
-  if (!taskId || !reasons.includes(reason)) {
-    res
-      .status(500)
-      .json({ error: `Invalid reason(${reason}) or task id(${taskId})` });
-  } else {
-    res.json(taskId);
-  }
-});
+router.post(
+  '/api/cancel',
+  asyncHandler(async (req, res) => {
+    console.log(req.body);
+    await roadMark(req.body);
+    res.status(200).send('ok');
+  })
+);
 
 router.get(
   '/api/route',

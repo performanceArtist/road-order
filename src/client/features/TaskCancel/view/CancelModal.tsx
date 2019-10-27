@@ -5,15 +5,25 @@ import { Modal } from '@features/Modal';
 import { actions as modalActions } from '@features/Modal/redux';
 const { openModal, closeModal } = modalActions;
 import { Button } from '@shared/view';
+import { GPSCoordinates } from '@shared/types';
 
 import { actions } from '../redux';
+import { RootState } from '@root/client/redux/driver/reducer';
 const { cancelWithReason, cancelWithAudio } = actions;
 
 type OwnProps = {
   taskId: string;
 };
 
-type Props = OwnProps & typeof mapDispatch;
+type Props = OwnProps & typeof mapDispatch & MapState;
+
+type MapState = {
+  condor: { speed: number; coordinates: GPSCoordinates };
+};
+
+const mapState = (state: RootState): MapState => ({
+  condor: state.condor
+});
 
 const mapDispatch = {
   openModal,
@@ -27,7 +37,8 @@ const CancelModal: React.FC<Props> = ({
   closeModal,
   cancelWithReason,
   cancelWithAudio,
-  taskId
+  taskId,
+  condor: { coordinates }
 }) => {
   return (
     <Modal open={true} onClose={closeModal}>
@@ -38,7 +49,7 @@ const CancelModal: React.FC<Props> = ({
             <div className="cancel-modal__button">
               <Button
                 onClick={() => {
-                  cancelWithReason(taskId, 'road-works');
+                  cancelWithReason(taskId, 'cancel_roadworks', coordinates);
                   closeModal();
                 }}
               >
@@ -48,7 +59,11 @@ const CancelModal: React.FC<Props> = ({
             <div className="cancel-modal__button">
               <Button
                 onClick={() => {
-                  cancelWithReason(taskId, 'car-crash-ahead');
+                  cancelWithReason(
+                    taskId,
+                    'cancel_car-crash-ahead',
+                    coordinates
+                  );
                   closeModal();
                 }}
               >
@@ -58,7 +73,11 @@ const CancelModal: React.FC<Props> = ({
             <div className="cancel-modal__button">
               <Button
                 onClick={() => {
-                  cancelWithReason(taskId, 'mechanical-failure');
+                  cancelWithReason(
+                    taskId,
+                    'cancel_condor-malfunction',
+                    coordinates
+                  );
                   closeModal();
                 }}
               >
@@ -66,16 +85,17 @@ const CancelModal: React.FC<Props> = ({
               </Button>
             </div>
           </div>
-          <div className="cancel-modal__voice">
+          <div className="cancel-modal__audio">
             <Button
-              onClick={() =>
+              onClick={() => {
                 openModal('Recorder', {
                   onSaveClick: (audio: any) => {
-                    cancelWithAudio(taskId, audio);
+                    cancelWithAudio(taskId, audio, coordinates);
+                    closeModal();
                     closeModal();
                   }
-                })
-              }
+                });
+              }}
             >
               Голосовой комментарий
             </Button>
@@ -88,6 +108,6 @@ const CancelModal: React.FC<Props> = ({
 };
 
 export default connect(
-  null,
+  mapState,
   mapDispatch
 )(CancelModal);

@@ -1,9 +1,10 @@
-import { TaskFilters, ApiRequest, TaskStatus } from '@shared/types';
+import { TaskFilters, ApiRequest, TaskStatus, ServerTask } from '@shared/types';
 import { a, actionTree } from '@shared/utils';
 
 export const TASK = actionTree('TASK')({
   SET_CURRENT: a.plain,
   UPDATE_STATUS: a.plain,
+  ADD: a.plain,
   GET: a.api
 });
 
@@ -23,4 +24,9 @@ export const updateTaskStatus = (payload: {
 }) => ({
   type: TASK.UPDATE_STATUS,
   payload
+});
+
+export const addTask = (task: ServerTask) => ({
+  type: TASK.ADD,
+  payload: task
 });
