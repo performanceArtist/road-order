@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import Pagination from './Pagination';
-
 import { ChartInfo } from '@shared/types';
+import Pagination from './Pagination';
 
 type Alias = {
   [key: string]: Array<string>;

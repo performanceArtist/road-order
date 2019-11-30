@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { useState } from 'react';
 
 import { actions as modalActions } from '@features/Modal/redux';
-const { openModal, closeModal } = modalActions;
 import { RootState } from '@root/client/redux/driver/reducer';
 import { GPSCoordinates } from '@shared/types';
 
@@ -11,6 +10,8 @@ import RoadChart from './RoadChart';
 import RoadControl from './RoadControl';
 import SpeedBar from './SpeedBar';
 import { markRequest } from '../redux/actions';
+
+const { openModal, closeModal } = modalActions;
 
 interface IStateProps {
   taskId: string;

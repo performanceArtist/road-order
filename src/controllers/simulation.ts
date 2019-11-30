@@ -10,7 +10,7 @@ export function simulateMovement(
   route: GPSTrack,
   callback?: (index: number) => Promise<any>
 ) {
-  let interval: NodeJS.Timeout | undefined = undefined;
+  let interval: NodeJS.Timeout | undefined;
   let index = 0;
 
   interval = setInterval(async () => {

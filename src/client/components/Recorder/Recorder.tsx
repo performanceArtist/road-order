@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useState } from 'react';
-const { ReactMic } = require('react-mic');
 
 import { Button } from '@shared/view';
+
+const { ReactMic } = require('react-mic');
 
 type OwnProps = {
   onSaveClick: Function;

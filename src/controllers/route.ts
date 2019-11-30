@@ -1,7 +1,8 @@
-const polyline = require('@mapbox/polyline');
 import axios from 'axios';
 
 import { GPSTrack, GPSCoordinates } from '@root/client/shared/types';
+
+const polyline = require('@mapbox/polyline');
 
 export const getRoute = async (points: GPSTrack) => {
   if (!points || points.length < 2) {

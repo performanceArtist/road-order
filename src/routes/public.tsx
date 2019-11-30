@@ -3,15 +3,17 @@ import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
-const jwt = require('jsonwebtoken');
-const router = express.Router();
 
 import knex from '@root/connection';
 import config from '@root/config';
 import App from '@root/client/entries/login/App';
 import { renderHTML } from '@root/utils';
-import { User } from '../models/User';
 import { DatabaseUser } from '@shared/types';
+import { User } from '../models/User';
+
+const jwt = require('jsonwebtoken');
+
+const router = express.Router();
 
 const sendApp = (url: string, res: express.Response) => {
   const jsx = (

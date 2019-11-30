@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as L from 'leaflet';
 
-import TaskMap from './TaskMapEntry';
 import { RootState } from '@root/client/redux/operator/reducer';
 import { TaskFormData, GPSTrack, GPSCoordinates } from '@shared/types';
+import TaskMap from './TaskMapEntry';
 
 import TaskForm from './TaskForm';
 import LocationSearch from './LocationSearch';

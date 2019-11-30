@@ -9,10 +9,11 @@ import { Button } from '@shared/view';
 import { RootState } from '@root/client/redux/driver/reducer';
 import { actions as modalActions } from '@features/Modal/redux';
 import { ServerTask } from '@shared/types';
-const { openModal } = modalActions;
 import { setHasArrived } from '@features/Map/redux/actions';
 
 import { setCurrentTask } from '../redux/actions';
+
+const { openModal } = modalActions;
 
 type OwnProps = {
   onlyLastActive?: boolean;
@@ -90,8 +91,8 @@ const TaskPanel: React.FC<Props> = ({
   );
   const noCancelled = filterCancelled
     ? R.filter(
-        ({ id, status }) => status === 'ready' && !cancel.cancelled.includes(id)
-      )(tasks)
+      ({ id, status }) => status === 'ready' && !cancel.cancelled.includes(id)
+    )(tasks)
     : tasks;
   const activeTasks = sortByDate(noCancelled);
 

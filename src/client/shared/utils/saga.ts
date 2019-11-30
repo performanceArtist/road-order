@@ -9,7 +9,7 @@ type Args = {
 };
 
 export function request({ url, method = 'get', apiAction }: Args) {
-  let action: ApiAction | undefined = undefined;
+  let action: ApiAction | undefined;
   let response;
   function* worker({ type, payload }: ApiRequest) {
     try {
@@ -24,9 +24,9 @@ export function request({ url, method = 'get', apiAction }: Args) {
       const getAction = (): ApiAction | undefined => {
         if (!Array.isArray(apiAction)) {
           return apiAction;
-        } else {
-          return apiAction.find(({ REQUEST }) => REQUEST === type);
-        }
+        } 
+        return apiAction.find(({ REQUEST }) => REQUEST === type);
+        
       };
 
       action = getAction();
@@ -49,9 +49,9 @@ export function request({ url, method = 'get', apiAction }: Args) {
     return function* watcher() {
       yield takeEvery(apiAction.map(a => a.REQUEST), worker);
     };
-  } else {
-    return function* watcher() {
-      yield takeLatest([apiAction.REQUEST], worker);
-    };
-  }
+  } 
+  return function* watcher() {
+    yield takeLatest([apiAction.REQUEST], worker);
+  };
+  
 }

@@ -1,11 +1,13 @@
 import * as express from 'express';
-const jwt = require('jsonwebtoken');
-const router = express.Router();
 
 import { Route, DatabaseUser, DatabaseUserGroup } from '@shared/types';
 import { renderApp } from '@root/utils';
 import config from '@root/config';
 import knex from '@root/connection';
+
+const jwt = require('jsonwebtoken');
+
+const router = express.Router();
 
 router.use('/', async (req, res, next) => {
   try {

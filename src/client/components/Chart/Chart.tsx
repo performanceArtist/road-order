@@ -150,10 +150,10 @@ class Chart extends React.Component<Props, State> {
 
     const ticks = showY
       ? [...Array(tickCount + 1)].map((el, index) =>
-          index === 0
-            ? Math.round(min * 100) / 100
-            : Math.round((min + index * step) * 100) / 100
-        )
+        index === 0
+          ? Math.round(min * 100) / 100
+          : Math.round((min + index * step) * 100) / 100
+      )
       : [];
 
     return [
@@ -387,7 +387,7 @@ class Chart extends React.Component<Props, State> {
                 image={IconImage.ZOOM_OUT}
                 onClick={this.zoomOut}
               />
-            </div>*/}
+            </div> */}
             </div>
           )}
         </div>

@@ -1,7 +1,8 @@
 import * as express from 'express';
-const router = express.Router();
 
 import { User } from '../models/User';
+
+const router = express.Router();
 
 router.use('/admin/', (req, res, next) => {
   if (!req.user || req.user.group !== 'admin')

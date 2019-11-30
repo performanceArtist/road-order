@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 
 import { Modal } from '@features/Modal';
 import { actions as modalActions } from '@features/Modal/redux';
-const { openModal, closeModal } = modalActions;
 import { Button } from '@shared/view';
 import { GPSCoordinates } from '@shared/types';
 
-import { actions } from '../redux';
 import { RootState } from '@root/client/redux/driver/reducer';
+import { actions } from '../redux';
+
+const { openModal, closeModal } = modalActions;
 const { cancelWithReason, cancelWithAudio } = actions;
 
 type OwnProps = {
@@ -41,7 +42,7 @@ const CancelModal: React.FC<Props> = ({
   condor: { coordinates }
 }) => {
   return (
-    <Modal open={true} onClose={closeModal}>
+    <Modal open onClose={closeModal}>
       <Modal.Header>Причина отмены</Modal.Header>
       <Modal.Content>
         <div className="cancel-modal">

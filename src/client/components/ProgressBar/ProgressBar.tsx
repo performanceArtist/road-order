@@ -10,7 +10,7 @@ type Props = {
 };
 
 const ProgressBar: React.FC<Props> = ({ steps = [] }) => {
-  const length = steps.length;
+  const {length} = steps;
   const lines = steps.map(({ name, status }) => (
     <div
       className={`progressbar__step progressbar__step_${status}`}

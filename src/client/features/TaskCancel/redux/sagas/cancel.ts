@@ -3,11 +3,11 @@ import axios from 'axios';
 
 import { sendAudio } from '@shared/utils';
 
-import { CANCEL } from '../actions';
 import {
   DatabaseRouteMarkType,
   GPSCoordinates
 } from '@root/client/shared/types';
+import { CANCEL } from '../actions';
 
 type CancelPayload = {
   taskId: number;

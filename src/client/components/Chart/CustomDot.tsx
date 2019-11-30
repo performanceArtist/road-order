@@ -9,8 +9,8 @@ type Props = {
 };
 
 const CustomDot: React.FC<Props> = ({
-  cx,
-  cy,
+  cx = 0,
+  cy = 0,
   value,
   max = null,
   min = null

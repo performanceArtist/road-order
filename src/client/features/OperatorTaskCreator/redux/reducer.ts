@@ -1,5 +1,5 @@
-import { NEWTASK } from './actions';
 import { GPSTrack, GPSCoordinates } from '@shared/types';
+import { NEWTASK } from './actions';
 
 type IState = {
   location?: GPSCoordinates;
