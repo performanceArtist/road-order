@@ -1,7 +1,7 @@
 import { RootState } from '@root/client/redux/driver/reducer';
 import { ServerTask } from '@shared/types';
 
-import { InitialState } from './reducer';
+import { InitialState } from './initial';
 
 export function selectBranch(state: RootState): InitialState {
   return state.tasks;

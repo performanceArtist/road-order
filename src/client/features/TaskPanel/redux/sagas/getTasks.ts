@@ -1,9 +1,9 @@
-import { request } from '@shared/utils';
+import { request } from '@shared/utils/newSaga';
 
-import { TASK } from '../actions';
+import { creators } from '../index';
 
 export default request({
   url: '/api/tasks',
-  apiAction: TASK.GET,
+  apiAction: creators.getTasks,
   method: 'get'
 });

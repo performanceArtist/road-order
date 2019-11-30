@@ -11,8 +11,8 @@ import { actions as modalActions } from '@features/Modal/redux';
 import { ServerTask } from '@shared/types';
 import { setHasArrived } from '@features/Map/redux/actions';
 
-import { setCurrentTask } from '../redux/actions';
-
+import { creators } from '../redux';
+const { setCurrentTask } = creators;
 const { openModal } = modalActions;
 
 type OwnProps = {
@@ -69,7 +69,8 @@ const TaskPanel: React.FC<Props> = ({
     </div>
   );
 
-  const createElements = mapIndexed((task: any, index: number) => (
+  const createElements = mapIndexed((task: any, index: number) => {
+    return (
     <div
       className={
         onlyLastActive
@@ -83,7 +84,8 @@ const TaskPanel: React.FC<Props> = ({
       <TaskInfo task={task} />
       {onlyLastActive ? index === 0 && buttons(task) : buttons(task)}
     </div>
-  ));
+  );
+  });
 
   const sortByDate = R.sort(
     ({ date: fdate }, { date: sdate }) =>
@@ -98,7 +100,7 @@ const TaskPanel: React.FC<Props> = ({
 
   return (
     <div className="task-panel">
-      {createElements(activeTasks)}
+      {activeTasks.map(createElements)}
       <div style={{ float: 'left', clear: 'both' }} />
     </div>
   );

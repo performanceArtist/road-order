@@ -12,7 +12,7 @@ import {
 
 import { creators as condorCreators } from '@redux/condor';
 import { creators as measurementCreators } from '@redux/measurements';
-import { updateTaskStatus, addTask } from '@features/TaskPanel/redux/actions';
+import { creators as taskCreators } from '@features/TaskPanel/redux';
 
 import { IO } from './actions';
 import config from '@root/config';
@@ -68,10 +68,10 @@ class Socket {
             emit(measurementCreators.add(payload));
             break;
           case 'new_order':
-            emit(addTask(payload));
+            emit(taskCreators.addTask(payload));
             break;
           case 'update_order':
-            emit(updateTaskStatus(payload));
+            emit(taskCreators.updateTaskStatus(payload));
           default:
             break;
         }
