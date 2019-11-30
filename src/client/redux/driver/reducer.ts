@@ -6,7 +6,7 @@ import { reducer as tasks } from '@features/TaskPanel/redux';
 import { reducer as map } from '@features/Map/redux';
 import { reducer as cancel } from '@root/client/features/TaskCancel/redux';
 
-import condor from '../condor/reducer';
+import { reducer as condor } from '../condor';
 import io from '../io/reducer';
 
 const rootReducer = combineReducers({

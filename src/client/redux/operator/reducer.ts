@@ -7,9 +7,9 @@ import { reducer as map } from '@features/Map/redux';
 import { reducer as cancel } from '@root/client/features/TaskCancel/redux';
 import { reducer as newTask } from '@features/OperatorTaskCreator/redux';
 
-import condor from '../condor/reducer';
+import { reducer as condor } from '../condor';
 import io from '../io/reducer';
-import measurements from '../measurements/reducer';
+import { reducer as measurements } from '../measurements';
 
 const rootReducer = combineReducers({
   modals,

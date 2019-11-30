@@ -10,8 +10,8 @@ import {
   delay
 } from 'redux-saga/effects';
 
-import { updateCondor } from '@redux/condor/actions';
-import { addMeasurement } from '../measurements/actions';
+import { creators as condorCreators } from '@redux/condor';
+import { creators as measurementCreators } from '@redux/measurements';
 import { updateTaskStatus, addTask } from '@features/TaskPanel/redux/actions';
 
 import { IO } from './actions';
@@ -62,10 +62,10 @@ class Socket {
       const handler = ({ type, payload }: { type: string; payload: any }) => {
         switch (type) {
           case 'new_diagnostic':
-            emit(updateCondor(payload));
+            emit(condorCreators.update(payload));
             break;
           case 'new_measurement':
-            emit(addMeasurement(payload));
+            emit(measurementCreators.add(payload));
             break;
           case 'new_order':
             emit(addTask(payload));
