@@ -14,7 +14,7 @@ import { markRequest } from '../redux/actions';
 const { openModal, closeModal } = modalActions;
 
 interface IStateProps {
-  taskId: string;
+  taskId: number;
   carPosition: GPSCoordinates;
   speed: number;
 }

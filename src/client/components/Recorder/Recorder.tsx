@@ -6,14 +6,14 @@ import { Button } from '@shared/view';
 const { ReactMic } = require('react-mic');
 
 type OwnProps = {
-  onSaveClick: Function;
+  onSaveClick: (audio: Blob) => void;
 };
 
 type Props = OwnProps;
 
 const Recorder: React.FC<Props> = ({ onSaveClick }) => {
   type Audio = {
-    blob: any;
+    blob: Blob;
   } | null;
 
   const [audio, setAudio] = useState<Audio>(null);

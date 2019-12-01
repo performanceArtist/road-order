@@ -141,15 +141,15 @@ export async function createTask(formData: TaskFormData) {
 
 export async function roadMark(args: {
   taskId: number;
-  markType: DatabaseRouteMarkType;
+  reason: DatabaseRouteMarkType | Blob;
   coordinates: GPSCoordinates;
   audioPath?: string;
 }) {
-  const { taskId, markType, coordinates, audioPath } = args;
-
+  const { taskId, reason, coordinates, audioPath } = args;
+  const markName = typeof reason === 'string' ? reason : 'cancel_with-audio';
   const markTypeId = await knex('route_mark_type')
     .select('*')
-    .where({ name: markType })
+    .where({ name: markName })
     .first();
 
   const newMark: Omit<DatabaseRouteMark, 'id'> = {
@@ -162,7 +162,7 @@ export async function roadMark(args: {
 
   await knex('order_route-marks').insert(newMark);
 
-  if (markType !== 'mark') {
+  if (reason !== 'mark') {
     await knex('orders')
       .update({ status_id: 5 })
       .where({ id: taskId });

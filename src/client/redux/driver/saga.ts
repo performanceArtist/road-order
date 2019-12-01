@@ -6,7 +6,7 @@ import {
   simulateMovement,
   simulateMeasurement
 } from '@features/Map/redux/sagas';
-import { cancel } from '@root/client/features/TaskCancel/redux/sagas';
+import { cancelTask } from '@features/TaskPanel/redux/sagas';
 import { mark } from '@features/Road/redux/sagas';
 import socket from '@redux/io/socket';
 
@@ -16,7 +16,7 @@ export default function* rootSaga() {
     getRoute(),
     simulateMovement(),
     simulateMeasurement(),
-    cancel(),
+    cancelTask(),
     mark(),
     socket.startStopChannel()
   ]);

@@ -1,7 +1,7 @@
 import { ConnectedComponentClass } from 'react-redux';
 
 import ErrorModal from '@components/ErrorModal/ErrorModal';
-import { CancelModal } from '@root/client/features/TaskCancel';
+import { CancelModal } from '@root/client/features/TaskPanel';
 import RecorderModal from '@components/RecorderModal/RecorderModal';
 
 import { MODAL } from './actions';

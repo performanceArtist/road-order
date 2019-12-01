@@ -2,6 +2,7 @@ import { reduxUnit, apiHandler } from '@shared/utils/redux-unit';
 import { ServerTask, TaskStatus } from '@root/client/shared/types';
 
 import { initialState } from './initial';
+import { CancelTaskParams } from './types';
 
 const unit = reduxUnit(initialState, { typePrefix: 'TASK' });
 const { creators, reducer } = unit({
@@ -16,7 +17,11 @@ const { creators, reducer } = unit({
   getTasks: apiHandler({
     communication: 'getTasks',
     onSuccess: (state) => (tasks: ServerTask[]) => ({ ...state, tasks })
-  })
+  }),
+  cancelTask: apiHandler({
+    communication: 'cancelTask',
+    onRequest: (state) => (params: CancelTaskParams) => state
+  }),
 });
 
 export { creators, reducer };

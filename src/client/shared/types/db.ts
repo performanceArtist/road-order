@@ -58,7 +58,6 @@ export type DatabaseJob = {
 };
 
 export type DatabaseRouteMarkType =
-  | 'cancel_with-audio'
   | 'cancel_roadworks'
   | 'cancel_car-crash-ahead'
   | 'cancel_condor-malfunction'

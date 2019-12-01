@@ -36,11 +36,11 @@ export function request<T extends ApiActionCreator<any, any>>({ url, method = 'g
 
   if (Array.isArray(apiAction)) {
     return function* watcher() {
-      yield takeEvery(apiAction.map(a => a.request), worker);
+      yield takeEvery(apiAction.map(a => a.getType('request')), worker);
     };
   }
   return function* watcher() {
-    yield takeLatest([apiAction.request().type], worker);
+    yield takeLatest([apiAction.getType('request')], worker);
   };
 
 }

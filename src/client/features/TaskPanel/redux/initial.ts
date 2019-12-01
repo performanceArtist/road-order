@@ -4,11 +4,13 @@ import { ServerTask } from '@shared/types';
 export interface InitialState {
   tasks: ServerTask[];
   currentTaskId: number | null;
-  getTasks: Communication
+  getTasks: Communication,
+  cancelTask: Communication,
 }
 
 export const initialState: InitialState = {
   tasks: [],
   currentTaskId: null,
-  getTasks: initialCommunication
+  getTasks: initialCommunication,
+  cancelTask: initialCommunication,
 };
