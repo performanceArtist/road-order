@@ -5,7 +5,7 @@ import { TaskPanel } from '@root/client/features/TaskPanel';
 const TaskView = () => {
   return (
     <div>
-      <TaskPanel onlyLastActive filterCancelled />
+      <TaskPanel onlyLastActive />
     </div>
   );
 };

@@ -16,7 +16,6 @@ const { openModal } = modalActions;
 
 type OwnProps = {
   onlyLastActive?: boolean;
-  filterCancelled?: boolean;
 };
 
 type StateProps = {
@@ -41,11 +40,10 @@ const TaskPanel: React.FC<Props> = ({
   setCurrentTask,
   setHasArrived,
   history,
-  filterCancelled,
   onlyLastActive
 }) => {
   const mapIndexed = R.addIndex(R.map);
-  const handleStartClick = ({ id, route, current_position }: ServerTask) => {
+  const handleStartClick = ({ id }: ServerTask) => {
     setHasArrived(false);
     setCurrentTask(id);
     const task = tasks.find(({ id: taskId }) => taskId === id);
@@ -91,17 +89,10 @@ const TaskPanel: React.FC<Props> = ({
     ({ date: fdate }, { date: sdate }) =>
       new Date(fdate).getTime() - new Date(sdate).getTime()
   );
-  const noCancelled = tasks;
-  /*filterCancelled
-    ? R.filter(
-      ({ id, status }) => status === 'ready' && !cancel.cancelled.includes(id)
-    )(tasks)
-    : tasks;*/
-  const activeTasks = sortByDate(noCancelled);
 
   return (
     <div className="task-panel">
-      {createElements(activeTasks)}
+      {createElements(sortByDate(tasks))}
       <div style={{ float: 'left', clear: 'both' }} />
     </div>
   );

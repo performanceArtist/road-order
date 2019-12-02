@@ -86,7 +86,11 @@ router.get(
     const tasks = await getServerTasks({
       user: req.user.group === 'operator' ? req.user.id : undefined
     });
-    res.json(tasks);
+    const result = req.user.group === 'driver'
+    ? tasks.filter(task => task.status === 'ready')
+    : tasks;
+
+    res.json(result);
   })
 );
 
