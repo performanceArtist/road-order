@@ -1,4 +1,4 @@
-import { request } from '@shared/utils/newSaga';
+import { request } from '@root/client/shared/utils';
 
 import { creators } from '../index';
 const { getRoute, getRoutePath } = creators;

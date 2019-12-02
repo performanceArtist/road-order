@@ -1,57 +1,46 @@
 import { takeLatest, takeEvery, call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { ApiAction, ApiRequest } from '@shared/types';
+import { ApiActionCreator } from '@shared/utils/redux-unit';
 
-type Args = {
+type Args<T> = {
   url: string;
-  apiAction: ApiAction | ApiAction[];
+  apiAction: T | T[];
   method?: 'get' | 'post';
 };
 
-export function request({ url, method = 'get', apiAction }: Args) {
-  let action: ApiAction | undefined;
-  let response;
-  function* worker({ type, payload }: ApiRequest) {
+export function request<T extends ApiActionCreator<any, any>>({ url, method = 'get', apiAction }: Args<T>) {
+  let action: T | undefined;
+
+  function* worker({ type, payload }: { type: string, payload: any }) {
     try {
-      if (method === 'get') {
-        response = yield call(axios.get, url, {
-          params: payload
-        });
-      } else {
-        response = yield call(axios.post, url, payload);
-      }
+      const response = method === 'get'
+      ? yield call(axios.get, url, {
+          params: payload[0]
+        })
+      : yield call(axios.post, url, payload[0]);
 
-      const getAction = (): ApiAction | undefined => {
-        if (!Array.isArray(apiAction)) {
-          return apiAction;
-        } 
-        return apiAction.find(({ REQUEST }) => REQUEST === type);
-        
-      };
+      action = !Array.isArray(apiAction)
+      ? apiAction
+      : apiAction.find(({ request }) => request().type === type);
 
-      action = getAction();
       if (!action) throw new Error('No action found');
 
-      yield put({
-        type: action.SUCCESS,
-        payload: response.data
-      });
+      yield put(action.success(response.data));
     } catch ({ response }) {
       console.log(response);
-      yield put({
-        type: action && action.FAILURE,
-        response: response.data
-      });
+      if (action) {
+        yield put(action.failure(response.data));
+      }
     }
   }
 
   if (Array.isArray(apiAction)) {
     return function* watcher() {
-      yield takeEvery(apiAction.map(a => a.REQUEST), worker);
+      yield takeEvery(apiAction.map(a => a.getType('request')), worker);
     };
-  } 
+  }
   return function* watcher() {
-    yield takeLatest([apiAction.REQUEST], worker);
+    yield takeLatest([apiAction.getType('request')], worker);
   };
-  
+
 }
