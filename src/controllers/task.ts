@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 
+import { GPSTrack } from '@shared/types';
 import knex from '@root/connection';
 
 import {
@@ -84,20 +85,20 @@ export const getServerTask = async (dbTask: DatabaseTask) => {
     })
     .first().name;
 
-  const pairs = <T>(arr: T[]) =>
+  const pairs = (arr: number[]) =>
     arr.reduce((acc, cur, i) => {
       if (i % 2 === 0) {
         return R.append([cur], acc);
       } else {
-        return R.adjust(acc.length - 1, R.append(cur), acc);
+        return R.adjust(acc.length - 1, el => el.concat(cur), acc);
       }
-    }, []);
+    }, [] as GPSTrack);
 
   const serverTask: ServerTask = {
     id: id as number,
     date,
     order_number,
-    route: pairs(route),
+    route: pairs(route) as GPSTrack,
     current_position: current,
     distance,
     is_direction_forward,

@@ -6,7 +6,7 @@ export const ROAD = actionTree('ROAD')({
 
 interface MarkRequestPayload {
   audio: any;
-  taskId: string;
+  taskId: number;
   latitude: number;
   longitude: number;
 }

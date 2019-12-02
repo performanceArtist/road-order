@@ -45,13 +45,11 @@ interface State {
   refAreaRight: string;
   xDomain: { left: string | number; right: string | number };
   yDomain: { top: string | number; bottom: string | number };
-  startIndex: number | null;
+  startIndex: number | undefined;
   endIndex: number;
 }
 
 class Chart extends React.Component<Props, State> {
-  brushRef: HTMLDivElement;
-
   constructor(props: Props) {
     super(props);
 
@@ -81,7 +79,7 @@ class Chart extends React.Component<Props, State> {
   ): { bottom: number; top: number } {
     const { data, keyX } = this.props;
 
-    const refData = data.filter(item => item[keyX] >= from && item[keyX] <= to);
+    const refData = data.filter(item => item[keyX] >= Number(from) && item[keyX] <= Number(to));
 
     let [bottom, top] = [refData[0][ref], refData[0][ref]];
     refData.forEach(axis => {
@@ -165,7 +163,7 @@ class Chart extends React.Component<Props, State> {
         stroke={breakpoint ? `url(#${keyY})` : mainColor}
         strokeWidth={2.5}
         dot={
-          <CustomDot max={showMax ? max : null} min={showMin ? min : null} />
+          <CustomDot max={showMax ? max : undefined} min={showMin ? min : undefined} />
         }
         activeDot={false}
         isAnimationActive={false}

@@ -8,3 +8,4 @@ export * from './gps';
 export * from './redux';
 export * from './measurement';
 export * from './stateType';
+export * from './chart';

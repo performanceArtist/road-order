@@ -23,14 +23,10 @@ const mapState = ({ newTask }: RootState) => ({
 });
 
 interface IStateProps {
-  newTask: {
-    location: GPSCoordinates;
-    routePoints: GPSTrack;
-    track: GPSTrack;
-  };
+  newTask: RootState['newTask'];
 }
 
-type IProps = typeof mapDispatch & IStateProps;
+type IProps = typeof mapDispatch & IStateProps & IStateProps;
 
 const OperatorTaskCreator: React.FC<IProps> = ({
   newTask,

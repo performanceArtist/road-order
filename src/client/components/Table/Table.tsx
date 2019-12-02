@@ -39,7 +39,7 @@ const Table: React.FC<Props> = ({
   };
 
   const isValid = (
-    breakpoint: { start: number; finish: number } | null,
+    breakpoint: { start: number; finish: number } | undefined,
     value: number
   ) => {
     if (!value) return true;
@@ -55,7 +55,7 @@ const Table: React.FC<Props> = ({
         <td
           className={
             isValid(
-              chartInfo.lines[key] ? chartInfo.lines[key].breakpoint : null,
+              chartInfo.lines[key]?.breakpoint,
               item[rawKey]
             )
               ? 'table__cell'

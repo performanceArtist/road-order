@@ -1,4 +1,4 @@
-import { ConnectedComponentClass } from 'react-redux';
+import { ConnectedComponent } from 'react-redux';
 
 import ErrorModal from '@components/ErrorModal/ErrorModal';
 import { CancelModal } from '@root/client/features/TaskPanel';
@@ -6,7 +6,7 @@ import RecorderModal from '@components/RecorderModal/RecorderModal';
 
 import { MODAL } from './actions';
 
-export const ModalMap: Record<string, ConnectedComponentClass<any, any>> = {
+export const ModalMap: Record<string, ConnectedComponent<any, any>> = {
   Error: ErrorModal,
   Cancel: CancelModal,
   Recorder: RecorderModal

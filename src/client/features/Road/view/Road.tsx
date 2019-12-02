@@ -14,7 +14,7 @@ import { markRequest } from '../redux/actions';
 const { openModal, closeModal } = modalActions;
 
 interface IStateProps {
-  taskId: number;
+  taskId: number | null;
   carPosition: GPSCoordinates;
   speed: number;
 }
@@ -52,7 +52,7 @@ const Road: React.FC<IProps> = ({
         onMarkAdd={() =>
           openModal('Recorder', {
             onSaveClick: (audio: any) => {
-              markRequest({
+              taskId && markRequest({
                 audio,
                 taskId,
                 latitude: carPosition ? carPosition[0] : 0,
