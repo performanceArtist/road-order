@@ -14,6 +14,14 @@ import { ServerTask } from '@shared/types';
 import * as taskSelectors from '@features/TaskPanel/redux/selectors';
 
 import { creators as mapCreators } from '../redux';
+const {
+  getRoute,
+  getRoutePath,
+  setHasArrived,
+  setMeasurementStarted,
+  simulateMeasurement,
+  simulateMovement
+} = mapCreators;
 import Controls from './Controls';
 import { inRadius } from './helpers';
 import Speed from './Speed';
@@ -49,7 +57,12 @@ const mapState = (state: RootState): MapState => {
 
 const mapDispatch = {
   openModal,
-  ...mapCreators
+  getRoute: getRoute.request,
+  getRoutePath: getRoutePath.request,
+  setHasArrived,
+  setMeasurementStarted,
+  simulateMeasurement: simulateMeasurement.request,
+  simulateMovement: simulateMovement.request
 };
 
 type LeafletDiv = HTMLDivElement & { leafletElement: any };
@@ -79,7 +92,7 @@ class MapComponent extends Component<Props, State> {
       const path = task.is_direction_forward
         ? [task.current_position, task.route[0]]
         : [task.current_position, task.route[task.route.length - 1]];
-      getRoutePath.request(path);
+      getRoutePath({ points: path });
     }
   }
 
@@ -103,7 +116,7 @@ class MapComponent extends Component<Props, State> {
     ) {
       setHasArrived(true);
       if (task && route.length === 0) {
-        getRoute.request(task.route);
+        getRoute({ points: task.route });
       }
     }
   }
@@ -139,14 +152,14 @@ class MapComponent extends Component<Props, State> {
   startSimulation() {
     const { routePath, simulateMovement } = this.props;
 
-    simulateMovement.request(routePath);
+    simulateMovement({ route: routePath });
   }
 
   startMeasurementSimulation() {
     const { task, track, simulateMeasurement } = this.props;
     if (!task) return;
 
-    simulateMeasurement.request(track, task.id);
+    simulateMeasurement({ route: track, taskId: task.id });
   }
 
   render() {

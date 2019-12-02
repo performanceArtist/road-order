@@ -14,19 +14,21 @@ const { creators, reducer } = unit({
     ({ ...state, hasArrived }),
   getRoute: apiHandler({
     communication: 'getRoute',
+    onRequest: (state) => (params: { points: GPSTrack }) => state,
     onSuccess: (state) => (track: GPSTrack) => ({ ...state, track })
   }),
   getRoutePath: apiHandler({
     communication: 'getRoutePath',
+    onRequest: (state) => (params: { points: GPSTrack }) => state,
     onSuccess: (state) => (routePath: GPSTrack) => ({ ...state, routePath })
   }),
   simulateMovement: apiHandler({
     communication: 'simulateMovement',
-    onRequest: (state) => (route: GPSTrack) => state
+    onRequest: (state) => (params: { route: GPSTrack }) => state
   }),
   simulateMeasurement: apiHandler({
     communication: 'simulateMeasurement',
-    onRequest: (state) => (route: GPSTrack, taskId: number) => state
+    onRequest: (state) => (params: { route: GPSTrack, taskId: number }) => state
   })
 });
 
