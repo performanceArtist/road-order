@@ -1,11 +1,11 @@
 import { IO } from './actions';
 
-type State = {
+type InitialState = {
   channelStatus: 'on' | 'off';
   serverStatus: 'unknown' | 'on' | 'off';
 };
 
-const initialState: State = {
+const initialState: InitialState = {
   channelStatus: 'off',
   serverStatus: 'unknown'
 };

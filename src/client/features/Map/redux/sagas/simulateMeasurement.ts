@@ -1,9 +1,9 @@
-import { request } from '@shared/utils';
+import { request } from '@shared/utils/newSaga';
 
-import { MAP } from '../actions';
+import { creators } from '../index';
 
 export default request({
   url: '/api/simulate/measurement',
-  apiAction: MAP.SIMULATE_MEASUREMENT,
+  apiAction: creators.simulateMeasurement,
   method: 'post'
 });

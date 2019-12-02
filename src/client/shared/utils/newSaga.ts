@@ -15,9 +15,9 @@ export function request<T extends ApiActionCreator<any, any>>({ url, method = 'g
     try {
       const response = method === 'get'
       ? yield call(axios.get, url, {
-          params: payload
+          params: payload[0]
         })
-      : yield call(axios.post, url, payload);
+      : yield call(axios.post, url, payload[0]);
 
       action = !Array.isArray(apiAction)
       ? apiAction

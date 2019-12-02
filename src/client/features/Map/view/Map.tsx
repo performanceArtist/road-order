@@ -13,14 +13,7 @@ import { RootState } from '@root/client/redux/driver/reducer';
 import { ServerTask } from '@shared/types';
 import * as taskSelectors from '@features/TaskPanel/redux/selectors';
 
-import {
-  getRoute,
-  getRoutePath,
-  setHasArrived,
-  setMeasurementStatus,
-  simulateMovement,
-  simulateMeasurement
-} from '../redux/actions';
+import { creators as mapCreators } from '../redux';
 import Controls from './Controls';
 import { inRadius } from './helpers';
 import Speed from './Speed';
@@ -55,13 +48,8 @@ const mapState = (state: RootState): MapState => {
 };
 
 const mapDispatch = {
-  getRoute,
-  getRoutePath,
-  setHasArrived,
-  setMeasurementStatus,
   openModal,
-  simulateMovement,
-  simulateMeasurement
+  ...mapCreators
 };
 
 type LeafletDiv = HTMLDivElement & { leafletElement: any };
@@ -91,7 +79,7 @@ class MapComponent extends Component<Props, State> {
       const path = task.is_direction_forward
         ? [task.current_position, task.route[0]]
         : [task.current_position, task.route[task.route.length - 1]];
-      getRoutePath(path);
+      getRoutePath.request(path);
     }
   }
 
@@ -115,7 +103,7 @@ class MapComponent extends Component<Props, State> {
     ) {
       setHasArrived(true);
       if (task && route.length === 0) {
-        getRoute(task.route);
+        getRoute.request(task.route);
       }
     }
   }
@@ -151,20 +139,20 @@ class MapComponent extends Component<Props, State> {
   startSimulation() {
     const { routePath, simulateMovement } = this.props;
 
-    simulateMovement(routePath);
+    simulateMovement.request(routePath);
   }
 
   startMeasurementSimulation() {
     const { task, track, simulateMeasurement } = this.props;
     if (!task) return;
 
-    simulateMeasurement(track, task.id);
+    simulateMeasurement.request(track, task.id);
   }
 
   render() {
     const { zoom, fullscreen } = this.state;
     const {
-      setMeasurementStatus,
+      setMeasurementStarted,
       openModal,
       measurementStarted,
       hasArrived,
@@ -206,18 +194,17 @@ class MapComponent extends Component<Props, State> {
             >
               Начать измерение
             </Button>
-            {/*
             <Controls
               measurementStarted={measurementStarted}
               hasArrived={hasArrived}
               onMeasurementClick={() => {
-                setMeasurementStatus(true);
+                setMeasurementStarted(true);
                 window.location.href = '/road';
               }}
               onCancelClick={() =>
                 currentTaskId && openModal('Cancel', { taskId: currentTaskId })
               }
-            />*/}
+            />
             <div className="map__speed">
               <Speed speed={speed} />
             </div>

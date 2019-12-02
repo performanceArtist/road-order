@@ -8,20 +8,14 @@ import TaskMap from './TaskMapEntry';
 
 import TaskForm from './TaskForm';
 import LocationSearch from './LocationSearch';
-import {
-  getLocation,
-  createTask,
-  getRoute,
-  addRoutePoint,
-  removeLastRoutePoint
-} from '../redux/actions';
-
+import { creators } from '../redux';
+const { addRoutePoint, removeLastRoutePoint, createTask, getLocation, getRoute } = creators;
 const mapDispatch = {
-  getLocation,
-  createTask,
-  getRoute,
   addRoutePoint,
-  removeLastRoutePoint
+  removeLastRoutePoint,
+  createTask: createTask.request,
+  getLocation: getLocation.request,
+  getRoute: getRoute.request
 };
 
 const mapState = ({ newTask }: RootState) => ({
@@ -62,12 +56,12 @@ const OperatorTaskCreator: React.FC<IProps> = ({
 
   useEffect(() => {
     if (from && to) {
-      getRoute(routePoints);
+      getRoute({ points: routePoints });
     }
   }, [routePoints]);
 
   const onSearchSubmit = (search: string) => {
-    getLocation(search);
+    getLocation({ search });
   };
 
   const handleFormSubmit = (formData: TaskFormData) => {

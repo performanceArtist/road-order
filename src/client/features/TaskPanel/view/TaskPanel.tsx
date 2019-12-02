@@ -9,10 +9,9 @@ import { Button } from '@shared/view';
 import { RootState } from '@root/client/redux/driver/reducer';
 import { actions as modalActions } from '@features/Modal/redux';
 import { ServerTask } from '@shared/types';
-import { setHasArrived } from '@features/Map/redux/actions';
+import { creators as mapCreators } from '@features/Map/redux';
 
-import { creators } from '../redux';
-const { setCurrentTask } = creators;
+import { creators as taskCreators } from '../redux';
 const { openModal } = modalActions;
 
 type OwnProps = {
@@ -22,21 +21,22 @@ type OwnProps = {
 
 type StateProps = {
   tasks: ServerTask[];
-  cancel: { cancelled: string[] };
 };
 
 type Props = OwnProps & StateProps & typeof mapDispatch & RouteComponentProps;
 
-const mapState = ({ tasks, cancel }: RootState) => ({
+const mapState = ({ tasks }: RootState) => ({
   tasks: tasks.tasks,
-  cancel
 });
 
-const mapDispatch = { openModal, setCurrentTask, setHasArrived };
+const mapDispatch = {
+  openModal,
+  setCurrentTask: taskCreators.setCurrentTask,
+  setHasArrived: mapCreators.setHasArrived
+};
 
 const TaskPanel: React.FC<Props> = ({
   tasks = [],
-  cancel,
   openModal,
   setCurrentTask,
   setHasArrived,
@@ -91,16 +91,17 @@ const TaskPanel: React.FC<Props> = ({
     ({ date: fdate }, { date: sdate }) =>
       new Date(fdate).getTime() - new Date(sdate).getTime()
   );
-  const noCancelled = filterCancelled
+  const noCancelled = tasks;
+  /*filterCancelled
     ? R.filter(
       ({ id, status }) => status === 'ready' && !cancel.cancelled.includes(id)
     )(tasks)
-    : tasks;
+    : tasks;*/
   const activeTasks = sortByDate(noCancelled);
 
   return (
     <div className="task-panel">
-      {activeTasks.map(createElements)}
+      {createElements(activeTasks)}
       <div style={{ float: 'left', clear: 'both' }} />
     </div>
   );

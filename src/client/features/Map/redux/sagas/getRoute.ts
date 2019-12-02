@@ -1,9 +1,10 @@
-import { request } from '@shared/utils';
+import { request } from '@shared/utils/newSaga';
 
-import { MAP } from '../actions';
+import { creators } from '../index';
+const { getRoute, getRoutePath } = creators;
 
 export default request({
   url: 'api/route',
-  apiAction: [MAP.GET_ROUTE, MAP.GET_ROUTE_PATH],
+  apiAction: [getRoute, getRoutePath],
   method: 'get'
 });
