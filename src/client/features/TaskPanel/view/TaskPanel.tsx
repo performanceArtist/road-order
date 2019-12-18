@@ -9,9 +9,9 @@ import { Button } from '@shared/view';
 import { RootState } from '@root/client/redux/driver/reducer';
 import { actions as modalActions } from '@features/Modal/redux';
 import { ServerTask } from '@shared/types';
-import { creators as mapCreators } from '@features/Map/redux';
+import { mapActions } from '@features/Map/redux';
 
-import { creators as taskCreators } from '../redux';
+import { taskActions } from '../redux';
 const { openModal } = modalActions;
 
 type OwnProps = {
@@ -30,8 +30,8 @@ const mapState = ({ tasks }: RootState) => ({
 
 const mapDispatch = {
   openModal,
-  setCurrentTask: taskCreators.setCurrentTask,
-  setHasArrived: mapCreators.setHasArrived
+  setCurrentTask: taskActions.setCurrentTask,
+  setHasArrived: mapActions.setHasArrived
 };
 
 const TaskPanel: React.FC<Props> = ({

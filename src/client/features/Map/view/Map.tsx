@@ -13,7 +13,7 @@ import { RootState } from '@root/client/redux/driver/reducer';
 import { ServerTask } from '@shared/types';
 import * as taskSelectors from '@features/TaskPanel/redux/selectors';
 
-import { creators as mapCreators } from '../redux';
+import { mapActions } from '../redux';
 const {
   getRoute,
   getRoutePath,
@@ -21,7 +21,7 @@ const {
   setMeasurementStarted,
   simulateMeasurement,
   simulateMovement
-} = mapCreators;
+} = mapActions;
 import Controls from './Controls';
 import { inRadius } from './helpers';
 import Speed from './Speed';

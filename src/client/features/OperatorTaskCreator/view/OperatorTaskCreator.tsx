@@ -8,8 +8,8 @@ import TaskMap from './TaskMapEntry';
 
 import TaskForm from './TaskForm';
 import LocationSearch from './LocationSearch';
-import { creators } from '../redux';
-const { addRoutePoint, removeLastRoutePoint, createTask, getLocation, getRoute } = creators;
+import { taskCreatorActions } from '../redux';
+const { addRoutePoint, removeLastRoutePoint, createTask, getLocation, getRoute } = taskCreatorActions;
 const mapDispatch = {
   addRoutePoint,
   removeLastRoutePoint,

@@ -2,22 +2,22 @@ import { combineReducers } from 'redux';
 import { StateType } from '@shared/types';
 
 import { reducer as modals } from '@features/Modal/redux';
-import { reducer as tasks } from '@root/client/features/TaskPanel/redux';
-import { reducer as map } from '@root/client/features/Map/redux';
-import { reducer as newTask } from '@root/client/features/OperatorTaskCreator/redux';
+import { tasksReducer } from '@root/client/features/TaskPanel/redux';
+import { mapReducer } from '@root/client/features/Map/redux';
+import { taskCreatorReducer } from '@root/client/features/OperatorTaskCreator/redux';
 
-import { reducer as condor } from '../condor';
+import { condorReducer } from '../condor';
+import { measurementsReducer } from '../measurements';
 import io from '../io/reducer';
-import { reducer as measurements } from '../measurements';
 
 const rootReducer = combineReducers({
   modals,
-  tasks,
-  map,
-  newTask,
+  tasks: tasksReducer,
+  map: mapReducer,
+  newTask: taskCreatorReducer,
   io,
-  condor,
-  measurements
+  condor: condorReducer,
+  measurements: measurementsReducer
 });
 
 export type RootState = StateType<typeof rootReducer>;

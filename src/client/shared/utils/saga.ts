@@ -21,7 +21,7 @@ export function request<T extends ApiActionCreator<any, any>>({ url, method = 'g
 
       action = !Array.isArray(apiAction)
       ? apiAction
-      : apiAction.find(({ request }) => request().type === type);
+      : apiAction.find((action) => action.getType('request') === type);
 
       if (!action) throw new Error('No action found');
 

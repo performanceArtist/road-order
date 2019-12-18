@@ -7,10 +7,8 @@ import { Button } from '@shared/view';
 import { GPSCoordinates } from '@shared/types';
 
 import { RootState } from '@root/client/redux/driver/reducer';
-import { creators } from '../redux';
-
+import { taskActions } from '../redux';
 const { openModal, closeModal } = modalActions;
-const { cancelTask } = creators;
 
 type OwnProps = {
   taskId: string;
@@ -29,7 +27,7 @@ const mapState = (state: RootState): MapState => ({
 const mapDispatch = {
   openModal,
   closeModal,
-  cancelTask: cancelTask.request
+  cancelTask: taskActions.cancelTask.request
 };
 
 const CancelModal: React.FC<Props> = ({

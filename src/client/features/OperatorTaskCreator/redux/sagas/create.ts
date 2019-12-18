@@ -1,9 +1,9 @@
 import { request } from '@root/client/shared/utils';
 
-import { creators } from '../index';
+import { taskCreatorActions } from '../index';
 
 export default request({
   url: '/api/task/create',
-  apiAction: creators.createTask,
+  apiAction: taskCreatorActions.createTask,
   method: 'post'
 });

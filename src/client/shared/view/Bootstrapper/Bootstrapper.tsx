@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import socket from '@redux/io/socket';
-import { creators as taskCreators } from '@features/TaskPanel/redux';
+import { taskActions } from '@features/TaskPanel/redux';
 
-const mapDispatch = { startChannel: socket.startChannel, getTasks: taskCreators.getTasks.request };
+const mapDispatch = { startChannel: socket.startChannel, getTasks: taskActions.getTasks.request };
 
 const StartChannel: React.FC<typeof mapDispatch> = ({
   startChannel,

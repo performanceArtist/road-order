@@ -2,17 +2,17 @@ import { combineReducers } from 'redux';
 import { StateType } from '@shared/types';
 
 import { reducer as modals } from '@features/Modal/redux';
-import { reducer as tasks } from '@root/client/features/TaskPanel/redux';
-import { reducer as map } from '@root/client/features/Map/redux';
+import { tasksReducer } from '@root/client/features/TaskPanel/redux';
+import { mapReducer } from '@root/client/features/Map/redux';
 
-import { reducer as condor } from '../condor';
+import { condorReducer } from '../condor';
 import io from '../io/reducer';
 
 const rootReducer = combineReducers({
   modals,
-  tasks,
-  map,
-  condor,
+  tasks: tasksReducer,
+  map: mapReducer,
+  condor: condorReducer,
   io
 });
 

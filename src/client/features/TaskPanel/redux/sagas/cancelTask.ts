@@ -3,15 +3,12 @@ import axios from 'axios';
 
 import { sendAudio } from '@shared/utils';
 
-import { CancelTaskParams } from '../types';
-import { creators } from '../index';
-const { cancelTask } = creators;
+import { taskActions } from '../index';
 
-function* worker({ type, payload }: { type: string; payload: [CancelTaskParams] }) {
+function* worker({ type, payload: [params] }: ReturnType<typeof taskActions.cancelTask.request>) {
   try {
-    console.log('params', payload);
     let response;
-    const { taskId, coordinates, reason }: CancelTaskParams = payload[0];
+    const { taskId, coordinates, reason } = params;
 
     if (typeof reason !== 'string') {
       response = yield sendAudio('/api/audio-cancel', reason, {
@@ -19,16 +16,16 @@ function* worker({ type, payload }: { type: string; payload: [CancelTaskParams] 
         coordinates,
       });
     } else {
-      response = yield call(axios.post, '/api/cancel', payload[0]);
+      response = yield call(axios.post, '/api/cancel', params);
     }
 
-    yield put(cancelTask.success(response.data));
+    yield put(taskActions.cancelTask.success());
   } catch ({ response }) {
     console.log(response);
-    yield put(cancelTask.failure(response.data));
+    yield put(taskActions.cancelTask.failure(response.data));
   }
 }
 
 export default function* watcher() {
-  yield takeLatest(cancelTask.getType('request'), worker);
+  yield takeLatest(taskActions.cancelTask.getType('request'), worker);
 }

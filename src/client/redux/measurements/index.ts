@@ -4,9 +4,9 @@ import { ServerMeasurement } from '@shared/types';
 import { initialState } from './initial';
 
 const unit = reduxUnit(initialState, { typePrefix: 'MEASUREMENTS' });
-const { creators, reducer } = unit({
+const { actions, reducer } = unit({
   add: (state) => (measurement: ServerMeasurement) =>
     ({ ...state, measurements: state.measurements.concat(measurement)})
 });
 
-export { creators, reducer };
+export { actions as measurementsActions, reducer as measurementsReducer };

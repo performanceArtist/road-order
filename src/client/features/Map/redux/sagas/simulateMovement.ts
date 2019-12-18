@@ -1,9 +1,9 @@
 import { request } from '@root/client/shared/utils';
 
-import { creators } from '../index';
+import { mapActions } from '../index';
 
 export default request({
   url: '/api/simulate/movement',
-  apiAction: creators.simulateMovement,
+  apiAction: mapActions.simulateMovement,
   method: 'post'
 });
